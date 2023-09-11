@@ -3,13 +3,14 @@ project:
   output-dir: docs
 
 website:
-  title: "MLT Notes"
+  title: "Machine Learning Techniques"
   page-footer:
     right: "This page is built with ❤️ and [Quarto](https://quarto.org/)."
     background: "#D9E3E4"
   repo-url: https://github.com/SherryS997/MLT_notes
   page-navigation: true
   sidebar:
+    logo: "images/logo.png"
     background: "#D9E3E4"
     pinned: true
     align: center

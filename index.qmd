@@ -1,5 +1,5 @@
 ---
-title: "MLT Notes"
+title: "CS2007: Machine Learning Techniques"
 ---
 
 :::{.callout-note}
@@ -19,7 +19,7 @@ To introduce the main methods and models used in machine learning problems of re
 
 ## Course Instructors
 
-**Arun Rajkumar**
+**Prof. Arun Rajkumar**
 
 Assistant Professor, Department of Computer Sciences & Engineering, IIT Madras
 

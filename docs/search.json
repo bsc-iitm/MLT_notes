@@ -2,49 +2,49 @@
   {
     "objectID": "index.html",
     "href": "index.html",
-    "title": "MLT Notes",
+    "title": "CS2007: Machine Learning Techniques",
     "section": "",
     "text": "Note\n\n\n\nThis site is still under development.\nFeedback/Correction: Click here!."
   },
   {
     "objectID": "index.html#about-the-course",
     "href": "index.html#about-the-course",
-    "title": "MLT Notes",
+    "title": "CS2007: Machine Learning Techniques",
     "section": "About the Course",
     "text": "About the Course\nTo introduce the main methods and models used in machine learning problems of regression, classification and clustering. To study the properties of these models and methods and learn about their suitability for different problems."
   },
   {
     "objectID": "index.html#what-youll-learn",
     "href": "index.html#what-youll-learn",
-    "title": "MLT Notes",
+    "title": "CS2007: Machine Learning Techniques",
     "section": "What you’ll learn",
     "text": "What you’ll learn\n\nDemonstrating In depth understanding of machine learning algorithms - model, objective or loss function, optimization algorithm and evaluation criteria.\nTweaking machine learning algorithms based on the outcome of experiments - what steps to take in case of underfitting and overfitting.\nBeing able to choose among multiple algorithms for a given task.\nDeveloping an understanding of unsupervised learning techniques."
   },
   {
     "objectID": "index.html#course-instructors",
     "href": "index.html#course-instructors",
-    "title": "MLT Notes",
+    "title": "CS2007: Machine Learning Techniques",
     "section": "Course Instructors",
-    "text": "Course Instructors\nArun Rajkumar\nAssistant Professor, Department of Computer Sciences & Engineering, IIT Madras"
+    "text": "Course Instructors\nProf. Arun Rajkumar\nAssistant Professor, Department of Computer Sciences & Engineering, IIT Madras"
   },
   {
     "objectID": "index.html#author",
     "href": "index.html#author",
-    "title": "MLT Notes",
+    "title": "CS2007: Machine Learning Techniques",
     "section": "Author",
     "text": "Author\n\nSherry\n\n\nCo-Authors\n\nA Aniruddha\nVivek Sivaramakrishnan"
   },
   {
     "objectID": "index.html#table-of-contents",
     "href": "index.html#table-of-contents",
-    "title": "MLT Notes",
+    "title": "CS2007: Machine Learning Techniques",
     "section": "Table of Contents",
     "text": "Table of Contents\n\nIntroduction; Unsupervised Learning - Representation learning - PCA\nUnsupervised Learning - Representation learning - Kernel PCA\nUnsupervised Learning - Clustering - K-means/Kernel K-means\nUnsupervised Learning - Estimation - Recap of MLE + Bayesian estimation, Gaussian Mixture Model - EM algorithm\nSupervised Learning - Regression - Least Squares; Bayesian view\nSupervised Learning - Regression - Ridge/LASSO\nSupervised Learning - Classification - K-NN, Decision tree\nSupervised Learning - Classification - Generative Models - Naive Bayes\nDiscriminative Models - Perceptron; Logistic Regression\nSupport Vector Machines\nEnsemble methods - Bagging and Boosting (Adaboost)"
   },
   {
     "objectID": "index.html#study-material",
     "href": "index.html#study-material",
-    "title": "MLT Notes",
+    "title": "CS2007: Machine Learning Techniques",
     "section": "Study Material",
     "text": "Study Material\nThe primary study material for this course is the set of videos and assignments posted on the course page. The prescribed textbook for this course is:\n\nPattern Classification by David G. Stork, Peter E. Hart, and Richard O. Duda\nPattern Recognition and Machine Learning by Christopher M. Bishop\nThe Elements of Statistical Learning: Data Mining, Inference, and Prediction by Trevor Hastie, Robert Tibshirani, and Jerome Friedman\n\nThe learners are advised to make best use of the interaction sessions with the course support members to clarify their doubts.\nTo know more about course syllabus, Instructors and course contents, please click on the below link\nhttps://onlinedegree.iitm.ac.in/course_pages/BSCCS2007.html\nPlease click on the below tab to view the Course Specific Calendar:\nhttps://calendar.google.com/calendar/u/2?cid=Y19vODg1amdtMTVrbjJzZW01dGlkM2szcjhnNEBncm91cC5jYWxlbmRhci5nb29nbGUuY29t"
   },
