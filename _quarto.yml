@@ -4,14 +4,21 @@ project:
 
 website:
   title: "MLT Notes"
+  page-footer:
+    right: "This page is built with ❤️ and [Quarto](https://quarto.org/)."
+    background: "#D9E3E4"
   repo-url: https://github.com/SherryS997/MLT_notes
   page-navigation: true
   sidebar:
+    background: "#D9E3E4"
+    pinned: true
+    align: center
     tools:
       - icon: github
         href: https://github.com/bsc-iitm/MLT_notes
     style: "docked"
     search: true
+    collapse-level: 1
     contents:
       - section: "Home"
         contents: 
@@ -54,11 +61,13 @@ website:
 
 format:
   html:
-    css: ["styles.css"]
-    theme: 
-      light: [lux, styles.scss]
-      dark: [darkly, styles.scss]
+    theme:
+      light: [cosmo, theme.scss]
+      dark: [cosmo, theme-dark.scss]
+    mainfont: "Atkinson Hyperlegible"
+    code-copy: true
+    code-overflow: wrap
     toc: true
 
-
-
+freeze: auto
+editor: visual
