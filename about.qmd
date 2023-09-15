@@ -2,4 +2,44 @@
 title: "About"
 ---
 
-About this site
+## About the Course
+To introduce the main methods and models used in machine learning problems of regression, classification and clustering. To study the properties of these models and methods and learn about their suitability for different problems.
+
+## What you'll learn
+* Demonstrating In depth understanding of machine learning algorithms - model, objective or loss function, optimization algorithm and evaluation criteria.
+* Tweaking machine learning algorithms based on the outcome of experiments - what steps to take in case of underfitting and overfitting.
+* Being able to choose among multiple algorithms for a given task.
+* Developing an understanding of unsupervised learning techniques.
+
+## Course Instructors
+
+**Prof. Arun Rajkumar**
+
+Assistant Professor, Department of Computer Sciences & Engineering, IIT Madras
+
+## Author
+
+* [Sherry](https://discourse.onlinedegree.iitm.ac.in/u/sherry)
+
+### Co-Authors
+
+* [A Aniruddha](https://discourse.onlinedegree.iitm.ac.in/u/alape_aniruddha)
+* [Vivek Sivaramakrishnan](https://discourse.onlinedegree.iitm.ac.in/u/vivekthegreat1)
+
+## Study Material
+
+The primary study material for this course is the set of videos and assignments posted on the course page. The prescribed textbook for this course is: 
+
+* Pattern Classification by David G. Stork, Peter E. Hart, and Richard O. Duda
+* Pattern Recognition and Machine Learning by Christopher M. Bishop
+* The Elements of Statistical Learning: Data Mining, Inference, and Prediction by Trevor Hastie, Robert Tibshirani, and Jerome Friedman
+
+The learners are advised to make best use of the interaction sessions with the course support members to clarify their doubts. 
+
+To know more about course syllabus, Instructors and course contents, please click on the below link
+
+[https://ds.study.iitm.ac.in/course_pages/BSCCS2007.html](https://onlinedegree.iitm.ac.in/course_pages/BSCCS2007.html)
+
+Please click on the below tab to view the Course Specific Calendar:
+
+[https://calendar.google.com/calendar/u/2?cid=Y19vODg1amdtMTVrbjJzZW01dGlkM2szcjhnNEBncm91cC5jYWxlbmRhci5nb29nbGUuY29t](https://calendar.google.com/calendar/u/2?cid=Y19vODg1amdtMTVrbjJzZW01dGlkM2szcjhnNEBncm91cC5jYWxlbmRhci5nb29nbGUuY29t)

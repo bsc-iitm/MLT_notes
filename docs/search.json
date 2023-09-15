@@ -1,255 +1,87 @@
 [
   {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "CS2007: Machine Learning Techniques",
-    "section": "",
-    "text": "Note\n\n\n\nThis site is still under development.\nFeedback/Correction: Click here!."
-  },
-  {
-    "objectID": "index.html#about-the-course",
-    "href": "index.html#about-the-course",
-    "title": "CS2007: Machine Learning Techniques",
-    "section": "About the Course",
-    "text": "About the Course\nTo introduce the main methods and models used in machine learning problems of regression, classification and clustering. To study the properties of these models and methods and learn about their suitability for different problems."
-  },
-  {
-    "objectID": "index.html#what-youll-learn",
-    "href": "index.html#what-youll-learn",
-    "title": "CS2007: Machine Learning Techniques",
-    "section": "What you’ll learn",
-    "text": "What you’ll learn\n\nDemonstrating In depth understanding of machine learning algorithms - model, objective or loss function, optimization algorithm and evaluation criteria.\nTweaking machine learning algorithms based on the outcome of experiments - what steps to take in case of underfitting and overfitting.\nBeing able to choose among multiple algorithms for a given task.\nDeveloping an understanding of unsupervised learning techniques."
-  },
-  {
-    "objectID": "index.html#course-instructors",
-    "href": "index.html#course-instructors",
-    "title": "CS2007: Machine Learning Techniques",
-    "section": "Course Instructors",
-    "text": "Course Instructors\nProf. Arun Rajkumar\nAssistant Professor, Department of Computer Sciences & Engineering, IIT Madras"
-  },
-  {
-    "objectID": "index.html#author",
-    "href": "index.html#author",
-    "title": "CS2007: Machine Learning Techniques",
-    "section": "Author",
-    "text": "Author\n\nSherry\n\n\nCo-Authors\n\nA Aniruddha\nVivek Sivaramakrishnan"
-  },
-  {
-    "objectID": "index.html#table-of-contents",
-    "href": "index.html#table-of-contents",
-    "title": "CS2007: Machine Learning Techniques",
-    "section": "Table of Contents",
-    "text": "Table of Contents\n\nIntroduction; Unsupervised Learning - Representation learning - PCA\nUnsupervised Learning - Representation learning - Kernel PCA\nUnsupervised Learning - Clustering - K-means/Kernel K-means\nUnsupervised Learning - Estimation - Recap of MLE + Bayesian estimation, Gaussian Mixture Model - EM algorithm\nSupervised Learning - Regression - Least Squares; Bayesian view\nSupervised Learning - Regression - Ridge/LASSO\nSupervised Learning - Classification - K-NN, Decision tree\nSupervised Learning - Classification - Generative Models - Naive Bayes\nDiscriminative Models - Perceptron; Logistic Regression\nSupport Vector Machines\nEnsemble methods - Bagging and Boosting (Adaboost)"
-  },
-  {
-    "objectID": "index.html#study-material",
-    "href": "index.html#study-material",
-    "title": "CS2007: Machine Learning Techniques",
-    "section": "Study Material",
-    "text": "Study Material\nThe primary study material for this course is the set of videos and assignments posted on the course page. The prescribed textbook for this course is:\n\nPattern Classification by David G. Stork, Peter E. Hart, and Richard O. Duda\nPattern Recognition and Machine Learning by Christopher M. Bishop\nThe Elements of Statistical Learning: Data Mining, Inference, and Prediction by Trevor Hastie, Robert Tibshirani, and Jerome Friedman\n\nThe learners are advised to make best use of the interaction sessions with the course support members to clarify their doubts.\nTo know more about course syllabus, Instructors and course contents, please click on the below link\nhttps://onlinedegree.iitm.ac.in/course_pages/BSCCS2007.html\nPlease click on the below tab to view the Course Specific Calendar:\nhttps://calendar.google.com/calendar/u/2?cid=Y19vODg1amdtMTVrbjJzZW01dGlkM2szcjhnNEBncm91cC5jYWxlbmRhci5nb29nbGUuY29t"
-  },
-  {
-    "objectID": "pages/Wk11.html",
-    "href": "pages/Wk11.html",
-    "title": "Ensemble methods - Bagging and Boosting (Adaboost)",
-    "section": "",
-    "text": "Note\n\n\n\nFeedback/Correction: Click here!.\nPDF Link: Click here!"
-  },
-  {
-    "objectID": "pages/Wk11.html#dual-formulation",
-    "href": "pages/Wk11.html#dual-formulation",
-    "title": "Ensemble methods - Bagging and Boosting (Adaboost)",
-    "section": "Dual Formulation",
-    "text": "Dual Formulation\nMaximizing the Lagrangian function w.r.t. \\(\\alpha\\) and \\(\\beta\\), and minimizing it w.r.t. \\(w\\) and \\(\\epsilon\\), we get,\n\\[\n\\min _{w, \\epsilon}\\left [\\max _{\\alpha \\ge 0; \\beta \\ge 0}\\frac{1}{2}||w||^2_2 + C\\sum _{i=1} ^n\\epsilon_i + \\sum _{i=1} ^n \\alpha_i(1-(w^Tx_i)y_i - \\epsilon_i) + \\sum _{i=1} ^n \\beta(-\\epsilon_i) \\right ]\n\\]\nThe dual of this is given by,\n\\[\n\\max _{\\alpha \\ge 0; \\beta \\ge 0}\\left [\\min _{w, \\epsilon}\\frac{1}{2}||w||^2_2 + C\\sum _{i=1} ^n\\epsilon_i + \\sum _{i=1} ^n \\alpha_i(1-(w^Tx_i)y_i - \\epsilon_i) + \\sum _{i=1} ^n \\beta(-\\epsilon_i) \\right ]\n\\]\n\\[\n\\max _{\\alpha \\ge 0; \\beta \\ge 0}\\left [\\min _{w, \\epsilon}\\mathcal{L}(w, \\epsilon, \\alpha, \\beta) \\right ] \\quad \\ldots[1]\n\\]\nDifferentiating the above function\\([1]\\) w.r.t. \\(w\\) while fixing \\(\\alpha\\) and \\(\\beta\\), we get, \\[\n\\frac{d\\mathcal{L}}{dw}  = 0\n\\] \\[\n\\frac{d}{dw} \\frac{1}{2}||w||^2_2 + C\\sum _{i=1} ^n\\epsilon_i + \\sum _{i=1} ^n \\alpha_i(1-(w^Tx_i)y_i - \\epsilon_i) + \\sum _{i=1} ^n \\beta(-\\epsilon_i) = 0\\\\\n\\] \\[\nw_{\\alpha, \\beta}^* - \\alpha_ix_iy_i = 0\n\\] \\[\n\\therefore w_{\\alpha, \\beta}^* = \\alpha_ix_iy_i \\quad \\ldots [2]\n\\]\nDifferentiating the above function\\([1]\\) w.r.t. \\(\\epsilon_i \\forall i\\) while fixing \\(\\alpha\\) and \\(\\beta\\), we get,\n\\[\n\\frac{\\partial\\mathcal{L}}{\\partial\\epsilon_i}  = 0\n\\] \\[\n\\frac{\\partial}{\\partial\\epsilon_i} \\frac{1}{2}||w||^2_2 + C\\sum _{i=1} ^n\\epsilon_i + \\sum _{i=1} ^n \\alpha_i(1-(w^Tx_i)y_i - \\epsilon_i) + \\sum _{i=1} ^n \\beta(-\\epsilon_i) = 0\n\\] \\[\nC - \\alpha_i -\\beta_i = 0\n\\] \\[\n\\therefore C = \\alpha_i + \\beta_i \\quad \\ldots [3]\n\\]\nSubstituting the values of \\(w\\) and \\(\\beta\\) from \\([2]\\) and \\([3]\\) in \\([1]\\), we get,\n\\[\n\\max _{\\alpha \\ge 0; \\beta \\ge 0; C = \\alpha_i + \\beta_i}\\left [\\frac{1}{2}||\\alpha_ix_iy_i||^2_2 + C\\sum _{i=1} ^n\\epsilon_i + \\sum _{i=1} ^n \\alpha_i(1-((\\alpha_ix_iy_i)^Tx_i)y_i - \\epsilon_i) + \\sum _{i=1} ^n (C-\\alpha_i)(-\\epsilon_i) \\right ]\n\\] \\[\n\\max _{\\alpha \\ge 0; \\beta \\ge 0; C = \\alpha_i + \\beta_i}\\left [\\frac{1}{2}\\alpha_i^Tx_i^Ty_i^Ty_ix_i\\alpha_i + C\\sum _{i=1} ^n\\epsilon_i + \\sum _{i=1} ^n \\alpha_i-\\alpha_i^Tx_i^Ty_i^Ty_ix_i\\alpha_i - \\sum _{i=1} ^n \\alpha_i\\epsilon_i - C\\sum _{i=1} ^n\\epsilon_i + \\sum _{i=1} ^n \\alpha_i\\epsilon_i \\right ]\n\\] \\[\n\\max _{\\alpha \\ge 0; \\beta \\ge 0; C = \\alpha_i + \\beta_i}\\left [\\sum _{i=1} ^n \\alpha_i - \\frac{1}{2}\\alpha_i^Tx_i^Ty_i^Ty_ix_i\\alpha_i\\right ]\n\\] \\[\n\\therefore \\max _{0 \\le \\alpha \\le C}\\left [\\sum _{i=1} ^n \\alpha_i - \\frac{1}{2}\\alpha_i^Tx_i^Ty_i^Ty_ix_i\\alpha_i\\right ]\n\\]"
-  },
-  {
-    "objectID": "pages/Wk09.html",
-    "href": "pages/Wk09.html",
-    "title": "Discriminative Models - Perceptron; Logistic Regression",
-    "section": "",
-    "text": "Note\n\n\n\nFeedback/Correction: Click here!.\nPDF Link: Click here!"
-  },
-  {
-    "objectID": "pages/Wk09.html#analysis-of-the-update-rule",
-    "href": "pages/Wk09.html#analysis-of-the-update-rule",
-    "title": "Discriminative Models - Perceptron; Logistic Regression",
-    "section": "Analysis of the Update Rule",
-    "text": "Analysis of the Update Rule\nFor a given training example \\((\\mathbf{x}, y)\\), where \\(\\mathbf{x}\\) represents the input and \\(y\\) represents the correct output (either \\(1\\) or \\(-1\\)), the perceptron algorithm updates the weight vector \\(\\mathbf{w}\\) according to the following rules:\n\nIf the perceptron’s prediction on \\(\\mathbf{x}\\) is correct (i.e., \\(\\text{sign}(\\mathbf{w}^\\mathbf{T}\\mathbf{x}_i)==y_i\\)), no update is performed.\nIf the perceptron’s prediction on \\(\\mathbf{x}\\) is incorrect (i.e., \\(\\text{sign}(\\mathbf{w}^\\mathbf{T}\\mathbf{x}_i)\\neq y_i\\)), the weights are updated by adding the product of the input vector and the correct output to the current weight vector: \\(\\mathbf{w}^{(t+1)} = \\mathbf{w}^t + \\mathbf{x}_iy_i\\).\nIt is important to note that the update occurs solely in response to the current data point. Consequently, data points that were previously classified correctly may not be classified similarly in future iterations.\n\nThis update rule effectively adjusts the decision boundary in the direction of correct classification for the misclassified example. The algorithm is guaranteed to converge to a linearly separable solution if the data is indeed linearly separable. However, if the data is not linearly separable, the perceptron algorithm may not converge to a solution."
-  },
-  {
-    "objectID": "pages/Wk09.html#further-assumptions",
-    "href": "pages/Wk09.html#further-assumptions",
-    "title": "Discriminative Models - Perceptron; Logistic Regression",
-    "section": "Further Assumptions",
-    "text": "Further Assumptions\nWe introduce three additional assumptions:\n\nLinear Separability with \\(\\gamma\\)-Margin: A dataset \\(D=\\{(\\mathbf{x}_1, y_1), \\ldots, (\\mathbf{x}_n,y_n)\\}\\) is considered linearly separable with a \\(\\gamma\\)-margin if there exists \\(\\mathbf{w}^* \\in \\mathbb{R}^d\\) such that \\((\\mathbf{w}^{*T}\\mathbf{x}_i)y_i\\geq\\gamma\\) holds for all \\(i\\), where \\(\\gamma&gt;0\\).\n\n\n\n\nLinear Separability with \\(\\gamma\\)-Margin\n\n\n\nRadius Assumption: Let \\(R&gt;0 \\in \\mathbb{R}\\) be a constant such that \\(\\forall i \\in D\\), \\(||\\mathbf{x}_i||\\leq R\\). In other words, \\(R\\) denotes the length of the data point farthest from the center.\nNormal Length for \\(\\mathbf{w}^*\\): Assume that \\(\\mathbf{w}^*\\) has unit length."
-  },
-  {
-    "objectID": "pages/Wk09.html#sigmoid-function",
-    "href": "pages/Wk09.html#sigmoid-function",
-    "title": "Discriminative Models - Perceptron; Logistic Regression",
-    "section": "Sigmoid Function",
-    "text": "Sigmoid Function\nUntil now, we have utilized the \\(\\text{sign}\\) function to determine the class for the output. However, what if we also wish to obtain the probabilities associated with these outputs?\nLet \\(z=\\mathbf{w}^\\mathbf{T}\\mathbf{x}\\), where \\(z \\in \\mathbb{R}\\). How can we map \\([-\\infty, \\infty]\\rightarrow[0,1]\\)? To address this, we introduce the Sigmoid Function, defined as follows:\n\\[\ng(z) = \\frac{1}{1+e^{-z}}\n\\]\n\n\n\nSigmoid Function\n\n\nThe sigmoid function is commonly employed in machine learning as an activation function for neural networks. It exhibits an S-shaped curve, making it well-suited for modeling processes with a threshold or saturation point, such as logistic growth or binary classification problems.\nFor large positive input values, the sigmoid function approaches 1, while for large negative input values, it approaches 0. When the input value is 0, the sigmoid function output is exactly 0.5.\nThe term “sigmoid” is derived from the Greek word “sigmoides,” meaning “shaped like the letter sigma” (\\(\\Sigma\\)). The sigmoid function’s characteristic S-shaped curve resembles the shape of the letter sigma, which likely influenced the function’s name."
-  },
-  {
-    "objectID": "pages/Wk09.html#logistic-regression-1",
-    "href": "pages/Wk09.html#logistic-regression-1",
-    "title": "Discriminative Models - Perceptron; Logistic Regression",
-    "section": "Logistic Regression",
-    "text": "Logistic Regression\nLogistic regression is a statistical method used to analyze and model the relationship between a binary (two-valued) dependent variable and one or more independent variables. The independent variables can be either continuous or categorical. The main objective of logistic regression is to estimate the probability that the dependent variable belongs to one of the two possible values, given the independent variable values.\nIn logistic regression, the dependent variable is modeled as a function of the independent variables using a logistic (sigmoid) function. This function generates an S-shaped curve ranging between 0 and 1. By transforming the output of a linear combination of the independent variables using the logistic function, logistic regression provides a probability estimate that can be used for classifying new observations.\nLet \\(D=\\{(\\mathbf{x}_1, y_1), \\ldots, (\\mathbf{x}_n,y_n)\\}\\) denote the dataset, where \\(\\mathbf{x}_i \\in \\mathbb{R}^d\\) and \\(y_i \\in \\{0, 1\\}\\).\nWe know that:\n\\[\nP(y=1|\\mathbf{x}) = g(\\mathbf{w}^\\mathbf{T}\\mathbf{x}_i) = \\frac{1}{1+e^{-\\mathbf{w}^\\mathbf{T}\\mathbf{x}}}\n\\]\nUsing the maximum likelihood approach, we can derive the following expression:\n\\[\\begin{align*}\n\\mathcal{L}(\\mathbf{w};\\text{Data}) &= \\prod _{i=1} ^{n} (g(\\mathbf{w}^\\mathbf{T}\\mathbf{x}_i))^{y_i}(1- g(\\mathbf{w}^\\mathbf{T}\\mathbf{x}_i))^{1-y_i} \\\\\n\\log(\\mathcal{L}(\\mathbf{w};\\text{Data})) &= \\sum _{i=1} ^{n} y_i\\log(g(\\mathbf{w}^\\mathbf{T}\\mathbf{x}_i))+(1-y_i)\\log(1- g(\\mathbf{w}^\\mathbf{T}\\mathbf{x}_i)) \\\\\n&= \\sum _{i=1} ^{n} y_i\\log\\left(\\frac{1}{1+e^{-\\mathbf{w}^\\mathbf{T}\\mathbf{x}_i}}\\right)+(1-y_i)\\log\\left(\\frac{e^{-\\mathbf{w}^\\mathbf{T}\\mathbf{x}_i}}{1+e^{-\\mathbf{w}^\\mathbf{T}\\mathbf{x}_i}}\\right) \\\\\n&= \\sum _{i=1} ^{n} \\left [ (1-y_i)(-\\mathbf{w}^\\mathbf{T}\\mathbf{x}_i) - \\log(1+e^{-\\mathbf{w}^\\mathbf{T}\\mathbf{x}_i}) \\right ]\n\\end{align*}\\]\nTherefore, our objective, which involves maximizing the log-likelihood function, can be formulated as follows:\n\\[\n\\max _{\\mathbf{w}}\\sum _{i=1} ^{n} \\left [ (1-y_i)(-\\mathbf{w}^\\mathbf{T}\\mathbf{x}_i) - \\log(1+e^{-\\mathbf{w}^\\mathbf{T}\\mathbf{x}_i}) \\right ]\n\\]\nHowever, a closed-form solution for this problem does not exist. Therefore, we resort to using gradient descent for convergence.\nThe gradient of the log-likelihood function is computed as follows:\n\\[\\begin{align*}\n\\nabla \\log(\\mathcal{L}(\\mathbf{w};\\text{Data})) &= \\sum _{i=1} ^{n} \\left [ (1-y_i)(-\\mathbf{x}_i) - \\left( \\frac{e^{-\\mathbf{w}^\\mathbf{T}\\mathbf{x}_i}}{1+e^{-\\mathbf{w}^\\mathbf{T}\\mathbf{x}_i}} \\right ) (-\\mathbf{x}_i) \\right ] \\\\\n&= \\sum _{i=1} ^{n} \\left [ -\\mathbf{x}_i + \\mathbf{x}_iy_i + \\mathbf{x}_i \\left( \\frac{e^{-\\mathbf{w}^\\mathbf{T}\\mathbf{x}_i}}{1+e^{-\\mathbf{w}^\\mathbf{T}\\mathbf{x}_i}} \\right ) \\right ] \\\\\n&= \\sum _{i=1} ^{n} \\left [ \\mathbf{x}_iy_i - \\mathbf{x}_i \\left( \\frac{1}{1+e^{-\\mathbf{w}^\\mathbf{T}\\mathbf{x}_i}} \\right ) \\right ] \\\\\n\\nabla \\log(\\mathcal{L}(\\mathbf{w};\\text{Data})) &= \\sum _{i=1} ^{n} \\left [ \\mathbf{x}_i \\left(y_i - \\frac{1}{1+e^{-\\mathbf{w}^\\mathbf{T}\\mathbf{x}_i}} \\right ) \\right ]\n\\end{align*}\\]\nUtilizing the gradient descent update rule, we obtain:\n\\[\\begin{align*}\n\\mathbf{w}_{t+1} &= \\mathbf{w}_t + \\eta_t\\nabla \\log(\\mathcal{L}(\\mathbf{w};\\text{Data})) \\\\\n&= \\mathbf{w}_t + \\eta_t  \\left ( \\sum _{i=1} ^{n} \\mathbf{x}_i \\left(y_i - \\frac{1}{1+e^{-\\mathbf{w}^\\mathbf{T}\\mathbf{x}_i}} \\right ) \\right )\n\\end{align*}\\]\n\nKernel and Regularized Versions\nIt is possible to argue that \\(\\mathbf{w}^*=\\displaystyle\\sum _{i=1} ^{n}\\alpha_i\\mathbf{x}_i\\), thereby allowing for kernelization. For additional information, please refer to this link.\nThe regularized version of logistic regression can be expressed as follows:\n\\[\n\\min _{\\mathbf{w}}\\sum _{i=1} ^{n} \\left [ \\log(1+e^{-\\mathbf{w}^\\mathbf{T}\\mathbf{x}_i}) + \\mathbf{w}^\\mathbf{T}\\mathbf{x}_i(1-y_i) \\right ] + \\frac{\\lambda}{2}||\\mathbf{w}||^2\n\\]\nHere, \\(\\frac{\\lambda}{2}||\\mathbf{w}||^2\\) serves as the regularizer, and \\(\\lambda\\) is determined through cross-validation."
-  },
-  {
-    "objectID": "pages/Wk07.html",
-    "href": "pages/Wk07.html",
-    "title": "Supervised Learning - Classification - K-NN, Decision tree",
-    "section": "",
-    "text": "Note\n\n\n\nFeedback/Correction: Click here!.\nPDF Link: Click here!"
-  },
-  {
-    "objectID": "pages/Wk07.html#issues-with-k-nn",
-    "href": "pages/Wk07.html#issues-with-k-nn",
-    "title": "Supervised Learning - Classification - K-NN, Decision tree",
-    "section": "Issues with K-NN",
-    "text": "Issues with K-NN\nThe K-NN algorithm suffers from several limitations:\n\nThe choice of distance function can yield different results. The Euclidean distance, commonly used, might not always be the best fit for all scenarios.\nComputationally, the algorithm can be demanding. When making predictions for a single test data point, the distances between that data point and all training points must be calculated and sorted. Consequently, the algorithm has a complexity of \\(O(n \\log(n))\\), where \\(n\\) represents the size of the dataset.\nThe algorithm does not learn a model but instead relies on the training dataset for making predictions."
-  },
-  {
-    "objectID": "pages/Wk07.html#goodness-of-a-question",
-    "href": "pages/Wk07.html#goodness-of-a-question",
-    "title": "Supervised Learning - Classification - K-NN, Decision tree",
-    "section": "Goodness of a Question",
-    "text": "Goodness of a Question\nTo evaluate the quality of a question, we need a measure of “impurity” for a set of labels \\(\\{y_1, \\ldots, y_n\\}\\). Various measures can be employed, but we will use the Entropy function.\nThe Entropy function is defined as:\n\\[\n\\text{Entropy}(\\{y_1, \\ldots, y_n\\}) = \\text{Entropy}(p) = -\\left( p\\log(p)+(1-p)\\log(1-p) \\right )\n\\]\nHere, \\(\\log(0)\\) is conventionally treated as \\(0\\).\nPictorial representation of the Entropy function:\n\nInformation Gain is then utilized to measure the quality of a split in the decision tree algorithm.\nInformation gain is a commonly used criterion in decision tree algorithms that quantifies the reduction in entropy or impurity of a dataset after splitting based on a given feature. High information gain signifies features that effectively differentiate between the different classes of data and lead to accurate predictions.\nInformation gain is calculated as:\n\\[\n\\text{Information Gain}(\\text{feature}, \\text{value}) = \\text{Entropy}(D) - \\left[\\gamma \\cdot \\text{Entropy}(D_{\\text{yes}}) + (1-\\gamma) \\cdot \\text{Entropy}(D_{\\text{no}}) \\right]\n\\]\nwhere \\(\\gamma\\) is defined as:\n\\[\n\\gamma = \\frac{|D_{\\text{yes}}|}{|D|}\n\\]"
-  },
-  {
-    "objectID": "pages/Wk07.html#decision-tree-algorithm",
-    "href": "pages/Wk07.html#decision-tree-algorithm",
-    "title": "Supervised Learning - Classification - K-NN, Decision tree",
-    "section": "Decision Tree Algorithm",
-    "text": "Decision Tree Algorithm\nThe decision tree algorithm follows these steps:\n\nDiscretize each feature within the range [min, max].\nSelect the question that provides the highest information gain.\nRepeat the procedure for subsets \\(D_{\\text{yes}}\\) and \\(D_{\\text{no}}\\).\nStop growing the tree when a node becomes sufficiently “pure” according to a predefined criterion.\n\nDifferent measures, such as the Gini Index, can also be employed to evaluate the quality of a question.\nPictorial depiction of the decision boundary and its decision tree:"
-  },
-  {
-    "objectID": "pages/Wk05.html",
-    "href": "pages/Wk05.html",
-    "title": "Supervised Learning - Regression - Least Squares; Bayesian view",
-    "section": "",
-    "text": "Note\n\n\n\nFeedback/Correction: Click here!.\nPDF Link: Click here!"
-  },
-  {
-    "objectID": "pages/Wk05.html#stochastic-gradient-descent",
-    "href": "pages/Wk05.html#stochastic-gradient-descent",
-    "title": "Supervised Learning - Regression - Least Squares; Bayesian view",
-    "section": "Stochastic Gradient Descent",
-    "text": "Stochastic Gradient Descent\nStochastic gradient descent (SGD) is an optimization algorithm widely employed in machine learning to minimize the loss function of a model by determining the optimal parameters. Unlike traditional gradient descent, which updates the model parameters based on the entire dataset, SGD updates the parameters using a randomly selected subset of the data, known as a batch. This approach leads to faster training times and makes SGD particularly suitable for handling large datasets.\nInstead of updating \\(\\mathbf{w}\\) using the entire dataset at each step \\(t\\), SGD leverages a small randomly selected subset of \\(k\\) data points to update \\(\\mathbf{w}\\). Consequently, the new gradient becomes \\(2(\\tilde{\\mathbf{X}}\\tilde{\\mathbf{X}}^T\\mathbf{w}^t - \\tilde{\\mathbf{X}}\\tilde{\\mathbf{y}})\\), where \\(\\tilde{\\mathbf{X}}\\) and \\(\\tilde{\\mathbf{y}}\\) represent small samples randomly chosen from the dataset. This strategy is feasible since \\(\\tilde{\\mathbf{X}} \\in \\mathbb{R}^{d \\times k}\\), which is considerably smaller compared to \\(\\mathbf{X}\\).\nAfter \\(T\\) rounds of training, the final estimate is obtained as follows:\n\\[\n\\mathbf{w}_{\\text{SGD}}^T = \\frac{1}{T} \\sum_{i=1}^T \\mathbf{w}^i\n\\]\nThe stochastic nature of SGD contributes to optimal convergence to a certain extent."
-  },
-  {
-    "objectID": "pages/Wk03.html",
-    "href": "pages/Wk03.html",
-    "title": "Unsupervised Learning - Clustering - K-means/Kernel K-means",
-    "section": "",
-    "text": "Note\n\n\n\nFeedback/Correction: Click here!.\nPDF Link: Click here!"
-  },
-  {
-    "objectID": "pages/Wk03.html#the-algorithm",
-    "href": "pages/Wk03.html#the-algorithm",
-    "title": "Unsupervised Learning - Clustering - K-means/Kernel K-means",
-    "section": "The Algorithm",
-    "text": "The Algorithm\nThe algorithm proceeds as follows:\nStep 1: Initialization: Randomly assign datapoints from the dataset as the initial cluster centers.\nStep 2: Reassignment Step: \\[\nz _i ^{t} = \\underset{k}{\\arg \\min} {|| \\mathbf{x}_i - \\boldsymbol{\\mu} _{k} ^t ||}_2 ^2 \\hspace{2em} \\forall i\n\\]\nStep 3: Compute Means: \\[\n\\boldsymbol{\\mu} _k ^{t+1} = \\frac{\\displaystyle \\sum _{i = 1} ^{n} {\\mathbf{x}_i \\cdot \\mathbb{1}(z_i^t=k)}}{\\displaystyle \\sum _{i = 1} ^{n} {\\mathbb{1}(z_i^t=k)}} \\hspace{2em} \\forall k\n\\]\nStep 4: Loop until Convergence: Repeat steps 2 and 3 until the cluster assignments do not change."
-  },
-  {
     "objectID": "about.html",
     "href": "about.html",
     "title": "About",
     "section": "",
-    "text": "About this site"
+    "text": "To introduce the main methods and models used in machine learning problems of regression, classification and clustering. To study the properties of these models and methods and learn about their suitability for different problems."
   },
   {
-    "objectID": "pages/Wk01.html",
-    "href": "pages/Wk01.html",
-    "title": "Introduction; Unsupervised Learning - Representation learning - PCA",
+    "objectID": "about.html#about-the-course",
+    "href": "about.html#about-the-course",
+    "title": "About",
+    "section": "",
+    "text": "To introduce the main methods and models used in machine learning problems of regression, classification and clustering. To study the properties of these models and methods and learn about their suitability for different problems."
+  },
+  {
+    "objectID": "about.html#what-youll-learn",
+    "href": "about.html#what-youll-learn",
+    "title": "About",
+    "section": "What you’ll learn",
+    "text": "What you’ll learn\n\nDemonstrating In depth understanding of machine learning algorithms - model, objective or loss function, optimization algorithm and evaluation criteria.\nTweaking machine learning algorithms based on the outcome of experiments - what steps to take in case of underfitting and overfitting.\nBeing able to choose among multiple algorithms for a given task.\nDeveloping an understanding of unsupervised learning techniques."
+  },
+  {
+    "objectID": "about.html#course-instructors",
+    "href": "about.html#course-instructors",
+    "title": "About",
+    "section": "Course Instructors",
+    "text": "Course Instructors\nProf. Arun Rajkumar\nAssistant Professor, Department of Computer Sciences & Engineering, IIT Madras"
+  },
+  {
+    "objectID": "about.html#author",
+    "href": "about.html#author",
+    "title": "About",
+    "section": "Author",
+    "text": "Author\n\nSherry\n\n\nCo-Authors\n\nA Aniruddha\nVivek Sivaramakrishnan"
+  },
+  {
+    "objectID": "about.html#study-material",
+    "href": "about.html#study-material",
+    "title": "About",
+    "section": "Study Material",
+    "text": "Study Material\nThe primary study material for this course is the set of videos and assignments posted on the course page. The prescribed textbook for this course is:\n\nPattern Classification by David G. Stork, Peter E. Hart, and Richard O. Duda\nPattern Recognition and Machine Learning by Christopher M. Bishop\nThe Elements of Statistical Learning: Data Mining, Inference, and Prediction by Trevor Hastie, Robert Tibshirani, and Jerome Friedman\n\nThe learners are advised to make best use of the interaction sessions with the course support members to clarify their doubts.\nTo know more about course syllabus, Instructors and course contents, please click on the below link\nhttps://ds.study.iitm.ac.in/course_pages/BSCCS2007.html\nPlease click on the below tab to view the Course Specific Calendar:\nhttps://calendar.google.com/calendar/u/2?cid=Y19vODg1amdtMTVrbjJzZW01dGlkM2szcjhnNEBncm91cC5jYWxlbmRhci5nb29nbGUuY29t"
+  },
+  {
+    "objectID": "pages/Wk02.html",
+    "href": "pages/Wk02.html",
+    "title": "Unsupervised Learning - Representation learning - Kernel PCA",
     "section": "",
     "text": "Note\n\n\n\nFeedback/Correction: Click here!.\nPDF Link: Click here!"
   },
   {
-    "objectID": "pages/Wk01.html#broad-paradigms-of-machine-learning",
-    "href": "pages/Wk01.html#broad-paradigms-of-machine-learning",
-    "title": "Introduction; Unsupervised Learning - Representation learning - PCA",
-    "section": "Broad Paradigms of Machine Learning",
-    "text": "Broad Paradigms of Machine Learning\n\nSupervised Learning:Supervised Machine Learning is a type of machine learning where the algorithm is trained on a labeled dataset, meaning that the data includes both inputs and their corresponding outputs. The goal of supervised learning is to build a model that can accurately predict the output for new, unseen input data. Few examples:\n\n\nLinear regression for predicting a continuous output\nLogistic regression for binary classification problems\nDecision trees for non-linear classification and regression problems\nSupport Vector Machines for binary and multi-class classification problems\nNeural Networks for complex non-linear problems in various domains such as computer vision, natural language processing, and speech recognition\n\n\nUnsupervised Learning: Unsupervised Machine Learning is a type of machine learning where the algorithm is trained on an unlabeled dataset, meaning that only the inputs are provided and no corresponding outputs. The goal of unsupervised learning is to uncover patterns or relationships within the data without any prior knowledge or guidance. Few examples:\n\n\nClustering algorithms such as K-means, hierarchical clustering, and density-based clustering, used to group similar data points together into clusters\nDimensionality reduction techniques such as Principal Component Analysis (PCA), used to reduce the number of features in a dataset while preserving the maximum amount of information\nAnomaly detection algorithms used to identify unusual data points that deviate from the normal patterns in the data\n\n\nSequential learning: Sequential Machine Learning (also known as time-series prediction) is a type of machine learning that is focused on making predictions based on sequences of data. It involves training the model on a sequence of inputs, such that the predictions for each time step depend on the previous time steps. Few examples:\n\n\nTime series forecasting, used to predict future values based on past trends and patterns in data such as stock prices, weather patterns, and energy consumption\nSpeech recognition, used to transcribe speech into text by recognizing patterns in audio signals\nNatural language processing, used to analyze and make predictions about sequences of text data"
+    "objectID": "pages/Wk02.html#transforming-features",
+    "href": "pages/Wk02.html#transforming-features",
+    "title": "Unsupervised Learning - Representation learning - Kernel PCA",
+    "section": "Transforming Features",
+    "text": "Transforming Features\nTo address non-linear relationships, we propose mapping the dataset to higher dimensions as follows: \\[\n\\mathbf{x} \\to \\phi(\\mathbf{x}) \\quad \\mathbb{R}^d \\to \\mathbb{R}^D \\quad \\text{where } [D &gt;&gt; d]\n\\]\nTo compute \\(D\\), let \\(\\mathbf{x}=\\left [ \\begin{array} {cc}  f_1 & f_2 \\end{array} \\right ]\\) represent features of a dataset containing datapoints lying on a second-degree curve in a two-dimensional space.\nTo convert it from quadratic to linear, we map the features to: \\[\n\\phi(\\mathbf{x})=\\left [\n\\begin{array} {cccccc}\n    1 & f_1^2 & f_2^2 & f_1f_2 & f_1 & f_2\n\\end{array}\n\\right ]\n\\]\nMapping \\(d\\) features to the polynomial power \\(p\\) results in \\(^{d+p} C_d\\) new features.\nHowever, it is essential to note that finding \\(\\phi(\\mathbf{x})\\) may be computationally demanding.\nTo overcome this issue, we present the solution in the subsequent section."
   },
   {
-    "objectID": "pages/Wk01.html#potential-algorithm",
-    "href": "pages/Wk01.html#potential-algorithm",
-    "title": "Introduction; Unsupervised Learning - Representation learning - PCA",
-    "section": "Potential Algorithm",
-    "text": "Potential Algorithm\nBased on the above concepts, we can outline the following algorithm for representation learning:\nGiven a dataset \\(\\{\\mathbf{x}_1, \\mathbf{x}_2, \\ldots, \\mathbf{x}_n\\}\\) where \\(\\mathbf{x}_i \\in \\mathbb{R}^{d}\\),\n\nCenter the dataset: \\[\n\\mathbf{\\mu} = \\frac{1}{n} \\sum _{i=1} ^{n} \\mathbf{x}_i\n\\] \\[\n\\mathbf{x}_i = \\mathbf{x}_i - \\mathbf{\\mu}  \\hspace{2em} \\forall i\n\\]\nFind the best representation \\(\\mathbf{w} \\in \\mathbb{R}^d\\) with \\(||\\mathbf{w}|| = 1\\).\nUpdate the dataset with the representation: \\[\n\\mathbf{x}_i = \\mathbf{x}_i - (\\mathbf{x}_i^T\\mathbf{w})\\mathbf{w}  \\hspace{1em} \\forall i\n\\]\nRepeat steps 2 and 3 until the residues become zero, resulting in \\(\\mathbf{w}_2, \\mathbf{w}_3, \\ldots, \\mathbf{w}_d\\).\n\nThe question arises: Is this the most effective approach, and how many \\(\\mathbf{w}\\) do we need to achieve optimal compression?"
+    "objectID": "pages/Wk02.html#kernel-functions",
+    "href": "pages/Wk02.html#kernel-functions",
+    "title": "Unsupervised Learning - Representation learning - Kernel PCA",
+    "section": "Kernel Functions",
+    "text": "Kernel Functions\nA function \\(k: \\mathbb{R}^d \\times \\mathbb{R}^d \\to \\mathbb{R}\\) is considered a “valid” Kernel Function if it maps data points to the real numbers.\nProof of a “Valid” Kernel: There are two methods to establish the validity of a kernel:\n\nMethod 1: Explicitly exhibit the mapping to \\(\\phi\\), which may be challenging in certain cases.\nMethod 2: Utilize Mercer’s Theorem, which states that \\(k: \\mathbb{R}^d \\times \\mathbb{R}^d \\to \\mathbb{R}\\) is a valid kernel if and only if:\n\n\\(k\\) is symmetric, i.e., \\(k(\\mathbf{x},\\mathbf{x}') = k(\\mathbf{x}',\\mathbf{x})\\)\nFor any dataset \\(\\{\\mathbf{x}_1,\\mathbf{x}_2,\\ldots,\\mathbf{x}_n\\}\\), the matrix \\(\\mathbf{K} \\in \\mathbb{R}^{n \\times n}\\), where \\(\\mathbf{K}_{ij} = k(\\mathbf{x}_i,\\mathbf{x}_j)\\), is Positive Semi-Definite.\n\n\nTwo popular kernel functions are:\n\nPolynomial Kernel: \\(k(\\mathbf{x},\\mathbf{x}') = (\\mathbf{x}^T\\mathbf{x} + 1)^p\\)\nRadial Basis Function Kernel or Gaussian Kernel: \\(k(\\mathbf{x},\\mathbf{x}') = \\exp\\left(\\displaystyle-\\frac{\\|\\mathbf{x}-\\mathbf{x}'\\|^2}{2\\sigma^2}\\right)\\)"
   },
   {
-    "objectID": "pages/Wk01.html#approximate-representation",
-    "href": "pages/Wk01.html#approximate-representation",
-    "title": "Introduction; Unsupervised Learning - Representation learning - PCA",
-    "section": "Approximate Representation",
-    "text": "Approximate Representation\nThe question arises: If the data can be approximately represented by a lower-dimensional subspace, would it suffice to use only those \\(k\\) projections? Additionally, how much variance should be covered?\nLet us consider a centered dataset \\(\\{\\mathbf{x}_1, \\mathbf{x}_2, \\ldots, \\mathbf{x}_n\\}\\) where \\(\\mathbf{x}_i \\in \\mathbb{R}^{d}\\). Let \\(\\mathbf{C}\\) represent its covariance matrix, and \\(\\{\\lambda_1, \\lambda_2, \\ldots, \\lambda_d \\}\\) be the corresponding eigenvalues, which are non-negative due to the positive semi-definiteness of the covariance matrix. These eigenvalues are arranged in descending order, with \\(\\{\\mathbf{w}_1, \\mathbf{w}_2, \\ldots, \\mathbf{w}_d \\}\\) as their corresponding eigenvectors of unit length.\nThe eigen equation for the covariance matrix can be expressed as follows: \\[\\begin{align*}\n    \\mathbf{C}\\mathbf{w} &= \\lambda \\mathbf{w} \\\\\n    \\mathbf{w}^T\\mathbf{C}\\mathbf{w} &= \\mathbf{w}^T\\lambda \\mathbf{w}\\\\\n    \\therefore \\lambda &= \\mathbf{w}^T\\mathbf{C}\\mathbf{w} \\hspace{2em} \\{\\mathbf{w}^T\\mathbf{w} = 1\\} \\\\\n    \\lambda &= \\frac{1}{n} \\sum _{i=1} ^{n} (\\mathbf{x}_i^T\\mathbf{w})^2 \\\\\n\\end{align*}\\]\nHence, the mean of the dataset being zero, \\(\\lambda\\) represents the variance captured by the eigenvector \\(\\mathbf{w}\\).\nA commonly accepted heuristic suggests that PCA should capture at least 95% of the variance. If the first \\(k\\) eigenvectors capture the desired variance, it can be stated as: \\[\n\\frac{\\displaystyle \\sum _{j=1} ^{k} \\lambda_j}{\\displaystyle \\sum _{i=1} ^{d} \\lambda_i} \\ge 0.95\n\\]\nThus, the higher the variance captured, the lower the error incurred."
-  },
-  {
-    "objectID": "pages/Wk01.html#p.c.a.-algorithm",
-    "href": "pages/Wk01.html#p.c.a.-algorithm",
-    "title": "Introduction; Unsupervised Learning - Representation learning - PCA",
-    "section": "P.C.A. Algorithm",
-    "text": "P.C.A. Algorithm\nThe Principal Component Analysis algorithm can be summarized as follows for a centered dataset \\(\\{\\mathbf{x}_1, \\mathbf{x}_2, \\ldots, \\mathbf{x}_n\\}\\) where \\(\\mathbf{x}_i \\in \\mathbb{R}^{d}\\), and \\(\\mathbf{C}\\) represents its covariance matrix:\n\nStep 1: Find the eigenvalues and eigenvectors of \\(\\mathbf{C}\\). Let \\(\\{\\lambda_1, \\lambda_2, \\ldots, \\lambda_d \\}\\) be the eigenvalues arranged in descending order, and \\(\\{\\mathbf{w}_1, \\mathbf{w}_2, \\ldots, \\mathbf{w}_d \\}\\) be their corresponding eigenvectors of unit length.\nStep 2: Calculate \\(k\\), the number of top eigenvalues and eigenvectors required, based on the desired variance to be covered.\nStep 3: Project the data onto the eigenvectors and obtain the desired representation as a linear combination of these projections.\n\n\n\n\nThe dataset depicted in the diagram has two principal components: the green vector represents the first PC, whereas the red vector corresponds to the second PC.\n\n\nIn essence, PCA is a dimensionality reduction technique that identifies feature combinations that are de-correlated (independent of each other)."
-  },
-  {
-    "objectID": "pages/Wk04.html",
-    "href": "pages/Wk04.html",
-    "title": "Unsupervised Learning - Estimation - Recap of MLE + Bayesian estimation, Gaussian Mixture Model - EM algorithm",
+    "objectID": "pages/Wk10.html",
+    "href": "pages/Wk10.html",
+    "title": "Support Vector Machines",
     "section": "",
     "text": "Note\n\n\n\nFeedback/Correction: Click here!.\nPDF Link: Click here!"
   },
   {
-    "objectID": "pages/Wk04.html#fishers-principle-of-maximum-likelihood",
-    "href": "pages/Wk04.html#fishers-principle-of-maximum-likelihood",
-    "title": "Unsupervised Learning - Estimation - Recap of MLE + Bayesian estimation, Gaussian Mixture Model - EM algorithm",
-    "section": "Fisher’s Principle of Maximum Likelihood",
-    "text": "Fisher’s Principle of Maximum Likelihood\nFisher’s principle of maximum likelihood is a statistical method used to estimate parameters of a statistical model by selecting values that maximize the likelihood function. This function quantifies how well the model fits the observed data."
+    "objectID": "pages/Wk10.html#margin-maximization",
+    "href": "pages/Wk10.html#margin-maximization",
+    "title": "Support Vector Machines",
+    "section": "Margin Maximization",
+    "text": "Margin Maximization\nFrom the previous analysis, it is clear that a single dataset could have multiple linear classifiers with varying margins. The following diagram illustrates this phenomenon,\n\n\n\nMultiple Classifiers\n\n\nTherefore, for getting the best classifier, our goal can be written as, \\[\n\\max_{w,\\gamma} \\gamma\n\\] \\[\\begin{align*}\ns.t. (w^Tx_i)y_i &\\ge \\gamma \\hspace{1em} \\forall i \\\\\n||w||^2 &= 1\\\n\\end{align*}\\]\\end{align*} The boundary of the margin is given by, \\[\\begin{align*}\n\\{x:(w^Tx_i)y_i &= \\gamma\\}\\\\\n\\{x:(\\frac{w}{\\gamma}^Tx_i)y_i &= 1\\}\\\\\n\\end{align*}\\] From the above equation, we can see that \\(\\gamma\\) depends on the width of \\(w\\). Therefore, we reformulate our goal as, \\[\n\\max_{w} \\text{width}(w)\n\\] \\[\\begin{align*}\ns.t. (w^Tx_i)y_i &\\ge 1 \\hspace{1em} \\forall i \\\\\n\\end{align*}\\] Let the width be the distance between the two parallel margins, and let \\(x\\) and \\(z\\) be two points who are on the two lines exactly opposite to each other s.t. \\(w^Tx=-1\\) and \\(w^Tz=1\\) or vice versa.\nLet \\(x_1\\) and \\(x_2\\) be two points which lie on opposite side of the decision boundary as well as on the margins.\n\n\n\nMargin Width\n\n\nTherefore, the width is given by, \\[\\begin{align*}\n||x_1^Tw - x_2^Tw||_2^2 &= 2 \\\\\n||x_1-x_2||_2^2||w||^2_2 &= 2\\\\\n\\therefore ||x_1 - x_2||^2_2 &= \\frac{2}{||w||^2_2}\n\\end{align*}\\]\nTherefore, our objective function can be written as, \\[\n\\max_{w}  \\frac{2}{||w||^2_2} \\hspace{1em} s.t. (w^Tx_i)y_i \\ge 1 \\hspace{1em} \\forall i\n\\] Equivalently, \\[\n\\min_{w}  \\frac{1}{2}||w||^2_2 \\hspace{1em} s.t. (w^Tx_i)y_i \\ge 1 \\hspace{1em} \\forall i\n\\] Therefore ﬁnding the separating hyperplane with maximum margin is equivalent to ﬁnding the one with the smallest possible normal vector \\(w\\)."
   },
   {
-    "objectID": "pages/Wk04.html#likelihood-estimation-for-bernoulli-distributions",
-    "href": "pages/Wk04.html#likelihood-estimation-for-bernoulli-distributions",
-    "title": "Unsupervised Learning - Estimation - Recap of MLE + Bayesian estimation, Gaussian Mixture Model - EM algorithm",
-    "section": "Likelihood Estimation for Bernoulli Distributions",
-    "text": "Likelihood Estimation for Bernoulli Distributions\nApplying the likelihood function on the aforementioned dataset, we obtain: \\[\\begin{align*}\n\\mathcal{L}(p;\\{\\mathbf{x}_1, \\mathbf{x}_2, \\ldots, \\mathbf{x}_n\\}) &= P(\\mathbf{x}_1, \\mathbf{x}_2, \\ldots, \\mathbf{x}_n;p)\\\\\n&= p(\\mathbf{x}_1;p)p(\\mathbf{x}_2;p)\\ldots p(\\mathbf{x}_n;p) \\\\\n&=\\prod _{i=1} ^n {p^{\\mathbf{x}_i}(1-p)^{1-\\mathbf{x}_i}}\n\\end{align*}\\] \\[\\begin{align*}\n\\therefore \\log(\\mathcal{L}(p;\\{\\mathbf{x}_1, \\mathbf{x}_2, \\ldots, \\mathbf{x}_n\\})) &=\\underset{p} {\\arg \\max}\\log \\left ( \\prod _{i=1} ^n {p^{\\mathbf{x}_i}(1-p)^{1-\\mathbf{x}_i}} \\right ) \\\\\n\\text{Differentiating wrt $p$, we get}\\\\\n\\therefore \\hat{p}_{\\text{ML}} &= \\frac{1}{n}\\sum _{i=1} ^n \\mathbf{x}_i\n\\end{align*}\\]"
-  },
-  {
-    "objectID": "pages/Wk04.html#likelihood-estimation-for-gaussian-distributions",
-    "href": "pages/Wk04.html#likelihood-estimation-for-gaussian-distributions",
-    "title": "Unsupervised Learning - Estimation - Recap of MLE + Bayesian estimation, Gaussian Mixture Model - EM algorithm",
-    "section": "Likelihood Estimation for Gaussian Distributions",
-    "text": "Likelihood Estimation for Gaussian Distributions\nLet \\(\\{\\mathbf{x}_1, \\mathbf{x}_2, \\ldots, \\mathbf{x}_n\\}\\) be a dataset where \\(\\mathbf{x}_i \\sim \\mathcal{N}(\\boldsymbol{\\mu},\\boldsymbol{\\sigma}^2)\\). We assume that the data points are independent and identically distributed.\n\\[\\begin{align*}\n\\mathcal{L}(\\boldsymbol{\\mu}, \\boldsymbol{\\sigma}^2;\\{\\mathbf{x}_1, \\mathbf{x}_2, \\ldots, \\mathbf{x}_n\\}) &= f_{\\mathbf{x}_1, \\mathbf{x}_2, \\ldots, \\mathbf{x}_n}(\\mathbf{x}_1, \\mathbf{x}_2, \\ldots, \\mathbf{x}_n;\\boldsymbol{\\mu}, \\boldsymbol{\\sigma}^2) \\\\\n&=\\prod _{i=1} ^n  f_{\\mathbf{x}_i}(\\mathbf{x}_i;\\boldsymbol{\\mu}, \\boldsymbol{\\sigma}^2) \\\\\n&=\\prod _{i=1} ^n \\left [ \\frac{1}{\\sqrt{2\\pi}\\boldsymbol{\\sigma}} e^{\\frac{-(\\mathbf{x}_i-\\boldsymbol{\\mu})^2}{2\\boldsymbol{\\sigma}^2}} \\right ] \\\\\n\\therefore \\log(\\mathcal{L}(p;\\{\\mathbf{x}_1, \\mathbf{x}_2, \\ldots, \\mathbf{x}_n\\})) &= \\sum _{i=1} ^n \\left[ \\log \\left (\\frac{1}{\\sqrt{2\\pi}\\boldsymbol{\\sigma}}  \\right ) - \\frac{(\\mathbf{x}_i-\\boldsymbol{\\mu})^2}{2\\boldsymbol{\\sigma}^2} \\right] \\\\\n\\end{align*}\\] \\[\n\\text{By differentiating with respect to $\\boldsymbol{\\mu}$ and $\\boldsymbol{\\sigma}$, we get}\n\\] \\[\\begin{align*}\n\\hat{\\boldsymbol{\\mu}}_{\\text{ML}} &= \\frac{1}{n}\\sum _{i=1} ^n \\mathbf{x}_i \\\\\n\\hat{\\boldsymbol{\\sigma}^2}_{\\text{ML}} &= \\frac{1}{n}\\sum _{i=1} ^n (\\mathbf{x}_i-\\boldsymbol{\\mu})^T(\\mathbf{x}_i-\\boldsymbol{\\mu})\n\\end{align*}\\]"
-  },
-  {
-    "objectID": "pages/Wk04.html#bayesian-estimation-for-a-bernoulli-distribution",
-    "href": "pages/Wk04.html#bayesian-estimation-for-a-bernoulli-distribution",
-    "title": "Unsupervised Learning - Estimation - Recap of MLE + Bayesian estimation, Gaussian Mixture Model - EM algorithm",
-    "section": "Bayesian Estimation for a Bernoulli Distribution",
-    "text": "Bayesian Estimation for a Bernoulli Distribution\nLet \\(\\{x_1, x_2, \\ldots, x_n\\}\\) be a dataset where \\(x_i \\in \\{0,1\\}\\) with parameter \\(\\theta\\). What distribution can be suitable for \\(P(\\theta)\\)?\nA commonly used distribution for priors is the Beta Distribution. \\[\nf(p;\\alpha,\\beta) = \\frac{p^{\\alpha-1}(1-p)^{\\beta-1}}{z} \\hspace{2em} \\forall p \\in [0,1] \\\\\n\\] \\[\n\\text{where $z$ is a normalizing factor}\n\\]\nHence, utilizing the Beta Distribution as the Prior, we obtain, \\[\\begin{align*}\nP(\\theta|\\{x_1, x_2, \\ldots, x_n\\}) &\\propto P(\\theta|\\{x_1, x_2, \\ldots, x_n\\})*P(\\theta) \\\\\nf_{\\theta|\\{x_1, x_2, \\ldots, x_n\\}}(p) &\\propto \\left [ \\prod _{i=1} ^n {p^{x_i}(1-p)^{1-x_i}} \\right ]*\\left [ p^{\\alpha-1}(1-p)^{\\beta-1} \\right ] \\\\\nf_{\\theta|\\{x_1, x_2, \\ldots, x_n\\}}(p) &\\propto p^{\\sum _{i=1} ^n x_i + \\alpha - 1}(1-p)^{\\sum _{i=1} ^n(1-x_i) + \\beta - 1}\n\\end{align*}\\] i.e. we obtain, \\[\n\\text{BETA PRIOR }(\\alpha, \\beta) \\xrightarrow[Bernoulli]{\\{x_1, x_2, \\ldots, x_n\\}} \\text{BETA POSTERIOR }(\\alpha + n_h, \\beta + n_t)\n\\] \\[\n\\therefore \\hat{p_{\\text{ML}}} = \\mathbb{E}[\\text{Posterior}]=\\mathbb{E}[\\text{Beta}(\\alpha +n_h, \\beta + n_t)]= \\frac{\\alpha + n_h}{\\alpha + n_h + \\beta + n_t}\n\\]"
-  },
-  {
-    "objectID": "pages/Wk04.html#convexity-and-jensens-inequality",
-    "href": "pages/Wk04.html#convexity-and-jensens-inequality",
-    "title": "Unsupervised Learning - Estimation - Recap of MLE + Bayesian estimation, Gaussian Mixture Model - EM algorithm",
-    "section": "Convexity and Jensen’s Inequality",
-    "text": "Convexity and Jensen’s Inequality\nConvexity is a property of a function or set that implies a unique line segment can be drawn between any two points within the function or set. For a concave function, this property can be expressed as, \\[\nf \\left (\\sum _{k=1} ^K \\lambda_k a_k \\right ) \\ge \\sum _{k=1} ^K \\lambda_k f(a_k)\n\\] where \\[\n\\sum _{k=1} ^K \\lambda _k = 1\n\\] \\[\na_k \\text{ are points of the function}\n\\] This is also known as Jensen’s Inequality."
-  },
-  {
-    "objectID": "pages/Wk06.html",
-    "href": "pages/Wk06.html",
-    "title": "Supervised Learning - Regression - Ridge/LASSO",
-    "section": "",
-    "text": "Note\n\n\n\nFeedback/Correction: Click here!.\nPDF Link: Click here!"
-  },
-  {
-    "objectID": "pages/Wk06.html#introduction",
-    "href": "pages/Wk06.html#introduction",
-    "title": "Supervised Learning - Regression - Ridge/LASSO",
-    "section": "Introduction",
-    "text": "Introduction\nLinear regression is a widely used technique for modeling the relationship between a dependent variable and one or more independent variables. The maximum likelihood estimator (MLE) is commonly employed to estimate the parameters of a linear regression model. Here, we discuss the goodness of the MLE for linear regression, explore cross-validation techniques to minimize mean squared error (MSE), examine Bayesian modeling as an alternative approach, and finally, delve into ridge and lasso regression as methods to mitigate overfitting."
+    "objectID": "pages/Wk10.html#hard-margin-svm-algorithm",
+    "href": "pages/Wk10.html#hard-margin-svm-algorithm",
+    "title": "Support Vector Machines",
+    "section": "Hard-Margin SVM Algorithm",
+    "text": "Hard-Margin SVM Algorithm\nThis algorithm only works if the dataset is linearly separable with a \\(\\gamma &gt; 0\\).\n\nCalculate \\(Q=X^TX\\) directly or using a kernel as per the dataset.\nUse the gradient of the dual formula (\\(\\alpha^T1 - \\frac{1}{2}\\alpha^TY^TQY\\alpha\\)), in the gradient descent algorithm to find a satisfactory \\(\\alpha\\). Let the intial \\(\\alpha\\) be a zero vector \\(\\in \\mathbb{R}^n_+\\).\nTo predict:\n\nFor non-kernelized SVM: \\(\\text{label}(x_{test}) = w^Tx_{test} = \\sum _{i=1} ^n \\alpha _i y_i(x_i^Tx_{test})\\)\nFor kernelized SVM: \\(\\text{label}(x_{test}) = w^T\\phi(x_{test}) = \\sum _{i=1} ^n \\alpha _i y_ik(x_i^Tx_{test})\\)"
   },
   {
     "objectID": "pages/Wk08.html",
@@ -294,45 +126,206 @@
     "text": "Decision Boundaries for Different Covariances\n\nWhen the covariance matrices are equal for both classes: As previously discussed, the decision boundary is linear.\n\n\n\n\nWhen the covariance matrices are equal for both classes\n\n\n\nWhen the covariance matrices are Identity matrices for both classes: The decision boundary is both linear and the perpendicular bisector of the line drawn from \\(\\hat{\\boldsymbol{\\mu}}_1\\) to \\(\\hat{\\boldsymbol{\\mu}}_0\\).\n\n\n\n\nWhen the covariance matrices are Identity matrices for both classes\n\n\n\nWhen the covariance matrices are not equal for both classes: Let \\(\\hat{\\boldsymbol{\\Sigma}}_1\\) and \\(\\hat{\\boldsymbol{\\Sigma}}_0\\) be the covariance matrices for classes 1 and 0, respectively. They are given by, \\[\\begin{align*}\n\\hat{\\boldsymbol{\\Sigma}}_1 &= \\frac{\\displaystyle \\sum_{i=1}^n(\\mathbb{1}(y_i=1)*\\mathbf{x}_i-\\hat{\\boldsymbol{\\mu}}_1)(\\mathbb{1}(y_i=1)*\\mathbf{x}_i-\\hat{\\boldsymbol{\\mu}}_1)^T}{\\displaystyle \\sum_{i=1}^n\\mathbb{1}(y_i=1)} \\\\\n\\hat{\\boldsymbol{\\Sigma}}_0 &= \\frac{\\displaystyle \\sum_{i=1}^n(\\mathbb{1}(y_i=0)*\\mathbf{x}_i-\\hat{\\boldsymbol{\\mu}}_0)(\\mathbb{1}(y_i=0)*\\mathbf{x}_i-\\hat{\\boldsymbol{\\mu}}_0)^T}{\\displaystyle \\sum_{i=1}^n\\mathbb{1}(y_i=0)}\n\\end{align*}\\] To predict \\(y_{test}=1\\), we compare the probabilities: \\[\\begin{align*}\nf(\\mathbf{x}_{test};\\hat{\\boldsymbol{\\mu}}_1, \\hat{\\boldsymbol{\\Sigma}}_1)*\\hat{p}&\\ge f(\\mathbf{x}_{test};\\hat{\\boldsymbol{\\mu}}_0, \\hat{\\boldsymbol{\\Sigma}}_0)*(1-\\hat{p}) \\\\\ne^{-(\\mathbf{x}_{test}-\\hat{\\boldsymbol{\\mu}}_1)^T\\hat{\\boldsymbol{\\Sigma}}_1(\\mathbf{x}_{test}-\\hat{\\boldsymbol{\\mu}}_1)}*\\hat{p}&\\ge e^{-(\\mathbf{x}_{test}-\\hat{\\boldsymbol{\\mu}}_0)^T\\hat{\\boldsymbol{\\Sigma}}_1(\\mathbf{x}_{test}-\\hat{\\boldsymbol{\\mu}}_0)}*(1-\\hat{p}) \\\\\n-(\\mathbf{x}_{test}-\\hat{\\boldsymbol{\\mu}}_1)^T\\hat{\\boldsymbol{\\Sigma}}_1(\\mathbf{x}_{test}-\\hat{\\boldsymbol{\\mu}}_1)+\\log(\\hat{p})&\\ge -(\\mathbf{x}_{test}-\\hat{\\boldsymbol{\\mu}}_0)^T\\hat{\\boldsymbol{\\Sigma}}_0(\\mathbf{x}_{test}-\\hat{\\boldsymbol{\\mu}}_0) + \\log(1-\\hat{p}) \\\\\n\\end{align*}\\] This inequality leads to a quadratic decision function: \\[\n\\mathbf{x}_{test}^T(\\hat{\\boldsymbol{\\Sigma}}_1^{-1}-\\hat{\\boldsymbol{\\Sigma}}_0^{-1})\\mathbf{x}_{test}-2(\\hat{\\boldsymbol{\\mu}}_1^T\\hat{\\boldsymbol{\\Sigma}}_1^{-1}-\\hat{\\boldsymbol{\\mu}}_0^T\\hat{\\boldsymbol{\\Sigma}}_0^{-1})\\mathbf{x}_{test}+(\\hat{\\boldsymbol{\\mu}}_0^T\\hat{\\boldsymbol{\\Sigma}}_0^{-1}\\hat{\\boldsymbol{\\mu}}_0-\\hat{\\boldsymbol{\\mu}}_1^T\\hat{\\boldsymbol{\\Sigma}}_1^{-1}\\hat{\\boldsymbol{\\mu}}_1) + \\log(\\frac{1-\\hat{p}}{\\hat{p}}) \\ge 0\n\\] Hence, the decision boundary is a quadratic function when the covariance matrices are not equal for both classes.\n\n\n\n\nWhen the covariance matrices are not equal for both classes"
   },
   {
-    "objectID": "pages/Wk10.html",
-    "href": "pages/Wk10.html",
-    "title": "Support Vector Machines",
+    "objectID": "pages/Wk06.html",
+    "href": "pages/Wk06.html",
+    "title": "Supervised Learning - Regression - Ridge/LASSO",
     "section": "",
     "text": "Note\n\n\n\nFeedback/Correction: Click here!.\nPDF Link: Click here!"
   },
   {
-    "objectID": "pages/Wk10.html#margin-maximization",
-    "href": "pages/Wk10.html#margin-maximization",
-    "title": "Support Vector Machines",
-    "section": "Margin Maximization",
-    "text": "Margin Maximization\nFrom the previous analysis, it is clear that a single dataset could have multiple linear classifiers with varying margins. The following diagram illustrates this phenomenon,\n\n\n\nMultiple Classifiers\n\n\nTherefore, for getting the best classifier, our goal can be written as, \\[\n\\max_{w,\\gamma} \\gamma\n\\] \\[\\begin{align*}\ns.t. (w^Tx_i)y_i &\\ge \\gamma \\hspace{1em} \\forall i \\\\\n||w||^2 &= 1\\\n\\end{align*}\\]\\end{align*} The boundary of the margin is given by, \\[\\begin{align*}\n\\{x:(w^Tx_i)y_i &= \\gamma\\}\\\\\n\\{x:(\\frac{w}{\\gamma}^Tx_i)y_i &= 1\\}\\\\\n\\end{align*}\\] From the above equation, we can see that \\(\\gamma\\) depends on the width of \\(w\\). Therefore, we reformulate our goal as, \\[\n\\max_{w} \\text{width}(w)\n\\] \\[\\begin{align*}\ns.t. (w^Tx_i)y_i &\\ge 1 \\hspace{1em} \\forall i \\\\\n\\end{align*}\\] Let the width be the distance between the two parallel margins, and let \\(x\\) and \\(z\\) be two points who are on the two lines exactly opposite to each other s.t. \\(w^Tx=-1\\) and \\(w^Tz=1\\) or vice versa.\nLet \\(x_1\\) and \\(x_2\\) be two points which lie on opposite side of the decision boundary as well as on the margins.\n\n\n\nMargin Width\n\n\nTherefore, the width is given by, \\[\\begin{align*}\n||x_1^Tw - x_2^Tw||_2^2 &= 2 \\\\\n||x_1-x_2||_2^2||w||^2_2 &= 2\\\\\n\\therefore ||x_1 - x_2||^2_2 &= \\frac{2}{||w||^2_2}\n\\end{align*}\\]\nTherefore, our objective function can be written as, \\[\n\\max_{w}  \\frac{2}{||w||^2_2} \\hspace{1em} s.t. (w^Tx_i)y_i \\ge 1 \\hspace{1em} \\forall i\n\\] Equivalently, \\[\n\\min_{w}  \\frac{1}{2}||w||^2_2 \\hspace{1em} s.t. (w^Tx_i)y_i \\ge 1 \\hspace{1em} \\forall i\n\\] Therefore ﬁnding the separating hyperplane with maximum margin is equivalent to ﬁnding the one with the smallest possible normal vector \\(w\\)."
+    "objectID": "pages/Wk06.html#introduction",
+    "href": "pages/Wk06.html#introduction",
+    "title": "Supervised Learning - Regression - Ridge/LASSO",
+    "section": "Introduction",
+    "text": "Introduction\nLinear regression is a widely used technique for modeling the relationship between a dependent variable and one or more independent variables. The maximum likelihood estimator (MLE) is commonly employed to estimate the parameters of a linear regression model. Here, we discuss the goodness of the MLE for linear regression, explore cross-validation techniques to minimize mean squared error (MSE), examine Bayesian modeling as an alternative approach, and finally, delve into ridge and lasso regression as methods to mitigate overfitting."
   },
   {
-    "objectID": "pages/Wk10.html#hard-margin-svm-algorithm",
-    "href": "pages/Wk10.html#hard-margin-svm-algorithm",
-    "title": "Support Vector Machines",
-    "section": "Hard-Margin SVM Algorithm",
-    "text": "Hard-Margin SVM Algorithm\nThis algorithm only works if the dataset is linearly separable with a \\(\\gamma &gt; 0\\).\n\nCalculate \\(Q=X^TX\\) directly or using a kernel as per the dataset.\nUse the gradient of the dual formula (\\(\\alpha^T1 - \\frac{1}{2}\\alpha^TY^TQY\\alpha\\)), in the gradient descent algorithm to find a satisfactory \\(\\alpha\\). Let the intial \\(\\alpha\\) be a zero vector \\(\\in \\mathbb{R}^n_+\\).\nTo predict:\n\nFor non-kernelized SVM: \\(\\text{label}(x_{test}) = w^Tx_{test} = \\sum _{i=1} ^n \\alpha _i y_i(x_i^Tx_{test})\\)\nFor kernelized SVM: \\(\\text{label}(x_{test}) = w^T\\phi(x_{test}) = \\sum _{i=1} ^n \\alpha _i y_ik(x_i^Tx_{test})\\)"
-  },
-  {
-    "objectID": "pages/Wk02.html",
-    "href": "pages/Wk02.html",
-    "title": "Unsupervised Learning - Representation learning - Kernel PCA",
+    "objectID": "pages/Wk04.html",
+    "href": "pages/Wk04.html",
+    "title": "Unsupervised Learning - Estimation - Recap of MLE + Bayesian estimation, Gaussian Mixture Model - EM algorithm",
     "section": "",
     "text": "Note\n\n\n\nFeedback/Correction: Click here!.\nPDF Link: Click here!"
   },
   {
-    "objectID": "pages/Wk02.html#transforming-features",
-    "href": "pages/Wk02.html#transforming-features",
-    "title": "Unsupervised Learning - Representation learning - Kernel PCA",
-    "section": "Transforming Features",
-    "text": "Transforming Features\nTo address non-linear relationships, we propose mapping the dataset to higher dimensions as follows: \\[\n\\mathbf{x} \\to \\phi(\\mathbf{x}) \\quad \\mathbb{R}^d \\to \\mathbb{R}^D \\quad \\text{where } [D &gt;&gt; d]\n\\]\nTo compute \\(D\\), let \\(\\mathbf{x}=\\left [ \\begin{array} {cc}  f_1 & f_2 \\end{array} \\right ]\\) represent features of a dataset containing datapoints lying on a second-degree curve in a two-dimensional space.\nTo convert it from quadratic to linear, we map the features to: \\[\n\\phi(\\mathbf{x})=\\left [\n\\begin{array} {cccccc}\n    1 & f_1^2 & f_2^2 & f_1f_2 & f_1 & f_2\n\\end{array}\n\\right ]\n\\]\nMapping \\(d\\) features to the polynomial power \\(p\\) results in \\(^{d+p} C_d\\) new features.\nHowever, it is essential to note that finding \\(\\phi(\\mathbf{x})\\) may be computationally demanding.\nTo overcome this issue, we present the solution in the subsequent section."
+    "objectID": "pages/Wk04.html#fishers-principle-of-maximum-likelihood",
+    "href": "pages/Wk04.html#fishers-principle-of-maximum-likelihood",
+    "title": "Unsupervised Learning - Estimation - Recap of MLE + Bayesian estimation, Gaussian Mixture Model - EM algorithm",
+    "section": "Fisher’s Principle of Maximum Likelihood",
+    "text": "Fisher’s Principle of Maximum Likelihood\nFisher’s principle of maximum likelihood is a statistical method used to estimate parameters of a statistical model by selecting values that maximize the likelihood function. This function quantifies how well the model fits the observed data."
   },
   {
-    "objectID": "pages/Wk02.html#kernel-functions",
-    "href": "pages/Wk02.html#kernel-functions",
-    "title": "Unsupervised Learning - Representation learning - Kernel PCA",
-    "section": "Kernel Functions",
-    "text": "Kernel Functions\nA function \\(k: \\mathbb{R}^d \\times \\mathbb{R}^d \\to \\mathbb{R}\\) is considered a “valid” Kernel Function if it maps data points to the real numbers.\nProof of a “Valid” Kernel: There are two methods to establish the validity of a kernel:\n\nMethod 1: Explicitly exhibit the mapping to \\(\\phi\\), which may be challenging in certain cases.\nMethod 2: Utilize Mercer’s Theorem, which states that \\(k: \\mathbb{R}^d \\times \\mathbb{R}^d \\to \\mathbb{R}\\) is a valid kernel if and only if:\n\n\\(k\\) is symmetric, i.e., \\(k(\\mathbf{x},\\mathbf{x}') = k(\\mathbf{x}',\\mathbf{x})\\)\nFor any dataset \\(\\{\\mathbf{x}_1,\\mathbf{x}_2,\\ldots,\\mathbf{x}_n\\}\\), the matrix \\(\\mathbf{K} \\in \\mathbb{R}^{n \\times n}\\), where \\(\\mathbf{K}_{ij} = k(\\mathbf{x}_i,\\mathbf{x}_j)\\), is Positive Semi-Definite.\n\n\nTwo popular kernel functions are:\n\nPolynomial Kernel: \\(k(\\mathbf{x},\\mathbf{x}') = (\\mathbf{x}^T\\mathbf{x} + 1)^p\\)\nRadial Basis Function Kernel or Gaussian Kernel: \\(k(\\mathbf{x},\\mathbf{x}') = \\exp\\left(\\displaystyle-\\frac{\\|\\mathbf{x}-\\mathbf{x}'\\|^2}{2\\sigma^2}\\right)\\)"
+    "objectID": "pages/Wk04.html#likelihood-estimation-for-bernoulli-distributions",
+    "href": "pages/Wk04.html#likelihood-estimation-for-bernoulli-distributions",
+    "title": "Unsupervised Learning - Estimation - Recap of MLE + Bayesian estimation, Gaussian Mixture Model - EM algorithm",
+    "section": "Likelihood Estimation for Bernoulli Distributions",
+    "text": "Likelihood Estimation for Bernoulli Distributions\nApplying the likelihood function on the aforementioned dataset, we obtain: \\[\\begin{align*}\n\\mathcal{L}(p;\\{\\mathbf{x}_1, \\mathbf{x}_2, \\ldots, \\mathbf{x}_n\\}) &= P(\\mathbf{x}_1, \\mathbf{x}_2, \\ldots, \\mathbf{x}_n;p)\\\\\n&= p(\\mathbf{x}_1;p)p(\\mathbf{x}_2;p)\\ldots p(\\mathbf{x}_n;p) \\\\\n&=\\prod _{i=1} ^n {p^{\\mathbf{x}_i}(1-p)^{1-\\mathbf{x}_i}}\n\\end{align*}\\] \\[\\begin{align*}\n\\therefore \\log(\\mathcal{L}(p;\\{\\mathbf{x}_1, \\mathbf{x}_2, \\ldots, \\mathbf{x}_n\\})) &=\\underset{p} {\\arg \\max}\\log \\left ( \\prod _{i=1} ^n {p^{\\mathbf{x}_i}(1-p)^{1-\\mathbf{x}_i}} \\right ) \\\\\n\\text{Differentiating wrt $p$, we get}\\\\\n\\therefore \\hat{p}_{\\text{ML}} &= \\frac{1}{n}\\sum _{i=1} ^n \\mathbf{x}_i\n\\end{align*}\\]"
+  },
+  {
+    "objectID": "pages/Wk04.html#likelihood-estimation-for-gaussian-distributions",
+    "href": "pages/Wk04.html#likelihood-estimation-for-gaussian-distributions",
+    "title": "Unsupervised Learning - Estimation - Recap of MLE + Bayesian estimation, Gaussian Mixture Model - EM algorithm",
+    "section": "Likelihood Estimation for Gaussian Distributions",
+    "text": "Likelihood Estimation for Gaussian Distributions\nLet \\(\\{\\mathbf{x}_1, \\mathbf{x}_2, \\ldots, \\mathbf{x}_n\\}\\) be a dataset where \\(\\mathbf{x}_i \\sim \\mathcal{N}(\\boldsymbol{\\mu},\\boldsymbol{\\sigma}^2)\\). We assume that the data points are independent and identically distributed.\n\\[\\begin{align*}\n\\mathcal{L}(\\boldsymbol{\\mu}, \\boldsymbol{\\sigma}^2;\\{\\mathbf{x}_1, \\mathbf{x}_2, \\ldots, \\mathbf{x}_n\\}) &= f_{\\mathbf{x}_1, \\mathbf{x}_2, \\ldots, \\mathbf{x}_n}(\\mathbf{x}_1, \\mathbf{x}_2, \\ldots, \\mathbf{x}_n;\\boldsymbol{\\mu}, \\boldsymbol{\\sigma}^2) \\\\\n&=\\prod _{i=1} ^n  f_{\\mathbf{x}_i}(\\mathbf{x}_i;\\boldsymbol{\\mu}, \\boldsymbol{\\sigma}^2) \\\\\n&=\\prod _{i=1} ^n \\left [ \\frac{1}{\\sqrt{2\\pi}\\boldsymbol{\\sigma}} e^{\\frac{-(\\mathbf{x}_i-\\boldsymbol{\\mu})^2}{2\\boldsymbol{\\sigma}^2}} \\right ] \\\\\n\\therefore \\log(\\mathcal{L}(p;\\{\\mathbf{x}_1, \\mathbf{x}_2, \\ldots, \\mathbf{x}_n\\})) &= \\sum _{i=1} ^n \\left[ \\log \\left (\\frac{1}{\\sqrt{2\\pi}\\boldsymbol{\\sigma}}  \\right ) - \\frac{(\\mathbf{x}_i-\\boldsymbol{\\mu})^2}{2\\boldsymbol{\\sigma}^2} \\right] \\\\\n\\end{align*}\\] \\[\n\\text{By differentiating with respect to $\\boldsymbol{\\mu}$ and $\\boldsymbol{\\sigma}$, we get}\n\\] \\[\\begin{align*}\n\\hat{\\boldsymbol{\\mu}}_{\\text{ML}} &= \\frac{1}{n}\\sum _{i=1} ^n \\mathbf{x}_i \\\\\n\\hat{\\boldsymbol{\\sigma}^2}_{\\text{ML}} &= \\frac{1}{n}\\sum _{i=1} ^n (\\mathbf{x}_i-\\boldsymbol{\\mu})^T(\\mathbf{x}_i-\\boldsymbol{\\mu})\n\\end{align*}\\]"
+  },
+  {
+    "objectID": "pages/Wk04.html#bayesian-estimation-for-a-bernoulli-distribution",
+    "href": "pages/Wk04.html#bayesian-estimation-for-a-bernoulli-distribution",
+    "title": "Unsupervised Learning - Estimation - Recap of MLE + Bayesian estimation, Gaussian Mixture Model - EM algorithm",
+    "section": "Bayesian Estimation for a Bernoulli Distribution",
+    "text": "Bayesian Estimation for a Bernoulli Distribution\nLet \\(\\{x_1, x_2, \\ldots, x_n\\}\\) be a dataset where \\(x_i \\in \\{0,1\\}\\) with parameter \\(\\theta\\). What distribution can be suitable for \\(P(\\theta)\\)?\nA commonly used distribution for priors is the Beta Distribution. \\[\nf(p;\\alpha,\\beta) = \\frac{p^{\\alpha-1}(1-p)^{\\beta-1}}{z} \\hspace{2em} \\forall p \\in [0,1] \\\\\n\\] \\[\n\\text{where $z$ is a normalizing factor}\n\\]\nHence, utilizing the Beta Distribution as the Prior, we obtain, \\[\\begin{align*}\nP(\\theta|\\{x_1, x_2, \\ldots, x_n\\}) &\\propto P(\\theta|\\{x_1, x_2, \\ldots, x_n\\})*P(\\theta) \\\\\nf_{\\theta|\\{x_1, x_2, \\ldots, x_n\\}}(p) &\\propto \\left [ \\prod _{i=1} ^n {p^{x_i}(1-p)^{1-x_i}} \\right ]*\\left [ p^{\\alpha-1}(1-p)^{\\beta-1} \\right ] \\\\\nf_{\\theta|\\{x_1, x_2, \\ldots, x_n\\}}(p) &\\propto p^{\\sum _{i=1} ^n x_i + \\alpha - 1}(1-p)^{\\sum _{i=1} ^n(1-x_i) + \\beta - 1}\n\\end{align*}\\] i.e. we obtain, \\[\n\\text{BETA PRIOR }(\\alpha, \\beta) \\xrightarrow[Bernoulli]{\\{x_1, x_2, \\ldots, x_n\\}} \\text{BETA POSTERIOR }(\\alpha + n_h, \\beta + n_t)\n\\] \\[\n\\therefore \\hat{p_{\\text{ML}}} = \\mathbb{E}[\\text{Posterior}]=\\mathbb{E}[\\text{Beta}(\\alpha +n_h, \\beta + n_t)]= \\frac{\\alpha + n_h}{\\alpha + n_h + \\beta + n_t}\n\\]"
+  },
+  {
+    "objectID": "pages/Wk04.html#convexity-and-jensens-inequality",
+    "href": "pages/Wk04.html#convexity-and-jensens-inequality",
+    "title": "Unsupervised Learning - Estimation - Recap of MLE + Bayesian estimation, Gaussian Mixture Model - EM algorithm",
+    "section": "Convexity and Jensen’s Inequality",
+    "text": "Convexity and Jensen’s Inequality\nConvexity is a property of a function or set that implies a unique line segment can be drawn between any two points within the function or set. For a concave function, this property can be expressed as, \\[\nf \\left (\\sum _{k=1} ^K \\lambda_k a_k \\right ) \\ge \\sum _{k=1} ^K \\lambda_k f(a_k)\n\\] where \\[\n\\sum _{k=1} ^K \\lambda _k = 1\n\\] \\[\na_k \\text{ are points of the function}\n\\] This is also known as Jensen’s Inequality."
+  },
+  {
+    "objectID": "pages/Wk01.html",
+    "href": "pages/Wk01.html",
+    "title": "Introduction; Unsupervised Learning - Representation learning - PCA",
+    "section": "",
+    "text": "Note\n\n\n\nFeedback/Correction: Click here!.\nPDF Link: Click here!"
+  },
+  {
+    "objectID": "pages/Wk01.html#broad-paradigms-of-machine-learning",
+    "href": "pages/Wk01.html#broad-paradigms-of-machine-learning",
+    "title": "Introduction; Unsupervised Learning - Representation learning - PCA",
+    "section": "Broad Paradigms of Machine Learning",
+    "text": "Broad Paradigms of Machine Learning\n\nSupervised Learning:Supervised Machine Learning is a type of machine learning where the algorithm is trained on a labeled dataset, meaning that the data includes both inputs and their corresponding outputs. The goal of supervised learning is to build a model that can accurately predict the output for new, unseen input data. Few examples:\n\n\nLinear regression for predicting a continuous output\nLogistic regression for binary classification problems\nDecision trees for non-linear classification and regression problems\nSupport Vector Machines for binary and multi-class classification problems\nNeural Networks for complex non-linear problems in various domains such as computer vision, natural language processing, and speech recognition\n\n\nUnsupervised Learning: Unsupervised Machine Learning is a type of machine learning where the algorithm is trained on an unlabeled dataset, meaning that only the inputs are provided and no corresponding outputs. The goal of unsupervised learning is to uncover patterns or relationships within the data without any prior knowledge or guidance. Few examples:\n\n\nClustering algorithms such as K-means, hierarchical clustering, and density-based clustering, used to group similar data points together into clusters\nDimensionality reduction techniques such as Principal Component Analysis (PCA), used to reduce the number of features in a dataset while preserving the maximum amount of information\nAnomaly detection algorithms used to identify unusual data points that deviate from the normal patterns in the data\n\n\nSequential learning: Sequential Machine Learning (also known as time-series prediction) is a type of machine learning that is focused on making predictions based on sequences of data. It involves training the model on a sequence of inputs, such that the predictions for each time step depend on the previous time steps. Few examples:\n\n\nTime series forecasting, used to predict future values based on past trends and patterns in data such as stock prices, weather patterns, and energy consumption\nSpeech recognition, used to transcribe speech into text by recognizing patterns in audio signals\nNatural language processing, used to analyze and make predictions about sequences of text data"
+  },
+  {
+    "objectID": "pages/Wk01.html#potential-algorithm",
+    "href": "pages/Wk01.html#potential-algorithm",
+    "title": "Introduction; Unsupervised Learning - Representation learning - PCA",
+    "section": "Potential Algorithm",
+    "text": "Potential Algorithm\nBased on the above concepts, we can outline the following algorithm for representation learning:\nGiven a dataset \\(\\{\\mathbf{x}_1, \\mathbf{x}_2, \\ldots, \\mathbf{x}_n\\}\\) where \\(\\mathbf{x}_i \\in \\mathbb{R}^{d}\\),\n\nCenter the dataset: \\[\n\\mathbf{\\mu} = \\frac{1}{n} \\sum _{i=1} ^{n} \\mathbf{x}_i\n\\] \\[\n\\mathbf{x}_i = \\mathbf{x}_i - \\mathbf{\\mu}  \\hspace{2em} \\forall i\n\\]\nFind the best representation \\(\\mathbf{w} \\in \\mathbb{R}^d\\) with \\(||\\mathbf{w}|| = 1\\).\nUpdate the dataset with the representation: \\[\n\\mathbf{x}_i = \\mathbf{x}_i - (\\mathbf{x}_i^T\\mathbf{w})\\mathbf{w}  \\hspace{1em} \\forall i\n\\]\nRepeat steps 2 and 3 until the residues become zero, resulting in \\(\\mathbf{w}_2, \\mathbf{w}_3, \\ldots, \\mathbf{w}_d\\).\n\nThe question arises: Is this the most effective approach, and how many \\(\\mathbf{w}\\) do we need to achieve optimal compression?"
+  },
+  {
+    "objectID": "pages/Wk01.html#approximate-representation",
+    "href": "pages/Wk01.html#approximate-representation",
+    "title": "Introduction; Unsupervised Learning - Representation learning - PCA",
+    "section": "Approximate Representation",
+    "text": "Approximate Representation\nThe question arises: If the data can be approximately represented by a lower-dimensional subspace, would it suffice to use only those \\(k\\) projections? Additionally, how much variance should be covered?\nLet us consider a centered dataset \\(\\{\\mathbf{x}_1, \\mathbf{x}_2, \\ldots, \\mathbf{x}_n\\}\\) where \\(\\mathbf{x}_i \\in \\mathbb{R}^{d}\\). Let \\(\\mathbf{C}\\) represent its covariance matrix, and \\(\\{\\lambda_1, \\lambda_2, \\ldots, \\lambda_d \\}\\) be the corresponding eigenvalues, which are non-negative due to the positive semi-definiteness of the covariance matrix. These eigenvalues are arranged in descending order, with \\(\\{\\mathbf{w}_1, \\mathbf{w}_2, \\ldots, \\mathbf{w}_d \\}\\) as their corresponding eigenvectors of unit length.\nThe eigen equation for the covariance matrix can be expressed as follows: \\[\\begin{align*}\n    \\mathbf{C}\\mathbf{w} &= \\lambda \\mathbf{w} \\\\\n    \\mathbf{w}^T\\mathbf{C}\\mathbf{w} &= \\mathbf{w}^T\\lambda \\mathbf{w}\\\\\n    \\therefore \\lambda &= \\mathbf{w}^T\\mathbf{C}\\mathbf{w} \\hspace{2em} \\{\\mathbf{w}^T\\mathbf{w} = 1\\} \\\\\n    \\lambda &= \\frac{1}{n} \\sum _{i=1} ^{n} (\\mathbf{x}_i^T\\mathbf{w})^2 \\\\\n\\end{align*}\\]\nHence, the mean of the dataset being zero, \\(\\lambda\\) represents the variance captured by the eigenvector \\(\\mathbf{w}\\).\nA commonly accepted heuristic suggests that PCA should capture at least 95% of the variance. If the first \\(k\\) eigenvectors capture the desired variance, it can be stated as: \\[\n\\frac{\\displaystyle \\sum _{j=1} ^{k} \\lambda_j}{\\displaystyle \\sum _{i=1} ^{d} \\lambda_i} \\ge 0.95\n\\]\nThus, the higher the variance captured, the lower the error incurred."
+  },
+  {
+    "objectID": "pages/Wk01.html#p.c.a.-algorithm",
+    "href": "pages/Wk01.html#p.c.a.-algorithm",
+    "title": "Introduction; Unsupervised Learning - Representation learning - PCA",
+    "section": "P.C.A. Algorithm",
+    "text": "P.C.A. Algorithm\nThe Principal Component Analysis algorithm can be summarized as follows for a centered dataset \\(\\{\\mathbf{x}_1, \\mathbf{x}_2, \\ldots, \\mathbf{x}_n\\}\\) where \\(\\mathbf{x}_i \\in \\mathbb{R}^{d}\\), and \\(\\mathbf{C}\\) represents its covariance matrix:\n\nStep 1: Find the eigenvalues and eigenvectors of \\(\\mathbf{C}\\). Let \\(\\{\\lambda_1, \\lambda_2, \\ldots, \\lambda_d \\}\\) be the eigenvalues arranged in descending order, and \\(\\{\\mathbf{w}_1, \\mathbf{w}_2, \\ldots, \\mathbf{w}_d \\}\\) be their corresponding eigenvectors of unit length.\nStep 2: Calculate \\(k\\), the number of top eigenvalues and eigenvectors required, based on the desired variance to be covered.\nStep 3: Project the data onto the eigenvectors and obtain the desired representation as a linear combination of these projections.\n\n\n\n\nThe dataset depicted in the diagram has two principal components: the green vector represents the first PC, whereas the red vector corresponds to the second PC.\n\n\nIn essence, PCA is a dimensionality reduction technique that identifies feature combinations that are de-correlated (independent of each other)."
+  },
+  {
+    "objectID": "pages/Wk03.html",
+    "href": "pages/Wk03.html",
+    "title": "Unsupervised Learning - Clustering - K-means/Kernel K-means",
+    "section": "",
+    "text": "Note\n\n\n\nFeedback/Correction: Click here!.\nPDF Link: Click here!"
+  },
+  {
+    "objectID": "pages/Wk03.html#the-algorithm",
+    "href": "pages/Wk03.html#the-algorithm",
+    "title": "Unsupervised Learning - Clustering - K-means/Kernel K-means",
+    "section": "The Algorithm",
+    "text": "The Algorithm\nThe algorithm proceeds as follows:\nStep 1: Initialization: Randomly assign datapoints from the dataset as the initial cluster centers.\nStep 2: Reassignment Step: \\[\nz _i ^{t} = \\underset{k}{\\arg \\min} {|| \\mathbf{x}_i - \\boldsymbol{\\mu} _{k} ^t ||}_2 ^2 \\hspace{2em} \\forall i\n\\]\nStep 3: Compute Means: \\[\n\\boldsymbol{\\mu} _k ^{t+1} = \\frac{\\displaystyle \\sum _{i = 1} ^{n} {\\mathbf{x}_i \\cdot \\mathbb{1}(z_i^t=k)}}{\\displaystyle \\sum _{i = 1} ^{n} {\\mathbb{1}(z_i^t=k)}} \\hspace{2em} \\forall k\n\\]\nStep 4: Loop until Convergence: Repeat steps 2 and 3 until the cluster assignments do not change."
+  },
+  {
+    "objectID": "pages/Wk05.html",
+    "href": "pages/Wk05.html",
+    "title": "Supervised Learning - Regression - Least Squares; Bayesian view",
+    "section": "",
+    "text": "Note\n\n\n\nFeedback/Correction: Click here!.\nPDF Link: Click here!"
+  },
+  {
+    "objectID": "pages/Wk05.html#stochastic-gradient-descent",
+    "href": "pages/Wk05.html#stochastic-gradient-descent",
+    "title": "Supervised Learning - Regression - Least Squares; Bayesian view",
+    "section": "Stochastic Gradient Descent",
+    "text": "Stochastic Gradient Descent\nStochastic gradient descent (SGD) is an optimization algorithm widely employed in machine learning to minimize the loss function of a model by determining the optimal parameters. Unlike traditional gradient descent, which updates the model parameters based on the entire dataset, SGD updates the parameters using a randomly selected subset of the data, known as a batch. This approach leads to faster training times and makes SGD particularly suitable for handling large datasets.\nInstead of updating \\(\\mathbf{w}\\) using the entire dataset at each step \\(t\\), SGD leverages a small randomly selected subset of \\(k\\) data points to update \\(\\mathbf{w}\\). Consequently, the new gradient becomes \\(2(\\tilde{\\mathbf{X}}\\tilde{\\mathbf{X}}^T\\mathbf{w}^t - \\tilde{\\mathbf{X}}\\tilde{\\mathbf{y}})\\), where \\(\\tilde{\\mathbf{X}}\\) and \\(\\tilde{\\mathbf{y}}\\) represent small samples randomly chosen from the dataset. This strategy is feasible since \\(\\tilde{\\mathbf{X}} \\in \\mathbb{R}^{d \\times k}\\), which is considerably smaller compared to \\(\\mathbf{X}\\).\nAfter \\(T\\) rounds of training, the final estimate is obtained as follows:\n\\[\n\\mathbf{w}_{\\text{SGD}}^T = \\frac{1}{T} \\sum_{i=1}^T \\mathbf{w}^i\n\\]\nThe stochastic nature of SGD contributes to optimal convergence to a certain extent."
+  },
+  {
+    "objectID": "pages/Wk07.html",
+    "href": "pages/Wk07.html",
+    "title": "Supervised Learning - Classification - K-NN, Decision tree",
+    "section": "",
+    "text": "Note\n\n\n\nFeedback/Correction: Click here!.\nPDF Link: Click here!"
+  },
+  {
+    "objectID": "pages/Wk07.html#issues-with-k-nn",
+    "href": "pages/Wk07.html#issues-with-k-nn",
+    "title": "Supervised Learning - Classification - K-NN, Decision tree",
+    "section": "Issues with K-NN",
+    "text": "Issues with K-NN\nThe K-NN algorithm suffers from several limitations:\n\nThe choice of distance function can yield different results. The Euclidean distance, commonly used, might not always be the best fit for all scenarios.\nComputationally, the algorithm can be demanding. When making predictions for a single test data point, the distances between that data point and all training points must be calculated and sorted. Consequently, the algorithm has a complexity of \\(O(n \\log(n))\\), where \\(n\\) represents the size of the dataset.\nThe algorithm does not learn a model but instead relies on the training dataset for making predictions."
+  },
+  {
+    "objectID": "pages/Wk07.html#goodness-of-a-question",
+    "href": "pages/Wk07.html#goodness-of-a-question",
+    "title": "Supervised Learning - Classification - K-NN, Decision tree",
+    "section": "Goodness of a Question",
+    "text": "Goodness of a Question\nTo evaluate the quality of a question, we need a measure of “impurity” for a set of labels \\(\\{y_1, \\ldots, y_n\\}\\). Various measures can be employed, but we will use the Entropy function.\nThe Entropy function is defined as:\n\\[\n\\text{Entropy}(\\{y_1, \\ldots, y_n\\}) = \\text{Entropy}(p) = -\\left( p\\log(p)+(1-p)\\log(1-p) \\right )\n\\]\nHere, \\(\\log(0)\\) is conventionally treated as \\(0\\).\nPictorial representation of the Entropy function:\n\nInformation Gain is then utilized to measure the quality of a split in the decision tree algorithm.\nInformation gain is a commonly used criterion in decision tree algorithms that quantifies the reduction in entropy or impurity of a dataset after splitting based on a given feature. High information gain signifies features that effectively differentiate between the different classes of data and lead to accurate predictions.\nInformation gain is calculated as:\n\\[\n\\text{Information Gain}(\\text{feature}, \\text{value}) = \\text{Entropy}(D) - \\left[\\gamma \\cdot \\text{Entropy}(D_{\\text{yes}}) + (1-\\gamma) \\cdot \\text{Entropy}(D_{\\text{no}}) \\right]\n\\]\nwhere \\(\\gamma\\) is defined as:\n\\[\n\\gamma = \\frac{|D_{\\text{yes}}|}{|D|}\n\\]"
+  },
+  {
+    "objectID": "pages/Wk07.html#decision-tree-algorithm",
+    "href": "pages/Wk07.html#decision-tree-algorithm",
+    "title": "Supervised Learning - Classification - K-NN, Decision tree",
+    "section": "Decision Tree Algorithm",
+    "text": "Decision Tree Algorithm\nThe decision tree algorithm follows these steps:\n\nDiscretize each feature within the range [min, max].\nSelect the question that provides the highest information gain.\nRepeat the procedure for subsets \\(D_{\\text{yes}}\\) and \\(D_{\\text{no}}\\).\nStop growing the tree when a node becomes sufficiently “pure” according to a predefined criterion.\n\nDifferent measures, such as the Gini Index, can also be employed to evaluate the quality of a question.\nPictorial depiction of the decision boundary and its decision tree:"
+  },
+  {
+    "objectID": "pages/Wk09.html",
+    "href": "pages/Wk09.html",
+    "title": "Discriminative Models - Perceptron; Logistic Regression",
+    "section": "",
+    "text": "Note\n\n\n\nFeedback/Correction: Click here!.\nPDF Link: Click here!"
+  },
+  {
+    "objectID": "pages/Wk09.html#analysis-of-the-update-rule",
+    "href": "pages/Wk09.html#analysis-of-the-update-rule",
+    "title": "Discriminative Models - Perceptron; Logistic Regression",
+    "section": "Analysis of the Update Rule",
+    "text": "Analysis of the Update Rule\nFor a given training example \\((\\mathbf{x}, y)\\), where \\(\\mathbf{x}\\) represents the input and \\(y\\) represents the correct output (either \\(1\\) or \\(-1\\)), the perceptron algorithm updates the weight vector \\(\\mathbf{w}\\) according to the following rules:\n\nIf the perceptron’s prediction on \\(\\mathbf{x}\\) is correct (i.e., \\(\\text{sign}(\\mathbf{w}^\\mathbf{T}\\mathbf{x}_i)==y_i\\)), no update is performed.\nIf the perceptron’s prediction on \\(\\mathbf{x}\\) is incorrect (i.e., \\(\\text{sign}(\\mathbf{w}^\\mathbf{T}\\mathbf{x}_i)\\neq y_i\\)), the weights are updated by adding the product of the input vector and the correct output to the current weight vector: \\(\\mathbf{w}^{(t+1)} = \\mathbf{w}^t + \\mathbf{x}_iy_i\\).\nIt is important to note that the update occurs solely in response to the current data point. Consequently, data points that were previously classified correctly may not be classified similarly in future iterations.\n\nThis update rule effectively adjusts the decision boundary in the direction of correct classification for the misclassified example. The algorithm is guaranteed to converge to a linearly separable solution if the data is indeed linearly separable. However, if the data is not linearly separable, the perceptron algorithm may not converge to a solution."
+  },
+  {
+    "objectID": "pages/Wk09.html#further-assumptions",
+    "href": "pages/Wk09.html#further-assumptions",
+    "title": "Discriminative Models - Perceptron; Logistic Regression",
+    "section": "Further Assumptions",
+    "text": "Further Assumptions\nWe introduce three additional assumptions:\n\nLinear Separability with \\(\\gamma\\)-Margin: A dataset \\(D=\\{(\\mathbf{x}_1, y_1), \\ldots, (\\mathbf{x}_n,y_n)\\}\\) is considered linearly separable with a \\(\\gamma\\)-margin if there exists \\(\\mathbf{w}^* \\in \\mathbb{R}^d\\) such that \\((\\mathbf{w}^{*T}\\mathbf{x}_i)y_i\\geq\\gamma\\) holds for all \\(i\\), where \\(\\gamma&gt;0\\).\n\n\n\n\nLinear Separability with \\(\\gamma\\)-Margin\n\n\n\nRadius Assumption: Let \\(R&gt;0 \\in \\mathbb{R}\\) be a constant such that \\(\\forall i \\in D\\), \\(||\\mathbf{x}_i||\\leq R\\). In other words, \\(R\\) denotes the length of the data point farthest from the center.\nNormal Length for \\(\\mathbf{w}^*\\): Assume that \\(\\mathbf{w}^*\\) has unit length."
+  },
+  {
+    "objectID": "pages/Wk09.html#sigmoid-function",
+    "href": "pages/Wk09.html#sigmoid-function",
+    "title": "Discriminative Models - Perceptron; Logistic Regression",
+    "section": "Sigmoid Function",
+    "text": "Sigmoid Function\nUntil now, we have utilized the \\(\\text{sign}\\) function to determine the class for the output. However, what if we also wish to obtain the probabilities associated with these outputs?\nLet \\(z=\\mathbf{w}^\\mathbf{T}\\mathbf{x}\\), where \\(z \\in \\mathbb{R}\\). How can we map \\([-\\infty, \\infty]\\rightarrow[0,1]\\)? To address this, we introduce the Sigmoid Function, defined as follows:\n\\[\ng(z) = \\frac{1}{1+e^{-z}}\n\\]\n\n\n\nSigmoid Function\n\n\nThe sigmoid function is commonly employed in machine learning as an activation function for neural networks. It exhibits an S-shaped curve, making it well-suited for modeling processes with a threshold or saturation point, such as logistic growth or binary classification problems.\nFor large positive input values, the sigmoid function approaches 1, while for large negative input values, it approaches 0. When the input value is 0, the sigmoid function output is exactly 0.5.\nThe term “sigmoid” is derived from the Greek word “sigmoides,” meaning “shaped like the letter sigma” (\\(\\Sigma\\)). The sigmoid function’s characteristic S-shaped curve resembles the shape of the letter sigma, which likely influenced the function’s name."
+  },
+  {
+    "objectID": "pages/Wk09.html#logistic-regression-1",
+    "href": "pages/Wk09.html#logistic-regression-1",
+    "title": "Discriminative Models - Perceptron; Logistic Regression",
+    "section": "Logistic Regression",
+    "text": "Logistic Regression\nLogistic regression is a statistical method used to analyze and model the relationship between a binary (two-valued) dependent variable and one or more independent variables. The independent variables can be either continuous or categorical. The main objective of logistic regression is to estimate the probability that the dependent variable belongs to one of the two possible values, given the independent variable values.\nIn logistic regression, the dependent variable is modeled as a function of the independent variables using a logistic (sigmoid) function. This function generates an S-shaped curve ranging between 0 and 1. By transforming the output of a linear combination of the independent variables using the logistic function, logistic regression provides a probability estimate that can be used for classifying new observations.\nLet \\(D=\\{(\\mathbf{x}_1, y_1), \\ldots, (\\mathbf{x}_n,y_n)\\}\\) denote the dataset, where \\(\\mathbf{x}_i \\in \\mathbb{R}^d\\) and \\(y_i \\in \\{0, 1\\}\\).\nWe know that:\n\\[\nP(y=1|\\mathbf{x}) = g(\\mathbf{w}^\\mathbf{T}\\mathbf{x}_i) = \\frac{1}{1+e^{-\\mathbf{w}^\\mathbf{T}\\mathbf{x}}}\n\\]\nUsing the maximum likelihood approach, we can derive the following expression:\n\\[\\begin{align*}\n\\mathcal{L}(\\mathbf{w};\\text{Data}) &= \\prod _{i=1} ^{n} (g(\\mathbf{w}^\\mathbf{T}\\mathbf{x}_i))^{y_i}(1- g(\\mathbf{w}^\\mathbf{T}\\mathbf{x}_i))^{1-y_i} \\\\\n\\log(\\mathcal{L}(\\mathbf{w};\\text{Data})) &= \\sum _{i=1} ^{n} y_i\\log(g(\\mathbf{w}^\\mathbf{T}\\mathbf{x}_i))+(1-y_i)\\log(1- g(\\mathbf{w}^\\mathbf{T}\\mathbf{x}_i)) \\\\\n&= \\sum _{i=1} ^{n} y_i\\log\\left(\\frac{1}{1+e^{-\\mathbf{w}^\\mathbf{T}\\mathbf{x}_i}}\\right)+(1-y_i)\\log\\left(\\frac{e^{-\\mathbf{w}^\\mathbf{T}\\mathbf{x}_i}}{1+e^{-\\mathbf{w}^\\mathbf{T}\\mathbf{x}_i}}\\right) \\\\\n&= \\sum _{i=1} ^{n} \\left [ (1-y_i)(-\\mathbf{w}^\\mathbf{T}\\mathbf{x}_i) - \\log(1+e^{-\\mathbf{w}^\\mathbf{T}\\mathbf{x}_i}) \\right ]\n\\end{align*}\\]\nTherefore, our objective, which involves maximizing the log-likelihood function, can be formulated as follows:\n\\[\n\\max _{\\mathbf{w}}\\sum _{i=1} ^{n} \\left [ (1-y_i)(-\\mathbf{w}^\\mathbf{T}\\mathbf{x}_i) - \\log(1+e^{-\\mathbf{w}^\\mathbf{T}\\mathbf{x}_i}) \\right ]\n\\]\nHowever, a closed-form solution for this problem does not exist. Therefore, we resort to using gradient descent for convergence.\nThe gradient of the log-likelihood function is computed as follows:\n\\[\\begin{align*}\n\\nabla \\log(\\mathcal{L}(\\mathbf{w};\\text{Data})) &= \\sum _{i=1} ^{n} \\left [ (1-y_i)(-\\mathbf{x}_i) - \\left( \\frac{e^{-\\mathbf{w}^\\mathbf{T}\\mathbf{x}_i}}{1+e^{-\\mathbf{w}^\\mathbf{T}\\mathbf{x}_i}} \\right ) (-\\mathbf{x}_i) \\right ] \\\\\n&= \\sum _{i=1} ^{n} \\left [ -\\mathbf{x}_i + \\mathbf{x}_iy_i + \\mathbf{x}_i \\left( \\frac{e^{-\\mathbf{w}^\\mathbf{T}\\mathbf{x}_i}}{1+e^{-\\mathbf{w}^\\mathbf{T}\\mathbf{x}_i}} \\right ) \\right ] \\\\\n&= \\sum _{i=1} ^{n} \\left [ \\mathbf{x}_iy_i - \\mathbf{x}_i \\left( \\frac{1}{1+e^{-\\mathbf{w}^\\mathbf{T}\\mathbf{x}_i}} \\right ) \\right ] \\\\\n\\nabla \\log(\\mathcal{L}(\\mathbf{w};\\text{Data})) &= \\sum _{i=1} ^{n} \\left [ \\mathbf{x}_i \\left(y_i - \\frac{1}{1+e^{-\\mathbf{w}^\\mathbf{T}\\mathbf{x}_i}} \\right ) \\right ]\n\\end{align*}\\]\nUtilizing the gradient descent update rule, we obtain:\n\\[\\begin{align*}\n\\mathbf{w}_{t+1} &= \\mathbf{w}_t + \\eta_t\\nabla \\log(\\mathcal{L}(\\mathbf{w};\\text{Data})) \\\\\n&= \\mathbf{w}_t + \\eta_t  \\left ( \\sum _{i=1} ^{n} \\mathbf{x}_i \\left(y_i - \\frac{1}{1+e^{-\\mathbf{w}^\\mathbf{T}\\mathbf{x}_i}} \\right ) \\right )\n\\end{align*}\\]\n\nKernel and Regularized Versions\nIt is possible to argue that \\(\\mathbf{w}^*=\\displaystyle\\sum _{i=1} ^{n}\\alpha_i\\mathbf{x}_i\\), thereby allowing for kernelization. For additional information, please refer to this link.\nThe regularized version of logistic regression can be expressed as follows:\n\\[\n\\min _{\\mathbf{w}}\\sum _{i=1} ^{n} \\left [ \\log(1+e^{-\\mathbf{w}^\\mathbf{T}\\mathbf{x}_i}) + \\mathbf{w}^\\mathbf{T}\\mathbf{x}_i(1-y_i) \\right ] + \\frac{\\lambda}{2}||\\mathbf{w}||^2\n\\]\nHere, \\(\\frac{\\lambda}{2}||\\mathbf{w}||^2\\) serves as the regularizer, and \\(\\lambda\\) is determined through cross-validation."
+  },
+  {
+    "objectID": "pages/Wk11.html",
+    "href": "pages/Wk11.html",
+    "title": "Ensemble methods - Bagging and Boosting (Adaboost)",
+    "section": "",
+    "text": "Note\n\n\n\nFeedback/Correction: Click here!.\nPDF Link: Click here!"
+  },
+  {
+    "objectID": "pages/Wk11.html#dual-formulation",
+    "href": "pages/Wk11.html#dual-formulation",
+    "title": "Ensemble methods - Bagging and Boosting (Adaboost)",
+    "section": "Dual Formulation",
+    "text": "Dual Formulation\nMaximizing the Lagrangian function w.r.t. \\(\\alpha\\) and \\(\\beta\\), and minimizing it w.r.t. \\(w\\) and \\(\\epsilon\\), we get,\n\\[\n\\min _{w, \\epsilon}\\left [\\max _{\\alpha \\ge 0; \\beta \\ge 0}\\frac{1}{2}||w||^2_2 + C\\sum _{i=1} ^n\\epsilon_i + \\sum _{i=1} ^n \\alpha_i(1-(w^Tx_i)y_i - \\epsilon_i) + \\sum _{i=1} ^n \\beta(-\\epsilon_i) \\right ]\n\\]\nThe dual of this is given by,\n\\[\n\\max _{\\alpha \\ge 0; \\beta \\ge 0}\\left [\\min _{w, \\epsilon}\\frac{1}{2}||w||^2_2 + C\\sum _{i=1} ^n\\epsilon_i + \\sum _{i=1} ^n \\alpha_i(1-(w^Tx_i)y_i - \\epsilon_i) + \\sum _{i=1} ^n \\beta(-\\epsilon_i) \\right ]\n\\]\n\\[\n\\max _{\\alpha \\ge 0; \\beta \\ge 0}\\left [\\min _{w, \\epsilon}\\mathcal{L}(w, \\epsilon, \\alpha, \\beta) \\right ] \\quad \\ldots[1]\n\\]\nDifferentiating the above function\\([1]\\) w.r.t. \\(w\\) while fixing \\(\\alpha\\) and \\(\\beta\\), we get, \\[\n\\frac{d\\mathcal{L}}{dw}  = 0\n\\] \\[\n\\frac{d}{dw} \\frac{1}{2}||w||^2_2 + C\\sum _{i=1} ^n\\epsilon_i + \\sum _{i=1} ^n \\alpha_i(1-(w^Tx_i)y_i - \\epsilon_i) + \\sum _{i=1} ^n \\beta(-\\epsilon_i) = 0\\\\\n\\] \\[\nw_{\\alpha, \\beta}^* - \\alpha_ix_iy_i = 0\n\\] \\[\n\\therefore w_{\\alpha, \\beta}^* = \\alpha_ix_iy_i \\quad \\ldots [2]\n\\]\nDifferentiating the above function\\([1]\\) w.r.t. \\(\\epsilon_i \\forall i\\) while fixing \\(\\alpha\\) and \\(\\beta\\), we get,\n\\[\n\\frac{\\partial\\mathcal{L}}{\\partial\\epsilon_i}  = 0\n\\] \\[\n\\frac{\\partial}{\\partial\\epsilon_i} \\frac{1}{2}||w||^2_2 + C\\sum _{i=1} ^n\\epsilon_i + \\sum _{i=1} ^n \\alpha_i(1-(w^Tx_i)y_i - \\epsilon_i) + \\sum _{i=1} ^n \\beta(-\\epsilon_i) = 0\n\\] \\[\nC - \\alpha_i -\\beta_i = 0\n\\] \\[\n\\therefore C = \\alpha_i + \\beta_i \\quad \\ldots [3]\n\\]\nSubstituting the values of \\(w\\) and \\(\\beta\\) from \\([2]\\) and \\([3]\\) in \\([1]\\), we get,\n\\[\n\\max _{\\alpha \\ge 0; \\beta \\ge 0; C = \\alpha_i + \\beta_i}\\left [\\frac{1}{2}||\\alpha_ix_iy_i||^2_2 + C\\sum _{i=1} ^n\\epsilon_i + \\sum _{i=1} ^n \\alpha_i(1-((\\alpha_ix_iy_i)^Tx_i)y_i - \\epsilon_i) + \\sum _{i=1} ^n (C-\\alpha_i)(-\\epsilon_i) \\right ]\n\\] \\[\n\\max _{\\alpha \\ge 0; \\beta \\ge 0; C = \\alpha_i + \\beta_i}\\left [\\frac{1}{2}\\alpha_i^Tx_i^Ty_i^Ty_ix_i\\alpha_i + C\\sum _{i=1} ^n\\epsilon_i + \\sum _{i=1} ^n \\alpha_i-\\alpha_i^Tx_i^Ty_i^Ty_ix_i\\alpha_i - \\sum _{i=1} ^n \\alpha_i\\epsilon_i - C\\sum _{i=1} ^n\\epsilon_i + \\sum _{i=1} ^n \\alpha_i\\epsilon_i \\right ]\n\\] \\[\n\\max _{\\alpha \\ge 0; \\beta \\ge 0; C = \\alpha_i + \\beta_i}\\left [\\sum _{i=1} ^n \\alpha_i - \\frac{1}{2}\\alpha_i^Tx_i^Ty_i^Ty_ix_i\\alpha_i\\right ]\n\\] \\[\n\\therefore \\max _{0 \\le \\alpha \\le C}\\left [\\sum _{i=1} ^n \\alpha_i - \\frac{1}{2}\\alpha_i^Tx_i^Ty_i^Ty_ix_i\\alpha_i\\right ]\n\\]"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "CS2007: Machine Learning Techniques",
+    "section": "",
+    "text": "Note\n\n\n\nThis site is still under development.\nFeedback/Correction: Click here!.\n\n\n\n\n\n\nWeek\nTopic\nPrepare\nPDF\n\n\n\n\n1\nIntroduction; Unsupervised Learning - Representation learning - PCA\n\n🖥️\n\n\n2\nUnsupervised Learning - Representation learning - Kernel PCA\n\n🖥️\n\n\n3\nUnsupervised Learning - Clustering - K-means/Kernel K-means\n\n🖥️\n\n\n4\nUnsupervised Learning - Estimation - Recap of MLE + Bayesian estimation, Gaussian Mixture Model - EM algorithm\n\n🖥️\n\n\n5\nSupervised Learning - Regression - Least Squares; Bayesian view\n\n🖥️\n\n\n6\nSupervised Learning - Regression - Ridge/LASSO\n\n🖥️\n\n\n7\nSupervised Learning - Classification - K-NN, Decision tree\n\n🖥️\n\n\n8\nSupervised Learning - Classification - Generative Models - Naive Bayes\n\n🖥️\n\n\n9\nDiscriminative Models - Perceptron; Logistic Regression\n\n🖥️\n\n\n10\nSupport Vector Machines\n\n🖥️"
   }
 ]

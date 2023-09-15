@@ -8,58 +8,17 @@ This site is still under development.
 Feedback/Correction: [Click here!](https://forms.gle/LehGfBWFX3yWFDBH6).
 :::
 
-## About the Course
-To introduce the main methods and models used in machine learning problems of regression, classification and clustering. To study the properties of these models and methods and learn about their suitability for different problems.
-
-## What you'll learn
-* Demonstrating In depth understanding of machine learning algorithms - model, objective or loss function, optimization algorithm and evaluation criteria.
-* Tweaking machine learning algorithms based on the outcome of experiments - what steps to take in case of underfitting and overfitting.
-* Being able to choose among multiple algorithms for a given task.
-* Developing an understanding of unsupervised learning techniques.
-
-## Course Instructors
-
-**Prof. Arun Rajkumar**
-
-Assistant Professor, Department of Computer Sciences & Engineering, IIT Madras
-
-## Author
-
-* [Sherry](https://discourse.onlinedegree.iitm.ac.in/u/sherry)
-
-### Co-Authors
-
-* [A Aniruddha](https://discourse.onlinedegree.iitm.ac.in/u/alape_aniruddha)
-* [Vivek Sivaramakrishnan](https://discourse.onlinedegree.iitm.ac.in/u/vivekthegreat1)
-
-## Table of Contents
-
-1. [Introduction; Unsupervised Learning - Representation learning - PCA](./pages/Wk01.html)
-2. [Unsupervised Learning - Representation learning - Kernel PCA](./pages/Wk02.html)
-3. [Unsupervised Learning - Clustering - K-means/Kernel K-means](./pages/Wk03.html)
-4. [Unsupervised Learning - Estimation - Recap of MLE + Bayesian estimation, Gaussian Mixture Model - EM algorithm](./pages/Wk04.html)
-5. [Supervised Learning - Regression - Least Squares; Bayesian view](./pages/Wk05.html)
-6. [Supervised Learning - Regression - Ridge/LASSO](./pages/Wk06.html)
-7. [Supervised Learning - Classification - K-NN, Decision tree](./pages/Wk07.html)
-8. [Supervised Learning - Classification - Generative Models - Naive Bayes](./pages/Wk08.html)
-9. [Discriminative Models - Perceptron; Logistic Regression](./pages/Wk09.html)
-10. [Support Vector Machines](./pages/Wk10.html)
-11. [Ensemble methods - Bagging and Boosting (Adaboost)](./pages/Wk11.html)
-
-## Study Material
-
-The primary study material for this course is the set of videos and assignments posted on the course page. The prescribed textbook for this course is: 
-
-* Pattern Classification by David G. Stork, Peter E. Hart, and Richard O. Duda
-* Pattern Recognition and Machine Learning by Christopher M. Bishop
-* The Elements of Statistical Learning: Data Mining, Inference, and Prediction by Trevor Hastie, Robert Tibshirani, and Jerome Friedman
-
-The learners are advised to make best use of the interaction sessions with the course support members to clarify their doubts. 
-
-To know more about course syllabus, Instructors and course contents, please click on the below link
-
-[https://onlinedegree.iitm.ac.in/course_pages/BSCCS2007.html](https://onlinedegree.iitm.ac.in/course_pages/BSCCS2007.html)
-
-Please click on the below tab to view the Course Specific Calendar:
-
-[https://calendar.google.com/calendar/u/2?cid=Y19vODg1amdtMTVrbjJzZW01dGlkM2szcjhnNEBncm91cC5jYWxlbmRhci5nb29nbGUuY29t](https://calendar.google.com/calendar/u/2?cid=Y19vODg1amdtMTVrbjJzZW01dGlkM2szcjhnNEBncm91cC5jYWxlbmRhci5nb29nbGUuY29t)
+::: column-screen-inset-right
+| Week | Topic | Prepare | PDF |
+|:------:|--------|--------|:------:|
+| [1](./pages/Wk01.html) | Introduction; Unsupervised Learning - Representation learning - PCA | | [🖥️](./notes/Wk01.pdf "PDF"){aria-label="Lab 0 slides"} |
+| [2](./pages/Wk02.html) | Unsupervised Learning - Representation learning - Kernel PCA | | [🖥️](./notes/Wk02.pdf "PDF"){aria-label="Lab 0 slides"} |
+| [3](./pages/Wk03.html) | Unsupervised Learning - Clustering - K-means/Kernel K-means | | [🖥️](./notes/Wk03.pdf "PDF"){aria-label="Lab 0 slides"} |
+| [4](./pages/Wk04.html) | Unsupervised Learning - Estimation - Recap of MLE + Bayesian estimation, Gaussian Mixture Model - EM algorithm | | [🖥️](./notes/Wk04.pdf "PDF"){aria-label="Lab 0 slides"} |
+| [5](./pages/Wk05.html) | Supervised Learning - Regression - Least Squares; Bayesian view | | [🖥️](./notes/Wk05.pdf "PDF"){aria-label="Lab 0 slides"} |
+| [6](./pages/Wk06.html) | Supervised Learning - Regression - Ridge/LASSO | | [🖥️](./notes/Wk06.pdf "PDF"){aria-label="Lab 0 slides"} |
+| [7](./pages/Wk07.html) | Supervised Learning - Classification - K-NN, Decision tree | | [🖥️](./notes/Wk07.pdf "PDF"){aria-label="Lab 0 slides"} |
+| [8](./pages/Wk08.html) | Supervised Learning - Classification - Generative Models - Naive Bayes | | [🖥️](./notes/Wk08.pdf "PDF"){aria-label="Lab 0 slides"} |
+| [9](./pages/Wk09.html) | Discriminative Models - Perceptron; Logistic Regression | | [🖥️](./notes/Wk09.pdf "PDF"){aria-label="Lab 0 slides"} |
+| [10](./pages/Wk10.html) | Support Vector Machines | | [🖥️](./notes/Wk10.pdf "PDF"){aria-label="Lab 0 slides"} |
+:::
