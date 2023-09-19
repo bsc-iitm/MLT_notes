@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>CS 2007 Machine Learning Techniques - Discriminative Models - Perceptron; Logistic Regression</title>
+<title>CS 2007 Machine Learning Techniques - Week 5: Linear Regression: Least Squares and Kernel Regression</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,6 +20,40 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -29,8 +63,6 @@ ul.task-list li input[type="checkbox"] {
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../pages/Wk10.html" rel="next">
-<link href="../pages/Wk08.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -66,12 +98,12 @@ ul.task-list li input[type="checkbox"] {
   <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
-<meta property="og:title" content="CS 2007 Machine Learning Techniques - Discriminative Models - Perceptron; Logistic Regression">
+<meta property="og:title" content="CS 2007 Machine Learning Techniques - Week 5: Linear Regression: Least Squares and Kernel Regression">
 <meta property="og:description" content="">
-<meta property="og:image" content="https://bsc-iitm.github.io/MLT_notes/images/Linear Separability with gamma-Margin.png">
+<meta property="og:image" content="https://bsc-iitm.github.io/MLT_notes/notes/Not05_files/figure-html/cell-3-output-1.png">
 <meta property="og:site-name" content="CS 2007 Machine Learning Techniques">
-<meta property="og:image:height" content="565">
-<meta property="og:image:width" content="655">
+<meta property="og:image:height" content="413">
+<meta property="og:image:width" content="546">
 </head>
 
 <body class="nav-sidebar docked">
@@ -83,7 +115,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../pages/Wk01.html">Notes</a></li><li class="breadcrumb-item"><a href="../pages/Wk09.html">Week-09</a></li></ol></nav>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">Week 5: Linear Regression: Least Squares and Kernel Regression</li></ol></nav>
       <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
       </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
@@ -137,13 +169,13 @@ ul.task-list li input[type="checkbox"] {
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="false">
  <span class="menu-text">Notes</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="false" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../pages/Wk01.html" class="sidebar-item-text sidebar-link">
@@ -194,7 +226,7 @@ ul.task-list li input[type="checkbox"] {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../pages/Wk09.html" class="sidebar-item-text sidebar-link active">
+  <a href="../pages/Wk09.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Week-09</span></a>
   </div>
 </li>
@@ -245,19 +277,12 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#perceptron-learning-algorithm" id="toc-perceptron-learning-algorithm" class="nav-link active" data-scroll-target="#perceptron-learning-algorithm">Perceptron Learning Algorithm</a>
+  <li><a href="#linear-regression-algorithm" id="toc-linear-regression-algorithm" class="nav-link active" data-scroll-target="#linear-regression-algorithm">Linear Regression Algorithm</a>
   <ul class="collapse">
-  <li><a href="#analysis-of-the-update-rule" id="toc-analysis-of-the-update-rule" class="nav-link" data-scroll-target="#analysis-of-the-update-rule">Analysis of the Update Rule</a></li>
-  <li><a href="#further-assumptions" id="toc-further-assumptions" class="nav-link" data-scroll-target="#further-assumptions">Further Assumptions</a></li>
-  </ul></li>
-  <li><a href="#proof-of-convergence-of-perceptron-algorithm" id="toc-proof-of-convergence-of-perceptron-algorithm" class="nav-link" data-scroll-target="#proof-of-convergence-of-perceptron-algorithm">Proof of Convergence of Perceptron Algorithm</a></li>
-  <li><a href="#logistic-regression" id="toc-logistic-regression" class="nav-link" data-scroll-target="#logistic-regression">Logistic Regression</a>
-  <ul class="collapse">
-  <li><a href="#sigmoid-function" id="toc-sigmoid-function" class="nav-link" data-scroll-target="#sigmoid-function">Sigmoid Function</a></li>
-  <li><a href="#logistic-regression-1" id="toc-logistic-regression-1" class="nav-link" data-scroll-target="#logistic-regression-1">Logistic Regression</a>
-  <ul class="collapse">
-  <li><a href="#kernel-and-regularized-versions" id="toc-kernel-and-regularized-versions" class="nav-link" data-scroll-target="#kernel-and-regularized-versions">Kernel and Regularized Versions</a></li>
-  </ul></li>
+  <li><a href="#optimizing-the-error-function" id="toc-optimizing-the-error-function" class="nav-link" data-scroll-target="#optimizing-the-error-function">Optimizing the Error Function</a></li>
+  <li><a href="#using-gradient-descent" id="toc-using-gradient-descent" class="nav-link" data-scroll-target="#using-gradient-descent">Using Gradient Descent</a></li>
+  <li><a href="#kernel-regression-algorithm" id="toc-kernel-regression-algorithm" class="nav-link" data-scroll-target="#kernel-regression-algorithm">Kernel Regression Algorithm</a></li>
+  <li><a href="#using-kernel-regression" id="toc-using-kernel-regression" class="nav-link" data-scroll-target="#using-kernel-regression">Using Kernel Regression</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -267,7 +292,7 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Discriminative Models - Perceptron; Logistic Regression</h1>
+<h1 class="title">Week 5: Linear Regression: Least Squares and Kernel Regression</h1>
 </div>
 
 
@@ -282,176 +307,184 @@ ul.task-list li input[type="checkbox"] {
 
 </header>
 
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
+<p>Colab Link: <a href="https://drive.google.com/file/d/18cIIJNaNvU3nTyXK6ShLQKlU0sdg_Hwv/view?usp=sharing" target="_blank">Click here!</a></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="callout-title-container flex-fill">
-Note
+<section id="linear-regression-algorithm" class="level1">
+<h1>Linear Regression Algorithm</h1>
+<p>Given a dataset <span class="math inline">\(\{x_{1} ,\dotsc ,x_{n} \}\)</span> where <span class="math inline">\(x_{i} \in \mathbb{R}^{d}\)</span>, let <span class="math inline">\(\{y_{1} ,\dotsc ,y_{n} \}\)</span> be the labels, where <span class="math inline">\(y_{i} \in \mathbb{R}\)</span>. <span class="math display">\[\begin{equation*}
+\mathbf{X} =\begin{bmatrix}
+-2 &amp; -1 &amp; 1 &amp; 2
+\end{bmatrix} \quad \mathbf{y} \ =\ \begin{bmatrix}
+-3.9\\
+-2.1\\
+1.7\\
+4.3
+\end{bmatrix}
+\end{equation*}\]</span></p>
+<div class="cell" data-outputid="f5d58cea-44cc-484f-9f24-21026f914225">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> np.array([[<span class="op">-</span><span class="dv">2</span>,<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">2</span>]])</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> np.array([[<span class="op">-</span><span class="fl">3.9</span>,<span class="op">-</span><span class="fl">2.1</span>,<span class="fl">1.7</span>,<span class="fl">4.3</span>]]).T</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>plt.scatter(X, y)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>plt.grid()</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>plt.axhline(c<span class="op">=</span><span class="st">'k'</span>)</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>plt.axvline(c<span class="op">=</span><span class="st">'k'</span>)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="Not05_files/figure-html/cell-3-output-1.png" class="img-fluid"></p>
 </div>
 </div>
-<div class="callout-body-container callout-body">
-<p>Feedback/Correction: <a href="https://forms.gle/LehGfBWFX3yWFDBH6">Click here!</a>.</p>
+<section id="optimizing-the-error-function" class="level2">
+<h2 class="anchored" data-anchor-id="optimizing-the-error-function">Optimizing the Error Function</h2>
+<p>The minimization equation can be rewritten in the vectorized form as, <span class="math display">\[\begin{equation*}
+\min_{\mathbf{w} \in \mathbb{R}^{d}}\frac{1}{2} ||\mathbf{X}^{T}\mathbf{w} -\mathbf{y} ||_{2}^{2}
+\end{equation*}\]</span> Let this be a function of <span class="math inline">\(\mathbf{w}\)</span> and as follows: <span class="math display">\[\begin{align*}
+f(\mathbf{w} ) &amp; =\underset{\mathbf{w} \in \mathbb{R}^{d}}{\min} \frac{1}{2} ||\mathbf{X}^{T}\mathbf{w} -\mathbf{y} ||_{2}^{2}\\
+f(\mathbf{w} ) &amp; = \frac{1}{2} (\mathbf{X}^{T}\mathbf{w} -\mathbf{y} )^{T} (\mathbf{X}^{T}\mathbf{w} -\mathbf{y} )\\
+\therefore \triangledown f(\mathbf{w} ) &amp; =(\mathbf{XX}^{T} )\mathbf{w} -(\mathbf{Xy} )
+\end{align*}\]</span> Setting the above equation to zero, we get <span class="math display">\[\begin{align*}
+(\mathbf{XX}^{T} )\mathbf{w} -(\mathbf{Xy} ) &amp; =0\\
+(\mathbf{XX}^{T} )\mathbf{w}^{*} &amp; =\mathbf{Xy}\\
+\therefore \mathbf{w}^{*} &amp; =(\mathbf{XX}^{T} )^{+}\mathbf{Xy}
+\end{align*}\]</span> where <span class="math inline">\((\mathbf{XX}^{T} )^{+}\)</span> is the pseudo-inverse of <span class="math inline">\(\mathbf{XX}^{T}\)</span>.</p>
+<div class="cell" data-outputid="e084b0f4-54ae-480f-868d-8859522987d6">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> np.vstack((np.array([[<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>]]),X))</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>X</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="3">
+<pre><code>array([[ 1,  1,  1,  1],
+       [-2, -1,  1,  2]])</code></pre>
 </div>
 </div>
-<p>PDF Link: <a href="../notes/Wk09.pdf">Click here!</a></p>
-<section id="perceptron-learning-algorithm" class="level1">
-<h1>Perceptron Learning Algorithm</h1>
-<p>The Perceptron Learning Algorithm (PLA) is a supervised learning algorithm widely employed for binary classification tasks. Its primary objective is to determine a decision boundary that effectively separates the two classes in the dataset. This algorithm belongs to the class of discriminative classification methods as it focuses on modeling the boundary between classes instead of characterizing the underlying probability distribution of each class.</p>
-<p>Let <span class="math inline">\(D=\{(\mathbf{x}_1, y_1), \ldots, (\mathbf{x}_n,y_n)\}\)</span> represent the dataset, where <span class="math inline">\(\mathbf{x}_i \in \mathbb{R}^d\)</span> and <span class="math inline">\(y_i \in \{0, 1\}\)</span>.</p>
-<p>The algorithm is founded on the following assumptions:</p>
-<ol type="1">
-<li><span class="math inline">\(P(y=1|\mathbf{x}) = 1\)</span> if <span class="math inline">\(\mathbf{w}^\mathbf{T}\mathbf{x}\geq0\)</span>, otherwise <span class="math inline">\(P(y=1|\mathbf{x}) = 0\)</span>.</li>
-<li><strong>Linear Separability Assumption</strong>: The Linear Separability Assumption is a fundamental assumption made in various machine learning algorithms, including the Perceptron Learning Algorithm. It posits that the classes to be classified can be accurately separated by a linear decision boundary. In other words, there exists a hyperplane in the feature space that can effectively segregate the data points of the two classes.</li>
-</ol>
-<p>The objective function is defined as follows:</p>
-<p><span class="math display">\[
-\min _{h \in \mathcal{H}} \sum _{i=1} ^n \mathbb{1}\left ( h(\mathbf{x}_i) \neq y_i \right )
-\]</span></p>
-<p>Even if <span class="math inline">\(\mathcal{H}\)</span> accounts only for the Linear Hypotheses, this problem is generally considered NP-Hard.</p>
-<p>Under the Linear Separability Assumption, assuming the existence of <span class="math inline">\(\mathbf{w} \in \mathbb{R}^d\)</span> such that <span class="math inline">\(\text{sign}(\mathbf{w}^\mathbf{T}\mathbf{x}_i)=y_i\)</span> holds for all <span class="math inline">\(i \in \{1, 2, \ldots, n\}\)</span>, the PLA solves the convergence problem using an iterative algorithm. The algorithm proceeds as follows:</p>
-<ul>
-<li>Initialize <span class="math inline">\(\mathbf{w}^0 = \mathbf{0} \in \mathbb{R}^d\)</span></li>
-<li>Until Convergence:
-<ul>
-<li>Select a <span class="math inline">\((\mathbf{x}_i, y_i)\)</span> pair from the dataset</li>
-<li>If <span class="math inline">\(\text{sign}(\mathbf{w}^\mathbf{T}\mathbf{x}_i)==y_i\)</span>
-<ul>
-<li>Do nothing</li>
-</ul></li>
-<li>Else
-<ul>
-<li>Update the weight vector: <span class="math inline">\(\mathbf{w}^{(t+1)} = \mathbf{w}^t + \mathbf{x}_iy_i\)</span></li>
-</ul></li>
-<li>End</li>
-</ul></li>
-</ul>
-<section id="analysis-of-the-update-rule" class="level2">
-<h2 class="anchored" data-anchor-id="analysis-of-the-update-rule">Analysis of the Update Rule</h2>
-<p>For a given training example <span class="math inline">\((\mathbf{x}, y)\)</span>, where <span class="math inline">\(\mathbf{x}\)</span> represents the input and <span class="math inline">\(y\)</span> represents the correct output (either <span class="math inline">\(1\)</span> or <span class="math inline">\(-1\)</span>), the perceptron algorithm updates the weight vector <span class="math inline">\(\mathbf{w}\)</span> according to the following rules:</p>
-<ul>
-<li>If the perceptron’s prediction on <span class="math inline">\(\mathbf{x}\)</span> is correct (i.e., <span class="math inline">\(\text{sign}(\mathbf{w}^\mathbf{T}\mathbf{x}_i)==y_i\)</span>), no update is performed.</li>
-<li>If the perceptron’s prediction on <span class="math inline">\(\mathbf{x}\)</span> is incorrect (i.e., <span class="math inline">\(\text{sign}(\mathbf{w}^\mathbf{T}\mathbf{x}_i)\neq y_i\)</span>), the weights are updated by adding the product of the input vector and the correct output to the current weight vector: <span class="math inline">\(\mathbf{w}^{(t+1)} = \mathbf{w}^t + \mathbf{x}_iy_i\)</span>.</li>
-<li>It is important to note that the update occurs solely in response to the current data point. Consequently, data points that were previously classified correctly may not be classified similarly in future iterations.</li>
-</ul>
-<p>This update rule effectively adjusts the decision boundary in the direction of correct classification for the misclassified example. The algorithm is guaranteed to converge to a linearly separable solution if the data is indeed linearly separable. However, if the data is not linearly separable, the perceptron algorithm may not converge to a solution.</p>
+<div class="cell" data-outputid="4d4687ce-842f-472e-ae5c-e7f31dc7acd0">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>w <span class="op">=</span> np.linalg.pinv(X<span class="op">@</span>X.T)<span class="op">@</span>X<span class="op">@</span>y</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>w</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="4">
+<pre><code>array([[0.  ],
+       [2.02]])</code></pre>
+</div>
+</div>
 </section>
-<section id="further-assumptions" class="level2">
-<h2 class="anchored" data-anchor-id="further-assumptions">Further Assumptions</h2>
-<p>We introduce three additional assumptions:</p>
-<ol type="1">
-<li><strong>Linear Separability with <span class="math inline">\(\gamma\)</span>-Margin</strong>: A dataset <span class="math inline">\(D=\{(\mathbf{x}_1, y_1), \ldots, (\mathbf{x}_n,y_n)\}\)</span> is considered linearly separable with a <span class="math inline">\(\gamma\)</span>-margin if there exists <span class="math inline">\(\mathbf{w}^* \in \mathbb{R}^d\)</span> such that <span class="math inline">\((\mathbf{w}^{*T}\mathbf{x}_i)y_i\geq\gamma\)</span> holds for all <span class="math inline">\(i\)</span>, where <span class="math inline">\(\gamma&gt;0\)</span>.</li>
-</ol>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="../images/Linear Separability with gamma-Margin.png" class="img-fluid figure-img"></p>
-<figcaption class="figure-caption">Linear Separability with <span class="math inline">\(\gamma\)</span>-Margin</figcaption>
-</figure>
+<section id="using-gradient-descent" class="level2">
+<h2 class="anchored" data-anchor-id="using-gradient-descent">Using Gradient Descent</h2>
+<p>As we know <span class="math inline">\(w^*\)</span> is the solution of an unconstrained optimization problem, we can solve it using gradient descent. It is given by, <span class="math display">\[\begin{align*}
+w^{t+1} &amp;= w^t - \eta^t \bigtriangledown f(w^t) \\
+\therefore w^{t+1} &amp;= w^t - \eta^t \left [ (XX^T)w^t - (Xy) \right ]
+\end{align*}\]</span> where <span class="math inline">\(\eta\)</span> is a scalar used to control the step-size of the descent and <span class="math inline">\(t\)</span> is the current iteration.</p>
+<div class="cell" data-outputid="76b5b329-e7c7-4a81-f836-dbf750145826">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>eta <span class="op">=</span> <span class="fl">1e-1</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>w_grad <span class="op">=</span> np.zeros((X.shape[<span class="dv">0</span>], <span class="dv">1</span>))</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>epochs <span class="op">=</span> <span class="dv">1</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(epochs):</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    w_grad <span class="op">=</span> w_grad <span class="op">-</span> eta<span class="op">*</span>((X<span class="op">@</span>X.T)<span class="op">@</span>w_grad <span class="op">-</span> X<span class="op">@</span>y)</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(w_grad)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[[0.  ]
+ [2.02]]</code></pre>
 </div>
-<ol start="2" type="1">
-<li><strong>Radius Assumption</strong>: Let <span class="math inline">\(R&gt;0 \in \mathbb{R}\)</span> be a constant such that <span class="math inline">\(\forall i \in D\)</span>, <span class="math inline">\(||\mathbf{x}_i||\leq R\)</span>. In other words, <span class="math inline">\(R\)</span> denotes the length of the data point farthest from the center.</li>
-<li><strong>Normal Length for <span class="math inline">\(\mathbf{w}^*\)</span></strong>: Assume that <span class="math inline">\(\mathbf{w}^*\)</span> has unit length.</li>
-</ol>
-</section>
-</section>
-<section id="proof-of-convergence-of-perceptron-algorithm" class="level1">
-<h1>Proof of Convergence of Perceptron Algorithm</h1>
-<p>We denote the current mistake number as <span class="math inline">\(l\)</span>. Based on our previous findings, we can observe the following:</p>
-<p><span class="math display">\[\begin{align*}
-\mathbf{w}^{l+1} &amp;= \mathbf{w}^l + \mathbf{x}y \\
-||\mathbf{w}^{l+1}||^2&amp;=||\mathbf{w}^l + \mathbf{x}y||^2 \\
-&amp;=(\mathbf{w}^l + \mathbf{x}y)^T(\mathbf{w}^l + \mathbf{x}y) \\
-&amp;=||\mathbf{w}^l||^2 + 2(\mathbf{w}^{lT}\mathbf{x})y+ ||\mathbf{x}||^2y^2 \\
-\therefore ||\mathbf{w}^{l+1}||^2&amp;\leq ||\mathbf{w}^l||^2 + R^2 \\
-&amp;\leq (||\mathbf{w}^{l-1}||^2 + R^2)  + R^2 \\
-&amp;\leq ||\mathbf{w}^0||^2 + lR^2 \\
-\therefore ||\mathbf{w}^{l+1}||^2&amp;\leq lR^2 \hspace{6em} \ldots[1]
-\end{align*}\]</span></p>
-<p>Furthermore, we have:</p>
-<p><span class="math display">\[\begin{align*}
-\mathbf{w}^{l+1} &amp;= \mathbf{w}^l + \mathbf{x}y \\
-(\mathbf{w}^{l+1})^T\mathbf{w}^* &amp;= (\mathbf{w}^l + \mathbf{x}y)^T\mathbf{w}^* \\
-&amp;= \mathbf{w}^{lT}\mathbf{w}^* + (\mathbf{w}^{*T}\mathbf{x})y \\
-\therefore (\mathbf{w}^{l+1})^T\mathbf{w}^* &amp;\geq \mathbf{w}^{lT}\mathbf{w}^* + \gamma \\
-&amp;\geq (\mathbf{w}^{l-1T}\mathbf{w}^* + \gamma) + \gamma \\
-&amp;\geq \mathbf{w}^{0T}\mathbf{w}^* + l\gamma \\
-\therefore (\mathbf{w}^{l+1})^T\mathbf{w}^* &amp;\geq l\gamma \\
-((\mathbf{w}^{l+1})^T\mathbf{w}^*)^2 &amp;\geq l^2\gamma^2 \\
-||\mathbf{w}^{l+1}||^2||\mathbf{w}^*||^2 &amp;\geq l^2\gamma^2 \hspace{0.5em}\ldots\text{Using the Cauchy-Schwarz inequality}\\
-\therefore ||\mathbf{w}^{l+1}||^2 &amp;\geq l^2\gamma^2 \hspace{6em} \ldots[2]
-\end{align*}\]</span></p>
-<p>Combining equations <span class="math inline">\([1]\)</span> and <span class="math inline">\([2]\)</span>, we obtain:</p>
-<p><span class="math display">\[\begin{align*}
-l^2\gamma^2 &amp;\leq ||\mathbf{w}^{l+1}||^2 \leq lR^2 \\
-l^2\gamma^2 &amp;\leq  lR^2 \\
-\therefore l &amp;\leq \frac{R^2}{\gamma^2}
-\end{align*}\]</span></p>
-<p>Consequently, the above equation establishes an upper bound on the number of mistakes for datasets conforming to the Linear Separability with <span class="math inline">\(\gamma\)</span>-Margin property and having a finite radius <span class="math inline">\(R\)</span>. This result demonstrates the convergence of the perceptron algorithm.</p>
-</section>
-<section id="logistic-regression" class="level1">
-<h1>Logistic Regression</h1>
-<section id="sigmoid-function" class="level2">
-<h2 class="anchored" data-anchor-id="sigmoid-function">Sigmoid Function</h2>
-<p>Until now, we have utilized the <span class="math inline">\(\text{sign}\)</span> function to determine the class for the output. However, what if we also wish to obtain the probabilities associated with these outputs?</p>
-<p>Let <span class="math inline">\(z=\mathbf{w}^\mathbf{T}\mathbf{x}\)</span>, where <span class="math inline">\(z \in \mathbb{R}\)</span>. How can we map <span class="math inline">\([-\infty, \infty]\rightarrow[0,1]\)</span>? To address this, we introduce the <strong>Sigmoid Function</strong>, defined as follows:</p>
-<p><span class="math display">\[
-g(z) = \frac{1}{1+e^{-z}}
-\]</span></p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="../images/sigmoid-function.png" class="img-fluid figure-img"></p>
-<figcaption class="figure-caption">Sigmoid Function</figcaption>
-</figure>
 </div>
-<p>The sigmoid function is commonly employed in machine learning as an activation function for neural networks. It exhibits an S-shaped curve, making it well-suited for modeling processes with a threshold or saturation point, such as logistic growth or binary classification problems.</p>
-<p>For large positive input values, the sigmoid function approaches 1, while for large negative input values, it approaches 0. When the input value is 0, the sigmoid function output is exactly 0.5.</p>
-<p>The term “sigmoid” is derived from the Greek word “sigmoides,” meaning “shaped like the letter sigma” (<span class="math inline">\(\Sigma\)</span>). The sigmoid function’s characteristic S-shaped curve resembles the shape of the letter sigma, which likely influenced the function’s name.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>y_pred <span class="op">=</span> w_grad.T<span class="op">@</span>X</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-outputid="c0282547-6fab-4b2a-d9fb-8292e0b4a3c7">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>plt.scatter(X[<span class="dv">1</span>], y)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>plt.plot(X[<span class="dv">1</span>], y_pred.T, c<span class="op">=</span><span class="st">'r'</span>)</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>plt.grid()</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>plt.axhline(c<span class="op">=</span><span class="st">'k'</span>)</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>plt.axvline(c<span class="op">=</span><span class="st">'k'</span>)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="Not05_files/figure-html/cell-8-output-1.png" class="img-fluid"></p>
+</div>
+</div>
 </section>
-<section id="logistic-regression-1" class="level2">
-<h2 class="anchored" data-anchor-id="logistic-regression-1">Logistic Regression</h2>
-<p>Logistic regression is a statistical method used to analyze and model the relationship between a binary (two-valued) dependent variable and one or more independent variables. The independent variables can be either continuous or categorical. The main objective of logistic regression is to estimate the probability that the dependent variable belongs to one of the two possible values, given the independent variable values.</p>
-<p>In logistic regression, the dependent variable is modeled as a function of the independent variables using a logistic (sigmoid) function. This function generates an S-shaped curve ranging between 0 and 1. By transforming the output of a linear combination of the independent variables using the logistic function, logistic regression provides a probability estimate that can be used for classifying new observations.</p>
-<p>Let <span class="math inline">\(D=\{(\mathbf{x}_1, y_1), \ldots, (\mathbf{x}_n,y_n)\}\)</span> denote the dataset, where <span class="math inline">\(\mathbf{x}_i \in \mathbb{R}^d\)</span> and <span class="math inline">\(y_i \in \{0, 1\}\)</span>.</p>
-<p>We know that:</p>
-<p><span class="math display">\[
-P(y=1|\mathbf{x}) = g(\mathbf{w}^\mathbf{T}\mathbf{x}_i) = \frac{1}{1+e^{-\mathbf{w}^\mathbf{T}\mathbf{x}}}
-\]</span></p>
-<p>Using the maximum likelihood approach, we can derive the following expression:</p>
-<p><span class="math display">\[\begin{align*}
-\mathcal{L}(\mathbf{w};\text{Data}) &amp;= \prod _{i=1} ^{n} (g(\mathbf{w}^\mathbf{T}\mathbf{x}_i))^{y_i}(1- g(\mathbf{w}^\mathbf{T}\mathbf{x}_i))^{1-y_i} \\
-\log(\mathcal{L}(\mathbf{w};\text{Data})) &amp;= \sum _{i=1} ^{n} y_i\log(g(\mathbf{w}^\mathbf{T}\mathbf{x}_i))+(1-y_i)\log(1- g(\mathbf{w}^\mathbf{T}\mathbf{x}_i)) \\
-&amp;= \sum _{i=1} ^{n} y_i\log\left(\frac{1}{1+e^{-\mathbf{w}^\mathbf{T}\mathbf{x}_i}}\right)+(1-y_i)\log\left(\frac{e^{-\mathbf{w}^\mathbf{T}\mathbf{x}_i}}{1+e^{-\mathbf{w}^\mathbf{T}\mathbf{x}_i}}\right) \\
-&amp;= \sum _{i=1} ^{n} \left [ (1-y_i)(-\mathbf{w}^\mathbf{T}\mathbf{x}_i) - \log(1+e^{-\mathbf{w}^\mathbf{T}\mathbf{x}_i}) \right ]
+<section id="kernel-regression-algorithm" class="level2">
+<h2 class="anchored" data-anchor-id="kernel-regression-algorithm">Kernel Regression Algorithm</h2>
+<p>Given a dataset <span class="math inline">\(\{x_{1} ,\dotsc ,x_{n} \}\)</span> where <span class="math inline">\(x_{i} \in \mathbb{R}^{d}\)</span>, let <span class="math inline">\(\{y_{1} ,\dotsc ,y_{n} \}\)</span> be the labels, where <span class="math inline">\(y_{i} \in \mathbb{R}\)</span>. <span class="math display">\[\begin{equation*}
+\mathbf{X} =\begin{bmatrix}
+1 &amp; 2 &amp; -1 &amp; -2
+\end{bmatrix} \quad \mathbf{y} \ =\ \begin{bmatrix}
+1\\
+3.9\\
+0.9\\
+4.1
+\end{bmatrix}
+\end{equation*}\]</span></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> np.array([[<span class="dv">1</span>,<span class="dv">2</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">2</span>]])</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> np.array([[<span class="dv">1</span>,<span class="fl">3.9</span>,<span class="fl">0.9</span>,<span class="fl">4.1</span>]]).T</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> np.vstack((np.array([[<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>]]),X))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-outputid="b1b753ad-cb9f-4b83-92a4-723fc516f662">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>plt.scatter(X[<span class="dv">1</span>], y)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>plt.grid()</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>plt.axhline(c<span class="op">=</span><span class="st">'k'</span>)</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>plt.axvline(c<span class="op">=</span><span class="st">'k'</span>)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="Not05_files/figure-html/cell-10-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+</section>
+<section id="using-kernel-regression" class="level2">
+<h2 class="anchored" data-anchor-id="using-kernel-regression">Using Kernel Regression</h2>
+Let’s use the polynomial kernel of degree of two. By applying the kernel function to the dataset, we obtain,
+<span class="math display">\[\begin{aligned}
+\mathbf{K} &amp; =\left(\mathbf{X}^{T}\mathbf{X} +1\right)^{2}
+\end{aligned}\]</span>
+<div class="cell" data-outputid="1b83a4f3-58e8-449f-fe5e-d3a27db17624">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>K <span class="op">=</span> (X.T<span class="op">@</span>X<span class="op">+</span><span class="dv">1</span>)<span class="op">**</span><span class="dv">2</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>K</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="10">
+<pre><code>array([[ 9, 16,  1,  0],
+       [16, 36,  0,  4],
+       [ 1,  0,  9, 16],
+       [ 0,  4, 16, 36]])</code></pre>
+</div>
+</div>
+<p>Let <span class="math inline">\(\mathbf{w}^{*} =\mathbf{X\alpha }^{*}\)</span> for some <span class="math inline">\(\mathbf{\alpha }^{*} \in \mathbb{R}^{n}\)</span>. <span class="math display">\[\begin{align*}
+\mathbf{\alpha }^{*} =\mathbf{K}^{-1}\mathbf{y}
 \end{align*}\]</span></p>
-<p>Therefore, our objective, which involves maximizing the log-likelihood function, can be formulated as follows:</p>
-<p><span class="math display">\[
-\max _{\mathbf{w}}\sum _{i=1} ^{n} \left [ (1-y_i)(-\mathbf{w}^\mathbf{T}\mathbf{x}_i) - \log(1+e^{-\mathbf{w}^\mathbf{T}\mathbf{x}_i}) \right ]
-\]</span></p>
-<p>However, a closed-form solution for this problem does not exist. Therefore, we resort to using gradient descent for convergence.</p>
-<p>The gradient of the log-likelihood function is computed as follows:</p>
-<p><span class="math display">\[\begin{align*}
-\nabla \log(\mathcal{L}(\mathbf{w};\text{Data})) &amp;= \sum _{i=1} ^{n} \left [ (1-y_i)(-\mathbf{x}_i) - \left( \frac{e^{-\mathbf{w}^\mathbf{T}\mathbf{x}_i}}{1+e^{-\mathbf{w}^\mathbf{T}\mathbf{x}_i}} \right ) (-\mathbf{x}_i) \right ] \\
-&amp;= \sum _{i=1} ^{n} \left [ -\mathbf{x}_i + \mathbf{x}_iy_i + \mathbf{x}_i \left( \frac{e^{-\mathbf{w}^\mathbf{T}\mathbf{x}_i}}{1+e^{-\mathbf{w}^\mathbf{T}\mathbf{x}_i}} \right ) \right ] \\
-&amp;= \sum _{i=1} ^{n} \left [ \mathbf{x}_iy_i - \mathbf{x}_i \left( \frac{1}{1+e^{-\mathbf{w}^\mathbf{T}\mathbf{x}_i}} \right ) \right ] \\
-\nabla \log(\mathcal{L}(\mathbf{w};\text{Data})) &amp;= \sum _{i=1} ^{n} \left [ \mathbf{x}_i \left(y_i - \frac{1}{1+e^{-\mathbf{w}^\mathbf{T}\mathbf{x}_i}} \right ) \right ]
-\end{align*}\]</span></p>
-<p>Utilizing the gradient descent update rule, we obtain:</p>
-<p><span class="math display">\[\begin{align*}
-\mathbf{w}_{t+1} &amp;= \mathbf{w}_t + \eta_t\nabla \log(\mathcal{L}(\mathbf{w};\text{Data})) \\
-&amp;= \mathbf{w}_t + \eta_t  \left ( \sum _{i=1} ^{n} \mathbf{x}_i \left(y_i - \frac{1}{1+e^{-\mathbf{w}^\mathbf{T}\mathbf{x}_i}} \right ) \right )
-\end{align*}\]</span></p>
-<section id="kernel-and-regularized-versions" class="level3">
-<h3 class="anchored" data-anchor-id="kernel-and-regularized-versions">Kernel and Regularized Versions</h3>
-<p>It is possible to argue that <span class="math inline">\(\mathbf{w}^*=\displaystyle\sum _{i=1} ^{n}\alpha_i\mathbf{x}_i\)</span>, thereby allowing for kernelization. For additional information, please refer to this <a href="https://cs229.stanford.edu/extra-notes/representer-function.pdf#section.2">link</a>.</p>
-<p>The regularized version of logistic regression can be expressed as follows:</p>
-<p><span class="math display">\[
-\min _{\mathbf{w}}\sum _{i=1} ^{n} \left [ \log(1+e^{-\mathbf{w}^\mathbf{T}\mathbf{x}_i}) + \mathbf{w}^\mathbf{T}\mathbf{x}_i(1-y_i) \right ] + \frac{\lambda}{2}||\mathbf{w}||^2
-\]</span></p>
-<p>Here, <span class="math inline">\(\frac{\lambda}{2}||\mathbf{w}||^2\)</span> serves as the regularizer, and <span class="math inline">\(\lambda\)</span> is determined through cross-validation.</p>
+<div class="cell" data-outputid="c72362cd-e3a1-4b64-bdd0-299073b0cc9e">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>alp <span class="op">=</span> np.linalg.pinv(K)<span class="op">@</span>y</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>alp</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="11">
+<pre><code>array([[-0.18130556],
+       [ 0.17072222],
+       [-0.17980556],
+       [ 0.17372222]])</code></pre>
+</div>
+</div>
+<p>Let <span class="math inline">\(X_{test} \in R^{d \times m}\)</span> be the test dataset. We predict by, <span class="math display">\[\begin{align*}
+w^*\phi(X_{test}) &amp;=  \sum _{i=1} ^n \alpha_i^* k(x_i, x_{test_i})
+\end{align*}\]</span> where <span class="math inline">\(\alpha_i^*\)</span> gives the importance of the <span class="math inline">\(i^{th}\)</span> datapoint towards <span class="math inline">\(w^*\)</span> and <span class="math inline">\(k(x_i, x_{test_i})\)</span> shows how similar <span class="math inline">\(x_{test_i}\)</span> is to <span class="math inline">\(x_i\)</span>.</p>
+<div class="cell" data-outputid="b3d25401-e590-437a-fba6-1b1111d0775c">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>y_pred <span class="op">=</span> K.T<span class="op">@</span>alp</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>y_pred</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="12">
+<pre><code>array([[0.92],
+       [3.94],
+       [0.98],
+       [4.06]])</code></pre>
+</div>
+</div>
+<div class="cell" data-outputid="0e544a04-a712-4123-82d8-0015a1ad3259">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>X_test <span class="op">=</span> np.linspace(<span class="op">-</span><span class="fl">2.5</span>, <span class="fl">2.5</span>).reshape((<span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>))</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>X_test <span class="op">=</span> np.vstack((np.ones((<span class="dv">1</span>,<span class="dv">50</span>)),X_test))</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>K_test <span class="op">=</span> (X.T<span class="op">@</span>X_test<span class="op">+</span><span class="dv">1</span>)<span class="op">**</span><span class="dv">2</span></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>y_test <span class="op">=</span> K_test.T<span class="op">@</span>alp</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>plt.scatter(X[<span class="dv">1</span>], y)</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>plt.plot(np.linspace(<span class="op">-</span><span class="fl">2.5</span>, <span class="fl">2.5</span>).reshape((<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>)), y_test, c<span class="op">=</span><span class="st">'r'</span>)</span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>plt.grid()</span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>plt.axhline(c<span class="op">=</span><span class="st">'k'</span>)</span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>plt.axvline(c<span class="op">=</span><span class="st">'k'</span>)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="Not05_files/figure-html/cell-14-output-1.png" class="img-fluid"></p>
+</div>
+</div>
 
 
-</section>
 </section>
 </section>
 
@@ -804,18 +837,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
 });
 </script>
-<nav class="page-navigation">
-  <div class="nav-page nav-page-previous">
-      <a href="../pages/Wk08.html" class="pagination-link">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Week-08</span>
-      </a>          
-  </div>
-  <div class="nav-page nav-page-next">
-      <a href="../pages/Wk10.html" class="pagination-link">
-        <span class="nav-page-text">Week-10</span> <i class="bi bi-arrow-right-short"></i>
-      </a>
-  </div>
-</nav>
 </div> <!-- /content -->
 <footer class="footer">
   <div class="nav-footer">

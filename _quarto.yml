@@ -3,12 +3,14 @@ project:
   output-dir: docs
 
 website:
-  title: "Machine Learning Techniques"
+  title: "CS 2007 Machine Learning Techniques"
   page-footer:
     right: "This page is built with ❤️ and [Quarto](https://quarto.org/)."
     background: "#D9E3E4"
   repo-url: https://github.com/SherryS997/MLT_notes
+  site-url: "https://bsc-iitm.github.io/MLT_notes/"
   page-navigation: true
+  open-graph: true
   sidebar:
     logo: "images/logo.png"
     background: "#D9E3E4"
@@ -31,34 +33,33 @@ website:
         contents:
           - href: pages/Wk01.qmd
             text: Week-01
-            title: Week-01
           - href: pages/Wk02.qmd
             text: Week-02
-            title: Week-02
           - href: pages/Wk03.qmd
             text: Week-03
-            title: Week-03
           - href: pages/Wk04.qmd
             text: Week-04
-            title: Week-04
           - href: pages/Wk05.qmd
             text: Week-05
-            title: Week-05
           - href: pages/Wk06.qmd
             text: Week-06
-            title: Week-06
           - href: pages/Wk07.qmd
             text: Week-07
-            title: Week-07
           - href: pages/Wk08.qmd
             text: Week-08
-            title: Week-08
           - href: pages/Wk09.qmd
             text: Week-09
-            title: Week-09
           - href: pages/Wk10.qmd
             text: Week-10
-            title: Week-10
+
+      - section: "Supplemental Notes"
+        contents:
+          - href: ./notes/Not01.html
+            text: Tutorial-01
+          - href: ./notes/Not03.html
+            text: Tutorial-03
+          - href: ./notes/Not05.html
+            text: Tutorial-05
 
 format:
   html:
