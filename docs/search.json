@@ -1,45 +1,10 @@
 [
   {
-    "objectID": "about.html",
-    "href": "about.html",
-    "title": "About",
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "CS2007: Machine Learning Techniques",
     "section": "",
-    "text": "To introduce the main methods and models used in machine learning problems of regression, classification and clustering. To study the properties of these models and methods and learn about their suitability for different problems."
-  },
-  {
-    "objectID": "about.html#about-the-course",
-    "href": "about.html#about-the-course",
-    "title": "About",
-    "section": "",
-    "text": "To introduce the main methods and models used in machine learning problems of regression, classification and clustering. To study the properties of these models and methods and learn about their suitability for different problems."
-  },
-  {
-    "objectID": "about.html#what-youll-learn",
-    "href": "about.html#what-youll-learn",
-    "title": "About",
-    "section": "What you’ll learn",
-    "text": "What you’ll learn\n\nDemonstrating In depth understanding of machine learning algorithms - model, objective or loss function, optimization algorithm and evaluation criteria.\nTweaking machine learning algorithms based on the outcome of experiments - what steps to take in case of underfitting and overfitting.\nBeing able to choose among multiple algorithms for a given task.\nDeveloping an understanding of unsupervised learning techniques."
-  },
-  {
-    "objectID": "about.html#course-instructors",
-    "href": "about.html#course-instructors",
-    "title": "About",
-    "section": "Course Instructors",
-    "text": "Course Instructors\nProf. Arun Rajkumar\nAssistant Professor, Department of Computer Sciences & Engineering, IIT Madras"
-  },
-  {
-    "objectID": "about.html#author",
-    "href": "about.html#author",
-    "title": "About",
-    "section": "Author",
-    "text": "Author\n\nSherry\n\n\nCo-Authors\n\nA Aniruddha\nVivek Sivaramakrishnan"
-  },
-  {
-    "objectID": "about.html#study-material",
-    "href": "about.html#study-material",
-    "title": "About",
-    "section": "Study Material",
-    "text": "Study Material\nThe primary study material for this course is the set of videos and assignments posted on the course page. The prescribed textbook for this course is:\n\nPattern Classification by David G. Stork, Peter E. Hart, and Richard O. Duda\nPattern Recognition and Machine Learning by Christopher M. Bishop\nThe Elements of Statistical Learning: Data Mining, Inference, and Prediction by Trevor Hastie, Robert Tibshirani, and Jerome Friedman\n\nThe learners are advised to make best use of the interaction sessions with the course support members to clarify their doubts.\nTo know more about course syllabus, Instructors and course contents, please click on the below link\nhttps://ds.study.iitm.ac.in/course_pages/BSCCS2007.html\nPlease click on the below tab to view the Course Specific Calendar:\nhttps://calendar.google.com/calendar/u/2?cid=Y19vODg1amdtMTVrbjJzZW01dGlkM2szcjhnNEBncm91cC5jYWxlbmRhci5nb29nbGUuY29t"
+    "text": "Note\n\n\n\nThis site is still under development.\nFeedback/Correction: Click here!.\n\n\n\n\n\n\nWeek\nTopic\nLecture Videos\nLecture Slides\nNotes PDF\nTutorial Video\nTutorial Slides\n\n\n\n\n1\nIntroduction; Unsupervised Learning - Representation learning - PCA\n🖥️\n🎫\n📝\n🖥️\n🎫\n\n\n2\nUnsupervised Learning - Representation learning - Kernel PCA\n🖥️\n🎫\n📝\n🖥️\n🎫\n\n\n3\nUnsupervised Learning - Clustering - K-means/Kernel K-means\n🖥️\n🎫\n📝\n🖥️\n🎫\n\n\n4\nUnsupervised Learning - Estimation - Recap of MLE + Bayesian estimation, Gaussian Mixture Model - EM algorithm\n🖥️\n🎫\n📝\n🖥️\n🎫\n\n\n5\nSupervised Learning - Regression - Least Squares; Bayesian view\n🖥️\n🎫\n📝\n🖥️\n🎫\n\n\n6\nSupervised Learning - Regression - Ridge/LASSO\n🖥️\n🎫\n📝\n🖥️\n🎫\n\n\n7\nSupervised Learning - Classification - K-NN, Decision tree\n🖥️\n🎫\n📝\n🖥️\n🎫\n\n\n8\nSupervised Learning - Classification - Generative Models - Naive Bayes\n🖥️\n🎫\n📝\n🖥️\n🎫\n\n\n9\nDiscriminative Models - Perceptron; Logistic Regression\n🖥️\n🎫\n📝\n🖥️\n🎫\n\n\n10\nSupport Vector Machines\n🖥️\n🎫\n📝\n🖥️\n🎫\n\n\n11\nEnsemble methods - Bagging and Boosting (Adaboost)\n🖥️\n🎫\n📝\n🖥️\n🎫\n\n\n12\nArtificial Neural networks; Multiclass classification\n🖥️\n🎫\n📝\n🖥️\n🎫"
   },
   {
     "objectID": "pages/Wk02.html",
@@ -322,10 +287,45 @@
     "text": "Dual Formulation\nMaximizing the Lagrangian function w.r.t. \\(\\alpha\\) and \\(\\beta\\), and minimizing it w.r.t. \\(w\\) and \\(\\epsilon\\), we get,\n\\[\n\\min _{w, \\epsilon}\\left [\\max _{\\alpha \\ge 0; \\beta \\ge 0}\\frac{1}{2}||w||^2_2 + C\\sum _{i=1} ^n\\epsilon_i + \\sum _{i=1} ^n \\alpha_i(1-(w^Tx_i)y_i - \\epsilon_i) + \\sum _{i=1} ^n \\beta(-\\epsilon_i) \\right ]\n\\]\nThe dual of this is given by,\n\\[\n\\max _{\\alpha \\ge 0; \\beta \\ge 0}\\left [\\min _{w, \\epsilon}\\frac{1}{2}||w||^2_2 + C\\sum _{i=1} ^n\\epsilon_i + \\sum _{i=1} ^n \\alpha_i(1-(w^Tx_i)y_i - \\epsilon_i) + \\sum _{i=1} ^n \\beta(-\\epsilon_i) \\right ]\n\\]\n\\[\n\\max _{\\alpha \\ge 0; \\beta \\ge 0}\\left [\\min _{w, \\epsilon}\\mathcal{L}(w, \\epsilon, \\alpha, \\beta) \\right ] \\quad \\ldots[1]\n\\]\nDifferentiating the above function\\([1]\\) w.r.t. \\(w\\) while fixing \\(\\alpha\\) and \\(\\beta\\), we get, \\[\n\\frac{d\\mathcal{L}}{dw}  = 0\n\\] \\[\n\\frac{d}{dw} \\frac{1}{2}||w||^2_2 + C\\sum _{i=1} ^n\\epsilon_i + \\sum _{i=1} ^n \\alpha_i(1-(w^Tx_i)y_i - \\epsilon_i) + \\sum _{i=1} ^n \\beta(-\\epsilon_i) = 0\\\\\n\\] \\[\nw_{\\alpha, \\beta}^* - \\alpha_ix_iy_i = 0\n\\] \\[\n\\therefore w_{\\alpha, \\beta}^* = \\alpha_ix_iy_i \\quad \\ldots [2]\n\\]\nDifferentiating the above function\\([1]\\) w.r.t. \\(\\epsilon_i \\forall i\\) while fixing \\(\\alpha\\) and \\(\\beta\\), we get,\n\\[\n\\frac{\\partial\\mathcal{L}}{\\partial\\epsilon_i}  = 0\n\\] \\[\n\\frac{\\partial}{\\partial\\epsilon_i} \\frac{1}{2}||w||^2_2 + C\\sum _{i=1} ^n\\epsilon_i + \\sum _{i=1} ^n \\alpha_i(1-(w^Tx_i)y_i - \\epsilon_i) + \\sum _{i=1} ^n \\beta(-\\epsilon_i) = 0\n\\] \\[\nC - \\alpha_i -\\beta_i = 0\n\\] \\[\n\\therefore C = \\alpha_i + \\beta_i \\quad \\ldots [3]\n\\]\nSubstituting the values of \\(w\\) and \\(\\beta\\) from \\([2]\\) and \\([3]\\) in \\([1]\\), we get,\n\\[\n\\max _{\\alpha \\ge 0; \\beta \\ge 0; C = \\alpha_i + \\beta_i}\\left [\\frac{1}{2}||\\alpha_ix_iy_i||^2_2 + C\\sum _{i=1} ^n\\epsilon_i + \\sum _{i=1} ^n \\alpha_i(1-((\\alpha_ix_iy_i)^Tx_i)y_i - \\epsilon_i) + \\sum _{i=1} ^n (C-\\alpha_i)(-\\epsilon_i) \\right ]\n\\] \\[\n\\max _{\\alpha \\ge 0; \\beta \\ge 0; C = \\alpha_i + \\beta_i}\\left [\\frac{1}{2}\\alpha_i^Tx_i^Ty_i^Ty_ix_i\\alpha_i + C\\sum _{i=1} ^n\\epsilon_i + \\sum _{i=1} ^n \\alpha_i-\\alpha_i^Tx_i^Ty_i^Ty_ix_i\\alpha_i - \\sum _{i=1} ^n \\alpha_i\\epsilon_i - C\\sum _{i=1} ^n\\epsilon_i + \\sum _{i=1} ^n \\alpha_i\\epsilon_i \\right ]\n\\] \\[\n\\max _{\\alpha \\ge 0; \\beta \\ge 0; C = \\alpha_i + \\beta_i}\\left [\\sum _{i=1} ^n \\alpha_i - \\frac{1}{2}\\alpha_i^Tx_i^Ty_i^Ty_ix_i\\alpha_i\\right ]\n\\] \\[\n\\therefore \\max _{0 \\le \\alpha \\le C}\\left [\\sum _{i=1} ^n \\alpha_i - \\frac{1}{2}\\alpha_i^Tx_i^Ty_i^Ty_ix_i\\alpha_i\\right ]\n\\]"
   },
   {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "CS2007: Machine Learning Techniques",
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
     "section": "",
-    "text": "Note\n\n\n\nThis site is still under development.\nFeedback/Correction: Click here!.\n\n\n\n\n\n\nWeek\nTopic\nLecture Videos\nLecture Slides\nNotes PDF\nTutorial Video\nTutorial Slides\n\n\n\n\n1\nIntroduction; Unsupervised Learning - Representation learning - PCA\n🖥️\n🎫\n📝\n🖥️\n🎫\n\n\n2\nUnsupervised Learning - Representation learning - Kernel PCA\n🖥️\n🎫\n📝\n🖥️\n🎫\n\n\n3\nUnsupervised Learning - Clustering - K-means/Kernel K-means\n🖥️\n🎫\n📝\n🖥️\n🎫\n\n\n4\nUnsupervised Learning - Estimation - Recap of MLE + Bayesian estimation, Gaussian Mixture Model - EM algorithm\n🖥️\n🎫\n📝\n🖥️\n🎫\n\n\n5\nSupervised Learning - Regression - Least Squares; Bayesian view\n🖥️\n🎫\n📝\n🖥️\n🎫\n\n\n6\nSupervised Learning - Regression - Ridge/LASSO\n🖥️\n🎫\n📝\n🖥️\n🎫\n\n\n7\nSupervised Learning - Classification - K-NN, Decision tree\n🖥️\n🎫\n📝\n🖥️\n🎫\n\n\n8\nSupervised Learning - Classification - Generative Models - Naive Bayes\n🖥️\n🎫\n📝\n🖥️\n🎫\n\n\n9\nDiscriminative Models - Perceptron; Logistic Regression\n🖥️\n🎫\n📝\n🖥️\n🎫\n\n\n10\nSupport Vector Machines\n🖥️\n🎫\n📝\n🖥️\n🎫\n\n\n11\nEnsemble methods - Bagging and Boosting (Adaboost)\n🖥️\n🎫\n📝\n🖥️\n🎫\n\n\n12\nArtificial Neural networks; Multiclass classification\n🖥️\n🎫\n📝\n🖥️\n🎫"
+    "text": "To introduce the main methods and models used in machine learning problems of regression, classification and clustering. To study the properties of these models and methods and learn about their suitability for different problems."
+  },
+  {
+    "objectID": "about.html#about-the-course",
+    "href": "about.html#about-the-course",
+    "title": "About",
+    "section": "",
+    "text": "To introduce the main methods and models used in machine learning problems of regression, classification and clustering. To study the properties of these models and methods and learn about their suitability for different problems."
+  },
+  {
+    "objectID": "about.html#what-youll-learn",
+    "href": "about.html#what-youll-learn",
+    "title": "About",
+    "section": "What you’ll learn",
+    "text": "What you’ll learn\n\nDemonstrating In depth understanding of machine learning algorithms - model, objective or loss function, optimization algorithm and evaluation criteria.\nTweaking machine learning algorithms based on the outcome of experiments - what steps to take in case of underfitting and overfitting.\nBeing able to choose among multiple algorithms for a given task.\nDeveloping an understanding of unsupervised learning techniques."
+  },
+  {
+    "objectID": "about.html#course-instructors",
+    "href": "about.html#course-instructors",
+    "title": "About",
+    "section": "Course Instructors",
+    "text": "Course Instructors\nProf. Arun Rajkumar\nAssistant Professor, Department of Computer Sciences & Engineering, IIT Madras"
+  },
+  {
+    "objectID": "about.html#author",
+    "href": "about.html#author",
+    "title": "About",
+    "section": "Author",
+    "text": "Author\n\nSherry\n\n\nCo-Authors\n\nA Aniruddha\nVivek Sivaramakrishnan"
+  },
+  {
+    "objectID": "about.html#study-material",
+    "href": "about.html#study-material",
+    "title": "About",
+    "section": "Study Material",
+    "text": "Study Material\nThe primary study material for this course is the set of videos and assignments posted on the course page. The prescribed textbook for this course is:\n\nPattern Classification by David G. Stork, Peter E. Hart, and Richard O. Duda\nPattern Recognition and Machine Learning by Christopher M. Bishop\nThe Elements of Statistical Learning: Data Mining, Inference, and Prediction by Trevor Hastie, Robert Tibshirani, and Jerome Friedman\n\nThe learners are advised to make best use of the interaction sessions with the course support members to clarify their doubts.\nTo know more about course syllabus, Instructors and course contents, please click on the below link\nhttps://ds.study.iitm.ac.in/course_pages/BSCCS2007.html\nPlease click on the below tab to view the Course Specific Calendar:\nhttps://calendar.google.com/calendar/u/2?cid=Y19vODg1amdtMTVrbjJzZW01dGlkM2szcjhnNEBncm91cC5jYWxlbmRhci5nb29nbGUuY29t"
   }
 ]
