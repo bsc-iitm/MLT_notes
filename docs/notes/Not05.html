@@ -95,8 +95,22 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   }
 }</script>
 
-  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+  <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js"></script>
+  <script>document.addEventListener("DOMContentLoaded", function () {
+ var mathElements = document.getElementsByClassName("math");
+ var macros = [];
+ for (var i = 0; i < mathElements.length; i++) {
+  var texText = mathElements[i].firstChild;
+  if (mathElements[i].tagName == "SPAN") {
+   katex.render(texText.data, mathElements[i], {
+    displayMode: mathElements[i].classList.contains('display'),
+    throwOnError: false,
+    macros: macros,
+    fleqn: false
+   });
+}}});
+  </script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css">
 
 <meta property="og:title" content="CS2007: Machine Learning Techniques - Week 5: Linear Regression: Least Squares and Kernel Regression">
 <meta property="og:description" content="">
@@ -314,7 +328,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <section id="linear-regression-algorithm" class="level1">
 <h1>Linear Regression Algorithm</h1>
-<p>Given a dataset <span class="math inline">\(\{x_{1} ,\dotsc ,x_{n} \}\)</span> where <span class="math inline">\(x_{i} \in \mathbb{R}^{d}\)</span>, let <span class="math inline">\(\{y_{1} ,\dotsc ,y_{n} \}\)</span> be the labels, where <span class="math inline">\(y_{i} \in \mathbb{R}\)</span>. <span class="math display">\[\begin{equation*}
+<p>Given a dataset <span class="math inline">\{x_{1} ,\dotsc ,x_{n} \}</span> where <span class="math inline">x_{i} \in \mathbb{R}^{d}</span>, let <span class="math inline">\{y_{1} ,\dotsc ,y_{n} \}</span> be the labels, where <span class="math inline">y_{i} \in \mathbb{R}</span>. <span class="math display">\begin{equation*}
 \mathbf{X} =\begin{bmatrix}
 -2 &amp; -1 &amp; 1 &amp; 2
 \end{bmatrix} \quad \mathbf{y} \ =\ \begin{bmatrix}
@@ -323,7 +337,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 1.7\\
 4.3
 \end{bmatrix}
-\end{equation*}\]</span></p>
+\end{equation*}</span></p>
 <div class="cell" data-outputid="f5d58cea-44cc-484f-9f24-21026f914225">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> np.array([[<span class="op">-</span><span class="dv">2</span>,<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">2</span>]])</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> np.array([[<span class="op">-</span><span class="fl">3.9</span>,<span class="op">-</span><span class="fl">2.1</span>,<span class="fl">1.7</span>,<span class="fl">4.3</span>]]).T</span>
@@ -338,17 +352,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <section id="optimizing-the-error-function" class="level2">
 <h2 class="anchored" data-anchor-id="optimizing-the-error-function">Optimizing the Error Function</h2>
-<p>The minimization equation can be rewritten in the vectorized form as, <span class="math display">\[\begin{equation*}
+<p>The minimization equation can be rewritten in the vectorized form as, <span class="math display">\begin{equation*}
 \min_{\mathbf{w} \in \mathbb{R}^{d}}\frac{1}{2} ||\mathbf{X}^{T}\mathbf{w} -\mathbf{y} ||_{2}^{2}
-\end{equation*}\]</span> Let this be a function of <span class="math inline">\(\mathbf{w}\)</span> and as follows: <span class="math display">\[\begin{align*}
+\end{equation*}</span> Let this be a function of <span class="math inline">\mathbf{w}</span> and as follows: <span class="math display">\begin{align*}
 f(\mathbf{w} ) &amp; =\underset{\mathbf{w} \in \mathbb{R}^{d}}{\min} \frac{1}{2} ||\mathbf{X}^{T}\mathbf{w} -\mathbf{y} ||_{2}^{2}\\
 f(\mathbf{w} ) &amp; = \frac{1}{2} (\mathbf{X}^{T}\mathbf{w} -\mathbf{y} )^{T} (\mathbf{X}^{T}\mathbf{w} -\mathbf{y} )\\
 \therefore \triangledown f(\mathbf{w} ) &amp; =(\mathbf{XX}^{T} )\mathbf{w} -(\mathbf{Xy} )
-\end{align*}\]</span> Setting the above equation to zero, we get <span class="math display">\[\begin{align*}
+\end{align*}</span> Setting the above equation to zero, we get <span class="math display">\begin{align*}
 (\mathbf{XX}^{T} )\mathbf{w} -(\mathbf{Xy} ) &amp; =0\\
 (\mathbf{XX}^{T} )\mathbf{w}^{*} &amp; =\mathbf{Xy}\\
 \therefore \mathbf{w}^{*} &amp; =(\mathbf{XX}^{T} )^{+}\mathbf{Xy}
-\end{align*}\]</span> where <span class="math inline">\((\mathbf{XX}^{T} )^{+}\)</span> is the pseudo-inverse of <span class="math inline">\(\mathbf{XX}^{T}\)</span>.</p>
+\end{align*}</span> where <span class="math inline">(\mathbf{XX}^{T} )^{+}</span> is the pseudo-inverse of <span class="math inline">\mathbf{XX}^{T}</span>.</p>
 <div class="cell" data-outputid="e084b0f4-54ae-480f-868d-8859522987d6">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> np.vstack((np.array([[<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>]]),X))</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>X</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -368,10 +382,10 @@ f(\mathbf{w} ) &amp; = \frac{1}{2} (\mathbf{X}^{T}\mathbf{w} -\mathbf{y} )^{T} (
 </section>
 <section id="using-gradient-descent" class="level2">
 <h2 class="anchored" data-anchor-id="using-gradient-descent">Using Gradient Descent</h2>
-<p>As we know <span class="math inline">\(w^*\)</span> is the solution of an unconstrained optimization problem, we can solve it using gradient descent. It is given by, <span class="math display">\[\begin{align*}
+<p>As we know <span class="math inline">w^*</span> is the solution of an unconstrained optimization problem, we can solve it using gradient descent. It is given by, <span class="math display">\begin{align*}
 w^{t+1} &amp;= w^t - \eta^t \bigtriangledown f(w^t) \\
 \therefore w^{t+1} &amp;= w^t - \eta^t \left [ (XX^T)w^t - (Xy) \right ]
-\end{align*}\]</span> where <span class="math inline">\(\eta\)</span> is a scalar used to control the step-size of the descent and <span class="math inline">\(t\)</span> is the current iteration.</p>
+\end{align*}</span> where <span class="math inline">\eta</span> is a scalar used to control the step-size of the descent and <span class="math inline">t</span> is the current iteration.</p>
 <div class="cell" data-outputid="76b5b329-e7c7-4a81-f836-dbf750145826">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>eta <span class="op">=</span> <span class="fl">1e-1</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>w_grad <span class="op">=</span> np.zeros((X.shape[<span class="dv">0</span>], <span class="dv">1</span>))</span>
@@ -401,7 +415,7 @@ w^{t+1} &amp;= w^t - \eta^t \bigtriangledown f(w^t) \\
 </section>
 <section id="kernel-regression-algorithm" class="level2">
 <h2 class="anchored" data-anchor-id="kernel-regression-algorithm">Kernel Regression Algorithm</h2>
-<p>Given a dataset <span class="math inline">\(\{x_{1} ,\dotsc ,x_{n} \}\)</span> where <span class="math inline">\(x_{i} \in \mathbb{R}^{d}\)</span>, let <span class="math inline">\(\{y_{1} ,\dotsc ,y_{n} \}\)</span> be the labels, where <span class="math inline">\(y_{i} \in \mathbb{R}\)</span>. <span class="math display">\[\begin{equation*}
+<p>Given a dataset <span class="math inline">\{x_{1} ,\dotsc ,x_{n} \}</span> where <span class="math inline">x_{i} \in \mathbb{R}^{d}</span>, let <span class="math inline">\{y_{1} ,\dotsc ,y_{n} \}</span> be the labels, where <span class="math inline">y_{i} \in \mathbb{R}</span>. <span class="math display">\begin{equation*}
 \mathbf{X} =\begin{bmatrix}
 1 &amp; 2 &amp; -1 &amp; -2
 \end{bmatrix} \quad \mathbf{y} \ =\ \begin{bmatrix}
@@ -410,7 +424,7 @@ w^{t+1} &amp;= w^t - \eta^t \bigtriangledown f(w^t) \\
 0.9\\
 4.1
 \end{bmatrix}
-\end{equation*}\]</span></p>
+\end{equation*}</span></p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> np.array([[<span class="dv">1</span>,<span class="dv">2</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">2</span>]])</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> np.array([[<span class="dv">1</span>,<span class="fl">3.9</span>,<span class="fl">0.9</span>,<span class="fl">4.1</span>]]).T</span>
@@ -429,9 +443,9 @@ w^{t+1} &amp;= w^t - \eta^t \bigtriangledown f(w^t) \\
 <section id="using-kernel-regression" class="level2">
 <h2 class="anchored" data-anchor-id="using-kernel-regression">Using Kernel Regression</h2>
 Let’s use the polynomial kernel of degree of two. By applying the kernel function to the dataset, we obtain,
-<span class="math display">\[\begin{aligned}
+<span class="math display">\begin{aligned}
 \mathbf{K} &amp; =\left(\mathbf{X}^{T}\mathbf{X} +1\right)^{2}
-\end{aligned}\]</span>
+\end{aligned}</span>
 <div class="cell" data-outputid="1b83a4f3-58e8-449f-fe5e-d3a27db17624">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>K <span class="op">=</span> (X.T<span class="op">@</span>X<span class="op">+</span><span class="dv">1</span>)<span class="op">**</span><span class="dv">2</span></span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>K</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -442,9 +456,9 @@ Let’s use the polynomial kernel of degree of two. By applying the kernel funct
        [ 0,  4, 16, 36]])</code></pre>
 </div>
 </div>
-<p>Let <span class="math inline">\(\mathbf{w}^{*} =\mathbf{X\alpha }^{*}\)</span> for some <span class="math inline">\(\mathbf{\alpha }^{*} \in \mathbb{R}^{n}\)</span>. <span class="math display">\[\begin{align*}
+<p>Let <span class="math inline">\mathbf{w}^{*} =\mathbf{X\alpha }^{*}</span> for some <span class="math inline">\mathbf{\alpha }^{*} \in \mathbb{R}^{n}</span>. <span class="math display">\begin{align*}
 \mathbf{\alpha }^{*} =\mathbf{K}^{-1}\mathbf{y}
-\end{align*}\]</span></p>
+\end{align*}</span></p>
 <div class="cell" data-outputid="c72362cd-e3a1-4b64-bdd0-299073b0cc9e">
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>alp <span class="op">=</span> np.linalg.pinv(K)<span class="op">@</span>y</span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>alp</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -455,9 +469,9 @@ Let’s use the polynomial kernel of degree of two. By applying the kernel funct
        [ 0.17372222]])</code></pre>
 </div>
 </div>
-<p>Let <span class="math inline">\(X_{test} \in R^{d \times m}\)</span> be the test dataset. We predict by, <span class="math display">\[\begin{align*}
+<p>Let <span class="math inline">X_{test} \in R^{d \times m}</span> be the test dataset. We predict by, <span class="math display">\begin{align*}
 w^*\phi(X_{test}) &amp;=  \sum _{i=1} ^n \alpha_i^* k(x_i, x_{test_i})
-\end{align*}\]</span> where <span class="math inline">\(\alpha_i^*\)</span> gives the importance of the <span class="math inline">\(i^{th}\)</span> datapoint towards <span class="math inline">\(w^*\)</span> and <span class="math inline">\(k(x_i, x_{test_i})\)</span> shows how similar <span class="math inline">\(x_{test_i}\)</span> is to <span class="math inline">\(x_i\)</span>.</p>
+\end{align*}</span> where <span class="math inline">\alpha_i^*</span> gives the importance of the <span class="math inline">i^{th}</span> datapoint towards <span class="math inline">w^*</span> and <span class="math inline">k(x_i, x_{test_i})</span> shows how similar <span class="math inline">x_{test_i}</span> is to <span class="math inline">x_i</span>.</p>
 <div class="cell" data-outputid="b3d25401-e590-437a-fba6-1b1111d0775c">
 <div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>y_pred <span class="op">=</span> K.T<span class="op">@</span>alp</span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>y_pred</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>

@@ -95,8 +95,22 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   }
 }</script>
 
-  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+  <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js"></script>
+  <script>document.addEventListener("DOMContentLoaded", function () {
+ var mathElements = document.getElementsByClassName("math");
+ var macros = [];
+ for (var i = 0; i < mathElements.length; i++) {
+  var texText = mathElements[i].firstChild;
+  if (mathElements[i].tagName == "SPAN") {
+   katex.render(texText.data, mathElements[i], {
+    displayMode: mathElements[i].classList.contains('display'),
+    throwOnError: false,
+    macros: macros,
+    fleqn: false
+   });
+}}});
+  </script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css">
 
 <meta property="og:title" content="CS2007: Machine Learning Techniques - Week 1: Standard PCA">
 <meta property="og:description" content="">
@@ -325,10 +339,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="observe-the-dataset" class="level2">
 <h2 class="anchored" data-anchor-id="observe-the-dataset">Observe the dataset</h2>
-<p>Let’s take a dataset <span class="math inline">\(\displaystyle \mathbf{X}\)</span> of shape (d,n) where</p>
+<p>Let’s take a dataset <span class="math inline">\displaystyle \mathbf{X}</span> of shape (d,n) where</p>
 <ul>
-<li><p><span class="math inline">\(d\)</span>: no. of features</p></li>
-<li><p><span class="math inline">\(n\)</span>: no. of datapoints</p></li>
+<li><p><span class="math inline">d</span>: no. of features</p></li>
+<li><p><span class="math inline">n</span>: no. of datapoints</p></li>
 </ul>
 <div class="cell" data-executioninfo="{&quot;elapsed&quot;:444,&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1694157888240,&quot;user&quot;:{&quot;displayName&quot;:&quot;A ANIRUDDHA&quot;,&quot;userId&quot;:&quot;13059136296806470484&quot;},&quot;user_tz&quot;:-330}" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> np.array([(<span class="dv">4</span>,<span class="dv">1</span>),(<span class="dv">5</span>,<span class="dv">4</span>),(<span class="dv">6</span>,<span class="dv">3</span>),(<span class="dv">7</span>,<span class="dv">4</span>),(<span class="dv">2</span>,<span class="op">-</span><span class="dv">1</span>),(<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">2</span>),(<span class="dv">0</span>,<span class="op">-</span><span class="dv">3</span>),(<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">4</span>)]).T</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -419,7 +433,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="find-the-covariance-matrix" class="level2">
 <h2 class="anchored" data-anchor-id="find-the-covariance-matrix">Find the covariance matrix</h2>
-<p>The covariance matrix is given by <span class="math inline">\(\mathbf{C} \ =\ \frac{1}{n}\sum \limits_{i\ =\ 1}^{n} \mathbf {x}_{i}\mathbf {x}_{i}^{T} \ =\ \frac{1}{n}\mathbf{XX}^{T}\)</span></p>
+<p>The covariance matrix is given by <span class="math inline">\mathbf{C} \ =\ \frac{1}{n}\sum \limits_{i\ =\ 1}^{n} \mathbf {x}_{i}\mathbf {x}_{i}^{T} \ =\ \frac{1}{n}\mathbf{XX}^{T}</span></p>
 <div class="cell" data-executioninfo="{&quot;elapsed&quot;:340,&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1694157939516,&quot;user&quot;:{&quot;displayName&quot;:&quot;A ANIRUDDHA&quot;,&quot;userId&quot;:&quot;13059136296806470484&quot;},&quot;user_tz&quot;:-330}" data-outputid="35014354-14b2-4041-c4cc-9585475870c7" data-execution_count="8">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> covariance(X):</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> X <span class="op">@</span> X.T <span class="op">/</span> X.shape[<span class="dv">1</span>]</span>
@@ -435,7 +449,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="compute-the-principal-components" class="level2">
 <h2 class="anchored" data-anchor-id="compute-the-principal-components">Compute the principal components</h2>
-<p>The <span class="math inline">\(k^{th}\)</span> principal component is given by the eigenvector corresponding to the <span class="math inline">\(k^{th}\)</span> largest eigenvalue</p>
+<p>The <span class="math inline">k^{th}</span> principal component is given by the eigenvector corresponding to the <span class="math inline">k^{th}</span> largest eigenvalue</p>
 <div class="cell" data-executioninfo="{&quot;elapsed&quot;:334,&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1694157957465,&quot;user&quot;:{&quot;displayName&quot;:&quot;A ANIRUDDHA&quot;,&quot;userId&quot;:&quot;13059136296806470484&quot;},&quot;user_tz&quot;:-330}" data-outputid="f58a06ce-0404-4e8c-fe73-205c9e4b5b7c" data-execution_count="9">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> compute_pc(C):</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>    d <span class="op">=</span> C.shape[<span class="dv">0</span>]</span>
@@ -460,8 +474,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="reconstruction-using-the-two-pcs" class="level2">
 <h2 class="anchored" data-anchor-id="reconstruction-using-the-two-pcs">Reconstruction using the two PCs</h2>
-<p>The scalar projection of the dataset on <span class="math inline">\(k^{th}\)</span> PC is given by <span class="math inline">\(\mathbf{X}_{\text{centered}}^{T} \ .\ \mathbf{w_{k}}\)</span></p>
-<p>The vector projection of the dataset on <span class="math inline">\(k^{th}\)</span> PC is given by <span class="math inline">\(\mathbf{w_{k} .(\mathbf{X}_{\text{centered}}^{T} \ .\ \mathbf{w_{k}})^{T}}\)</span></p>
+<p>The scalar projection of the dataset on <span class="math inline">k^{th}</span> PC is given by <span class="math inline">\mathbf{X}_{\text{centered}}^{T} \ .\ \mathbf{w_{k}}</span></p>
+<p>The vector projection of the dataset on <span class="math inline">k^{th}</span> PC is given by <span class="math inline">\mathbf{w_{k} .(\mathbf{X}_{\text{centered}}^{T} \ .\ \mathbf{w_{k}})^{T}}</span></p>
 <div class="cell" data-executioninfo="{&quot;elapsed&quot;:494,&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1694157977547,&quot;user&quot;:{&quot;displayName&quot;:&quot;A ANIRUDDHA&quot;,&quot;userId&quot;:&quot;13059136296806470484&quot;},&quot;user_tz&quot;:-330}" data-outputid="00fde8db-cc80-45c4-b405-3d93f1a7bc88" data-execution_count="10">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Since the points are 2-dimensional, by combining the projection on the two PCs, we get back the centered dataset</span></span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>w_1 <span class="op">@</span> (X_centered.T <span class="op">@</span> w_1).reshape(<span class="dv">1</span>,n) <span class="op">+</span> w_2 <span class="op">@</span> (X_centered.T <span class="op">@</span> w_2).reshape(<span class="dv">1</span>,n)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -500,7 +514,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <pre><code>The reconstruction error along the first principal component is 0.375</code></pre>
 </div>
 </div>
-<p>The reconstruction error for the entire dataset along <span class="math inline">\(\mathbf{w}_r\)</span> will be</p>
+<p>The reconstruction error for the entire dataset along <span class="math inline">\mathbf{w}_r</span> will be</p>
 <div class="cell" data-executioninfo="{&quot;elapsed&quot;:388,&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1694158023511,&quot;user&quot;:{&quot;displayName&quot;:&quot;A ANIRUDDHA&quot;,&quot;userId&quot;:&quot;13059136296806470484&quot;},&quot;user_tz&quot;:-330}" data-execution_count="14">
 <div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>w_r <span class="op">=</span> np.array([<span class="dv">0</span>,<span class="dv">1</span>]).reshape(<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -518,7 +532,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <pre><code>The reconstruction error along w_r is 8.9375</code></pre>
 </div>
 </div>
-<p>For our dataset we can see that the reconstruction error is much lower along the first principal component as compared to the vector <span class="math inline">\(\mathbf{w}_r\)</span></p>
+<p>For our dataset we can see that the reconstruction error is much lower along the first principal component as compared to the vector <span class="math inline">\mathbf{w}_r</span></p>
 </section>
 <section id="finding-the-optimal-value-of-k" class="level2">
 <h2 class="anchored" data-anchor-id="finding-the-optimal-value-of-k">Finding the optimal value of K</h2>
@@ -549,7 +563,7 @@ The explained variance when K is 2 is 1.0</code></pre>
 </section>
 <section id="pca-on-a-real-world-dataset" class="level2">
 <h2 class="anchored" data-anchor-id="pca-on-a-real-world-dataset">PCA on a real-world Dataset</h2>
-<p>We will be working with a subset of the <a href="https://en.wikipedia.org/wiki/MNIST_database">MNIST dataset</a>. The cell below generates the data-matrix <span class="math inline">\(\mathbf{X}\)</span>, which is of shape <span class="math inline">\((d, n)\)</span>, where <span class="math inline">\(n\)</span> denotes the number of samples and <span class="math inline">\(d\)</span> denotes the number of features.</p>
+<p>We will be working with a subset of the <a href="https://en.wikipedia.org/wiki/MNIST_database">MNIST dataset</a>. The cell below generates the data-matrix <span class="math inline">\mathbf{X}</span>, which is of shape <span class="math inline">(d, n)</span>, where <span class="math inline">n</span> denotes the number of samples and <span class="math inline">d</span> denotes the number of features.</p>
 <div class="cell" data-executioninfo="{&quot;elapsed&quot;:3014,&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1694158081593,&quot;user&quot;:{&quot;displayName&quot;:&quot;A ANIRUDDHA&quot;,&quot;userId&quot;:&quot;13059136296806470484&quot;},&quot;user_tz&quot;:-330}" data-execution_count="19">
 <div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co">##### DATASET GENERATION #####</span></span>
 <span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
@@ -567,7 +581,7 @@ The explained variance when K is 2 is 1.0</code></pre>
 <p><img src="Not01_files/figure-html/cell-22-output-1.png" class="img-fluid"></p>
 </div>
 </div>
-<p>We need to center the dataset <span class="math inline">\(\mathbf{X}\)</span> around its mean. Let us call this centered dataset <span class="math inline">\(\mathbf{X}^{\prime}\)</span>.</p>
+<p>We need to center the dataset <span class="math inline">\mathbf{X}</span> around its mean. Let us call this centered dataset <span class="math inline">\mathbf{X}^{\prime}</span>.</p>
 <div class="cell" data-executioninfo="{&quot;elapsed&quot;:318,&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1694158095541,&quot;user&quot;:{&quot;displayName&quot;:&quot;A ANIRUDDHA&quot;,&quot;userId&quot;:&quot;13059136296806470484&quot;},&quot;user_tz&quot;:-330}" data-execution_count="21">
 <div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> center(X):</span>
 <span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> X <span class="op">-</span> X.mean(axis <span class="op">=</span> <span class="dv">1</span>).reshape(<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>)</span>
@@ -575,14 +589,14 @@ The explained variance when K is 2 is 1.0</code></pre>
 <span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>d, n <span class="op">=</span> X.shape</span>
 <span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>X_prime <span class="op">=</span> center(X)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Compute the covariance matrix <span class="math inline">\(\mathbf{C}\)</span> of the centered dataset.</p>
+<p>Compute the covariance matrix <span class="math inline">\mathbf{C}</span> of the centered dataset.</p>
 <div class="cell" data-executioninfo="{&quot;elapsed&quot;:315,&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1694158099692,&quot;user&quot;:{&quot;displayName&quot;:&quot;A ANIRUDDHA&quot;,&quot;userId&quot;:&quot;13059136296806470484&quot;},&quot;user_tz&quot;:-330}" data-execution_count="22">
 <div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> covariance(X):</span>
 <span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> X <span class="op">@</span> X.T <span class="op">/</span> X.shape[<span class="dv">1</span>]</span>
 <span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>C <span class="op">=</span> covariance(X_prime)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Compute the first and second principal components of the dataset, <span class="math inline">\(\mathbf{w}_1\)</span> and <span class="math inline">\(\mathbf{w}_2\)</span>.</p>
+<p>Compute the first and second principal components of the dataset, <span class="math inline">\mathbf{w}_1</span> and <span class="math inline">\mathbf{w}_2</span>.</p>
 <div class="cell" data-executioninfo="{&quot;elapsed&quot;:506,&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1694158104392,&quot;user&quot;:{&quot;displayName&quot;:&quot;A ANIRUDDHA&quot;,&quot;userId&quot;:&quot;13059136296806470484&quot;},&quot;user_tz&quot;:-330}" data-execution_count="23">
 <div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> compute_pc(C):</span>
 <span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>    d <span class="op">=</span> C.shape[<span class="dv">0</span>]</span>
@@ -603,7 +617,7 @@ The explained variance when K is 2 is 1.0</code></pre>
 <p><img src="Not01_files/figure-html/cell-26-output-2.png" class="img-fluid"></p>
 </div>
 </div>
-<p>Given a <code>test_image</code>, visualize the proxies by reconstructing it using the top <span class="math inline">\(k\)</span> principal components. Consider four values of <span class="math inline">\(k\)</span>; values of <span class="math inline">\(k\)</span> for which the top-<span class="math inline">\(k\)</span> principal components explain:</p>
+<p>Given a <code>test_image</code>, visualize the proxies by reconstructing it using the top <span class="math inline">k</span> principal components. Consider four values of <span class="math inline">k</span>; values of <span class="math inline">k</span> for which the top-<span class="math inline">k</span> principal components explain:</p>
 <ul>
 <li>20% of the variance</li>
 <li>50% of the variance</li>
