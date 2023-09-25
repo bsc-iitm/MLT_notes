@@ -8,231 +8,316 @@ Feedback/Correction: [Click here!](https://forms.gle/LehGfBWFX3yWFDBH6).
 
 PDF Link: [Click here!](../notes/Wk10.pdf)
 
-# Perceptron and Margins
-Let dataset $D=\{(x_1, y_1), \ldots, (x_n,y_n)\}$ be linearly separable with $\gamma$-margin where $x_i \in \mathbb{R}^d$ and $y_i \in \{-1, 1\}$.
+# Perceptron and Margin Maximization in Linear Separability
 
-Let $w* \in \mathbb{R}^d$ be the weight vector s.t. $(w^{*T}x_i)y_i\ge\gamma$ $\forall i$.
+In this week, we explore the concept of perceptron learning in the context of linearly separable datasets with a specified margin, denoted as $\gamma$. The dataset is defined as $D=\{(\mathbf{x_1}, y_1), \ldots, (\mathbf{x_n},y_n)\}$, where $\mathbf{x_i} \in \mathbb{R}^d$ represents data points and $y_i \in \{-1, 1\}$ indicates their respective classes.
 
-Let some $R>0 \in \mathbb{R}$, s.t. $\forall i$ $||x_i||\le R$.
+## Defining Key Parameters
 
-Therefore, the number of mistakes made by the algorithm is given by,
+We begin by introducing essential parameters:
+
+1. **Weight Vector**: Let $\mathbf{w^*} \in \mathbb{R}^d$ be the weight vector such that $(\mathbf{w^{*T}x_i})y_i\ge\gamma$ for all $i$. This weight vector ensures the desired margin $\gamma$.
+
+2. **Bounding Radius**: We define $R>0 \in \mathbb{R}$ such that for all $i$, $||\mathbf{x_i}||\le R$. This represents a constraint on the norm of input data.
+
+With these parameters established, we can formulate the upper bound on the number of mistakes made by the perceptron learning algorithm:
+
 $$
 \text{\#mistakes} \le \frac{R^2}{\gamma^2}
 $$
 
-**Observations**
+## Observations and Objectives
 
-Let $w_{perc}$ be any weight vector which can linearly separate the dataset.
+### Observations
 
-Therefore, we observe the following:
+We make several observations regarding the perceptron learning algorithm:
 
-1. "Quality" of the solution depends on the margin.
-2. Number of mistakes depend on $w^*$'s margin.
-3. $w_{perc}$ need not necessarily be $w^*$.
+1. The "quality" of the solution depends on the margin $\gamma$.
+2. The number of mistakes is influenced by the margin associated with $\mathbf{w^*}$.
+3. The weight vector $\mathbf{w_{perc}}$ need not be identical to $\mathbf{w^*}$.
 
-Hence, our **goal** should be to **find the solution that maximizes the margin**.
+### Goal: Margin Maximization
 
-## Margin Maximization
-From the previous analysis, it is clear that a single dataset could have multiple linear classifiers with varying margins. The following diagram illustrates this phenomenon,
+Given these observations, our overarching goal is to find the solution that maximizes the margin. It is crucial to note that a single dataset can have multiple linear classifiers with varying margins, as depicted in the diagram below:
 
-![Multiple Classifiers](../images/Multple possible classifiers.png)
+![Multiple Classifiers](../images/Multple possible classifiers.png){width=70%}
 
-Therefore, for getting the best classifier, our goal can be written as,
+To formalize our objective, we aim to maximize the margin $\gamma$:
+
 $$
-\max_{w,\gamma} \gamma
+\max_{\mathbf{w},\gamma} \gamma
 $$
-\begin{align*}
-s.t. (w^Tx_i)y_i &\ge \gamma \hspace{1em} \forall i \\
-||w||^2 &= 1\
-\end{align*}
-The boundary of the margin is given by,
-\begin{align*}
-\{x:(w^Tx_i)y_i &= \gamma\}\\
-\{x:(\frac{w}{\gamma}^Tx_i)y_i &= 1\}\\
-\end{align*}
-From the above equation, we can see that $\gamma$ depends on the width of $w$. Therefore, we reformulate our goal as,
-$$
-\max_{w} \text{width}(w)
-$$
-\begin{align*}
-s.t. (w^Tx_i)y_i &\ge 1 \hspace{1em} \forall i \\
-\end{align*}
-Let the width be the distance between the two parallel margins, and let $x$ and $z$ be two points who are on the two lines exactly opposite to each other s.t. $w^Tx=-1$ and $w^Tz=1$ or vice versa.
 
-Let $x_1$ and $x_2$ be two points which lie on opposite side of the decision boundary as well as on the margins. 
+Subject to the following constraints:
 
-![Margin Width](../images/Perceptron Distance.png)
-
-Therefore, the width is given by,
 \begin{align*}
-x_1^Tw - x_2^Tw &= 2 \\
-(x_1-x_2)^Tw &= 2\\
-|x_1 - x_2||_2||w||_2 \cos(\theta) &= 2 \\ 
-\therefore ||x_1 - x_2||_2 &= \frac{2}{||w||_2}
+(\mathbf{w^T x_i})y_i &\ge \gamma \quad \text{for all } i \\
+||\mathbf{w}||^2 &= 1
 \end{align*}
 
-Therefore, our objective function can be written as,
-$$
-\max_{w}  \frac{2}{||w||^2_2} \hspace{1em} s.t. (w^Tx_i)y_i \ge 1 \hspace{1em} \forall i
-$$
-Equivalently,
-$$
-\min_{w}  \frac{1}{2}||w||^2_2 \hspace{1em} s.t. (w^Tx_i)y_i \ge 1 \hspace{1em} \forall i
-$$
-Therefore ﬁnding the separating hyperplane with maximum margin is equivalent to ﬁnding the one with the smallest possible normal vector $w$.
+## Reformulating the Objective
 
-# Constrained Optimization
-Let a constrained optimization problem be formulated as follows,
+To simplify our objective, we can express $\gamma$ in terms of the width of $\mathbf{w}$:
+
+$$
+\max_{\mathbf{w}} \text{width}(\mathbf{w})
+$$
+
+Subject to the constraint:
+
+$$
+(\mathbf{w^T x_i})y_i \ge 1 \quad \text{for all } i
+$$
+
+### Width Calculation
+
+The width of the margin, denoted as $\text{width}(\mathbf{w})$, can be calculated as the distance between two parallel margins. Consider two points $\mathbf{x}$ and $\mathbf{z}$ lying on opposite sides of the decision boundary such that $\mathbf{w^T x}=-1$ and $\mathbf{w^T z}=1$ or vice versa. 
+
+Let $\mathbf{x_1}$ and $\mathbf{x_2}$ be two points on the margins and opposite sides of the decision boundary. 
+
+![Margin Width](../images/Perceptron Distance.png){width=70%}
+
+The width is given by:
+
 \begin{align*}
-\min_w f(w) \\
-s.t. g(w) \le 0 \\
+\mathbf{x_1^T w} - \mathbf{x_2^T w} &= 2 \\
+(\mathbf{x_1}-\mathbf{x_2})^T\mathbf{w} &= 2\\
+||\mathbf{x_1} - \mathbf{x_2}||_2||\mathbf{w}||_2 \cos(\theta) &= 2 \\ 
+\therefore ||\mathbf{x_1} - \mathbf{x_2}||_2 &= \frac{2}{||\mathbf{w}||_2}
 \end{align*}
-We can solve this problem using **Lagrange Multipliers**.
 
-Lagrange multipliers are used in constrained optimization problems to find the optimal values of the objective function subject to a set of constraints. In Lagrange multipliers method, the constraints are incorporated into the objective function by introducing additional variables called Lagrange multipliers.
+Hence, our objective can be restated as:
 
-The Lagrange function $\mathcal{L}(x, \alpha)$, for our above function, is defined as follows:
 $$
-\mathcal{L}(w, \alpha) = f(w) + \alpha g(w) \hspace{1em} \forall w
+\max_{\mathbf{w}}  \frac{2}{||\mathbf{w}||^2_2} \quad \text{subject to} \quad (\mathbf{w^T x_i})y_i \ge 1 \quad \text{for all } i
 $$
-where $\alpha \ge 0$.
 
-Therefore, maximizing the Lagrange function w.r.t. $\alpha$,
+Equivalently, we can frame it as a minimization problem:
+
+$$
+\min_{\mathbf{w}}  \frac{1}{2}||\mathbf{w}||^2_2 \quad \text{subject to} \quad (\mathbf{w^T x_i})y_i \ge 1 \quad \text{for all } i
+$$
+
+In summary, finding the separating hyperplane with the maximum margin is equivalent to finding the one with the smallest possible normal vector $\mathbf{w}$.
+
+# Constrained Optimization and Dual Problem in Lagrange Multipliers
+
+In the realm of constrained optimization, we encounter problems formulated as follows:
+
 \begin{align*}
-\max_{\alpha\ge0} \mathcal{L}(w, \alpha) &= \max_{\alpha\ge0} f(w) + \alpha g(w) \\
+\min_{\mathbf{w}} f(\mathbf{w}) \\
+s.t. \ g(\mathbf{w}) \le 0
+\end{align*}
+
+To tackle such problems effectively, the method of **Lagrange Multipliers** comes into play. Lagrange multipliers are instrumental in solving constrained optimization problems by identifying optimal values of an objective function while adhering to a set of constraints. In this method, the constraints are seamlessly integrated into the objective function through the introduction of auxiliary variables known as Lagrange multipliers.
+
+## Lagrange Function
+
+For the optimization problem described above, the Lagrange function, denoted as $\mathcal{L}(\mathbf{w}, \alpha)$, is defined as follows:
+
+$$
+\mathcal{L}(\mathbf{w}, \alpha) = f(\mathbf{w}) + \alpha^T g(\mathbf{w}) \quad \text{for all } \mathbf{w}
+$$
+
+Here, $\alpha$ is a vector of Lagrange multipliers, constrained to be non-negative ($\alpha \ge \mathbf{0}$).
+
+Maximizing the Lagrange function with respect to $\alpha$ leads us to the following formulation:
+
+\begin{align*}
+\max_{\alpha \ge \mathbf{0}} \mathcal{L}(\mathbf{w}, \alpha) &= \max_{\alpha \ge \mathbf{0}} \left(f(\mathbf{w}) + \alpha^T g(\mathbf{w})\right) \\
 &=
 \begin{cases}
-\infty \hspace{2em} \text{if} \hspace{1em} g(w) > 0 \\
-f(w) \hspace{1em} \text{if} \hspace{1em} g(w) \le 0
+\infty & \text{if } g(\mathbf{w}) > \mathbf{0} \\
+f(\mathbf{w}) & \text{if } g(\mathbf{w}) \le \mathbf{0}
 \end{cases}
 \end{align*}
-As the Lagrange function is equal to $f(w)$ where $g(w) \le 0$, we can rewrite our original function as,
+
+Since the Lagrange function is equivalent to $f(\mathbf{w})$ when $g(\mathbf{w}) \le \mathbf{0}$, we can rewrite our original problem as follows:
+
 \begin{align*}
-\min_w f(w) &= \min_w \left [ \max_{\alpha\ge0} \mathcal{L}(w, \alpha) \right ] \\
-&= \min_w \left [ \max_{\alpha\ge0} f(w) + \alpha g(w) \right ] \\
+\min_{\mathbf{w}} f(\mathbf{w}) &= \min_{\mathbf{w}} \left[\max_{\alpha \ge \mathbf{0}} \mathcal{L}(\mathbf{w}, \alpha)\right] \\
+&= \min_{\mathbf{w}} \left[\max_{\alpha \ge \mathbf{0}} \left(f(\mathbf{w}) + \alpha^T g(\mathbf{w})\right)\right]
 \end{align*}
-In general, we cannot swap the min and max functions unless all the functions involved are convex functions. Hence, as both $f$ and $g$ are convex functions in our example, we can rewrite them as follows,
+
+In general, interchanging the positions of the min and max functions is not permissible unless all involved functions are convex. In our case, both $f$ and $g$ are convex functions, allowing us to express this as:
+
 $$
-\min_w \left [ \max_{\alpha\ge0} f(w) + \alpha g(w) \right ] \equiv \max_{\alpha\ge0} \left [ \min_w f(w) + \alpha g(w) \right ]
+\min_{\mathbf{w}} \left[\max_{\alpha \ge \mathbf{0}} \left(f(\mathbf{w}) + \alpha^T g(\mathbf{w})\right)\right] \equiv \max_{\alpha \ge \mathbf{0}} \left[\min_{\mathbf{w}} \left(f(\mathbf{w}) + \alpha^T g(\mathbf{w})\right)\right]
 $$
-Let's rewrite the above constrained optimization problem with $m$ constraints $g_i(w) \le 0$ where $i \in [1, m]$. This can written as,
+
+## Multiple Constraints
+
+Now, extending our discussion to scenarios with $m$ constraints, denoted as $g_i(\mathbf{w}) \le \mathbf{0}$ for $i \in [1, m]$, we can represent the problem as follows:
+
 \begin{align*}
-\min_w f(w) &\equiv \min_w \left [ \max_{\alpha\ge0} f(w) + \sum _{i=1} ^m \alpha _i g_i(w) \right ] \\
-&\equiv \max_{\alpha\ge0} \left [ \min_w f(w) + \sum _{i=1} ^m \alpha _i g_i(w) \right ] \\
+\min_{\mathbf{w}} f(\mathbf{w}) &\equiv \min_{\mathbf{w}} \left[\max_{\alpha \ge \mathbf{0}} f(\mathbf{w}) + \sum _{i=1} ^m \alpha _i g_i(\mathbf{w})\right] \\
+&\equiv \max_{\alpha \ge \mathbf{0}} \left[\min_{\mathbf{w}} f(\mathbf{w}) + \sum _{i=1} ^m \alpha _i g_i(\mathbf{w})\right]
 \end{align*}
 
 # Formulating the Dual Problem
-Our Objective function is as follows,
+
+To formalize the dual problem, we start with our objective function:
+
 $$
-\min_{w}  \frac{1}{2}||w||^2_2 \quad s.t. (w^Tx_i)y_i \ge 1 \quad \forall i
+\min_{\mathbf{w}}  \frac{1}{2}||\mathbf{w}||^2_2 \quad \text{s.t.} \ (\mathbf{w}^T\mathbf{x}_i)y_i \ge 1 \quad \forall i
 $$
-The constraints can be written as follows,
+
+The constraints can be expressed as:
+
 \begin{align*}
-(w^Tx_i)y_i &\ge 1 \quad \forall i \\
-1 - (w^Tx_i)y_i &\le 0 \quad \forall i \\
+(\mathbf{w}^T\mathbf{x}_i)y_i &\ge 1 \quad \forall i \\
+1 - (\mathbf{w}^T\mathbf{x}_i)y_i &\le 0 \quad \forall i
 \end{align*}
-Let $\alpha \in \mathbb{R}^d$ be the Lagrange multipliers, and let our Lagrange function be written as,
+
+Introducing Lagrange multipliers $\alpha \in \mathbb{R}^d$, we construct the Lagrange function:
+
 \begin{align*}
-\mathcal{L}(w, \alpha) &= \frac{1}{2}||w||^2_2 + \sum _{i=1} ^n \alpha _i (1 - (w^Tx_i)y_i) \\
-\min_w \max_{\alpha\ge0} \left [ \frac{1}{2}||w||^2_2 + \sum _{i=1} ^n \alpha _i (1 - (w^Tx_i)y_i) \right ] &\equiv \max_{\alpha\ge0} \min_w \left [ \frac{1}{2}||w||^2_2 + \sum _{i=1} ^n \alpha _i (1 - (w^Tx_i)y_i) \right ]
+\mathcal{L}(\mathbf{w}, \alpha) &= \frac{1}{2}||\mathbf{w}||^2_2 + \sum _{i=1} ^n \alpha _i (1 - (\mathbf{w}^T\mathbf{x}_i)y_i)
 \end{align*}
-Solving for the inner function of the dual problem, we get, \begin{align*}
-w_{\alpha}^* - \sum _{i=1} ^n \alpha _i x_i y_i = 0 \\
-\therefore w_{\alpha}^* = \sum _{i=1} ^n \alpha _i x_i y_i
+
+Now, considering the duality principle, we arrive at:
+
+\begin{align*}
+\min_{\mathbf{w}} \max_{\alpha \ge \mathbf{0}} \left[\frac{1}{2}||\mathbf{w}||^2_2 + \sum _{i=1} ^n \alpha _i (1 - (\mathbf{w}^T\mathbf{x}_i)y_i)\right] &\equiv \max_{\alpha \ge \mathbf{0}} \min_{\mathbf{w}} \left[\frac{1}{2}||\mathbf{w}||^2_2 + \sum _{i=1} ^n \alpha _i (1 - (\mathbf{w}^T\mathbf{x}_i)y_i)\right]
 \end{align*}
-Rewriting the above equation in vectorized form, we get,
+
+Solving for the inner function of the dual problem, we obtain:
+
+\begin{align*}
+\mathbf{w}_{\alpha}^* - \sum _{i=1} ^n \alpha _i \mathbf{x}_i y_i = 0
+\end{align*}
+
+This leads to a vectorized form:
+
 $$
-w_{\alpha}^* = XY\alpha \quad \ldots[1]
+\mathbf{w}_{\alpha}^* = \mathbf{XY}\alpha \quad \ldots[1]
 $$
-where $X \in \mathbb{R}^{d \times n}$, $Y \in \mathbb{R}^{n \times n}$, and $\alpha \in \mathbb{R}^{n}$. $X$ is the dataset, $Y$ is the label diagonal matrix, where the diagonals are the labels.
+
+Here, $\mathbf{X} \in \mathbb{R}^{d \times n}$ represents the dataset, $\mathbf{Y} \in \mathbb{R}^{n \times n}$ is a diagonal matrix with label values on its diagonals, and $\alpha \in \mathbb{R}^{n}$. 
+
 Rewriting the outer dual function, we get,
 \begin{align*}
-&\max_{\alpha\ge0} \left[ \frac{1}{2}||w||^2_2 + \sum _{i=1} ^n \alpha _i (1 - (w^Tx_i)y_i) \right] \\
-&= \max_{\alpha\ge0} \left[ \frac{1}{2}w^Tw + \sum _{i=1} ^n \alpha_i -  w^TXY\alpha \right] \\
-&= \max_{\alpha\ge0} \left[ \frac{1}{2}(XY\alpha)^TXY\alpha + \sum _{i=1} ^n \alpha_i -  (XY\alpha)^TXY\alpha \right] \quad \ldots\text{from }[1] \\
-&= \max_{\alpha\ge0} \left[ \frac{1}{2}\alpha^TY^TX^TXY\alpha + \sum _{i=1} ^n \alpha_i -  \alpha^TY^TX^TXY\alpha \right] \\
-&= \max_{\alpha\ge0} \left[\sum _{i=1} ^n \alpha_i -  \frac{1}{2}\alpha^TY^TX^TXY\alpha \right] \\
+&\max_{\alpha \ge \mathbf{0}} \left[ \frac{1}{2}||\mathbf{w}||^2_2 + \sum _{i=1} ^n \alpha _i (1 - (\mathbf{w}^T\mathbf{x}_i)y_i) \right] \\
+&= \max_{\alpha \ge \mathbf{0}} \left[ \frac{1}{2}\mathbf{w}^T\mathbf{w} + \sum _{i=1} ^n \alpha_i -  \mathbf{w}^T\mathbf{XY}\alpha \right] \\
+&= \max_{\alpha \ge \mathbf{0}} \left[ \frac{1}{2}(\mathbf{XY}\alpha)^T(\mathbf{XY}\alpha) + \sum _{i=1} ^n \alpha_i -  (\mathbf{XY}\alpha)^T(\mathbf{XY}\alpha) \right] \quad \ldots\text{from }[1] \\
+&= \max_{\alpha \ge \mathbf{0}} \left[ \sum _{i=1} ^n \alpha_i -  \frac{1}{2}(\mathbf{XY}\alpha)^T(\mathbf{XY}\alpha) \right] \\
 \end{align*}
 
-**Observations**:
+# Observations
 
-1. As the dual problem solves for $\alpha \ge 0$, its variable dimension is in $\mathbb{R}^n_+$, while as the primal problem solves for $w$, its variable dimension is in $\mathbb{R}^d$.
-2. Solving the dual problem is "easier".
-3. As the dual problem depends on $X^TX$, it can be kernalized.
+1. **Dual and Primal Variables:** The duality of the SVM problem manifests in the dimensions of its variables. The dual problem is characterized by $\alpha \ge \mathbf{0}$, residing in $\mathbb{R}^n_+$, while the primal problem deals with $\mathbf{w}$ in $\mathbb{R}^d$.
 
-Some observations regarding the following equation,
+2. **Simplicity of Dual Problem:** Solving the dual problem is often considered "easier" compared to the primal problem.
+
+3. **Kernelization Potential:** The dual problem's dependence on $\mathbf{X}^T\mathbf{X}$ opens the door for kernelization techniques.
+
+Let's now examine the equation:
+
 $$
-w_{\alpha}^* = \sum _{i=1} ^n \alpha _i x_i y_i
+\mathbf{w}^* = \sum _{i=1} ^n \alpha _i \mathbf{x}_i y_i
 $$
 
-1. The optimal $w^*$ is the linear combination of the datapoints where the importance of each datapoint is given by $\alpha_i$ for the $i^{th}$ point.
-2. Hence, there are points that are more important that others.
+### Observations on the Equation
 
-# Support Vector Machine
-Revisiting the Lagrangian function,
-$$
-\min_w \left [ \max_{\alpha\ge0} f(w) + \alpha g(w) \right ] \equiv \max_{\alpha\ge0} \left [ \min_w f(w) + \alpha g(w) \right ]
-$$
-The primal function is represented on the left-hand side of the equation, while the right-hand side represents the dual function. $w^∗$ and $\alpha^*$ are the solutions derived for the primal and dual functions, respectively. When these solutions are inserted into the equation, we obtain,
-$$
-\max_{\alpha\ge0} f(w^*) + \alpha g(w^*) =  \min_w f(w) + \alpha^* g(w)
-$$
-But as $g(w^*) \le 0$, the left hand side equates to $f(w^*)$.
-$$
-f(w^*) =  \min_w f(w) + \alpha^* g(w)
-$$
-Substituting $w^*$ for $w$ in the right-hand side of the equation would result in a new right-hand side that is greater than or equal to the current one.
-$$
-f(w^*) \le f(w^*) + \alpha^* g(w^*)
-$$
-$$
-\therefore \alpha^* g(w^*) \ge 0 \quad \ldots [1]
-$$
-But, according to our constraints, $\alpha^* \ge 0$ and $g(w^*)\le0$.
-$$
-\therefore \alpha^* g(w^*) \le 0 \quad \ldots [2]
-$$
-From $[1]$ and $[2]$, we get,
-$$
-\alpha^* g(w^*) = 0
-$$
-Rewriting the equation for multiple constraints, we get,
-$$
-\alpha_i^* g(w^*_i) = 0 \quad \forall i
-$$
-Therefore, if one of the two is greater than zero, the other equals zero. We know that $g(w^*) = 1-(w^Tx_i)y_i$.
-$$
-\alpha_i^* (1-(w^Tx_i)y_i) = 0 \quad \forall i
-$$
-As the importance of the $i^{th}$ datapoint is given by $\alpha_i$, if $\alpha_i > 0$, we get,
-$$
-(w^Tx_i)y_i = 1
-$$
-which means that the $i^{th}$ datapoint lies on the **"Supporting"** hyperplane and contributes to $w^*$.
+1. **Interpreting $\mathbf{w}^*$:** The optimal $\mathbf{w}^*$ emerges as a linear combination of data points, where each data point's significance is determined by the corresponding Lagrange multiplier $\alpha_i$.
 
-Therefore, the datapoints whose $\alpha_i > 0$ are known as **Support Vectors** and this algorithm is known as **Support Vector Machine**.
+2. **Varying Importance:** Consequently, some data points exert greater influence on $\mathbf{w}^*$ than others.
 
-**Support Vector Machines (SVMs)** are a type of supervised learning algorithm used for classification and regression analysis. SVMs aim to find the optimal hyperplane that separates data points from different classes with the maximum margin. In the case of non-linearly separable data, SVMs use kernel functions to transform the data into a higher-dimensional space, where a linear decision boundary can be used to separate the data.
+# Support Vector Machine (SVM)
 
-**Insight**: $w^*$ is a sparse linear combination of the data points.
+## Duality Revisited
+
+Revisiting the Lagrangian function:
+
+$$
+\min_{\mathbf{w}} \left [\max_{\alpha \ge \mathbf{0}} f(\mathbf{w}) + \alpha^T g(\mathbf{w}) \right ] \equiv \max_{\alpha \ge \mathbf{0}} \left [ \min_{\mathbf{w}} f(\mathbf{w}) + \alpha^T g(\mathbf{w}) \right ]
+$$
+
+Here, the primal function is on the left-hand side, and the dual function is on the right. The solutions for the primal and dual functions are denoted as $\mathbf{w}^∗$ and $\alpha^*$, respectively. When these solutions are substituted into the equation, we obtain:
+
+$$
+\max_{\alpha \ge \mathbf{0}} f(\mathbf{w}^*) + \alpha^T g(\mathbf{w}^*) =  \min_{\mathbf{w}} f(\mathbf{w}) + \alpha^{*T} g(\mathbf{w})
+$$
+
+Given that $g(\mathbf{w}^*) \le \mathbf{0}$, the left-hand side simplifies to $f(\mathbf{w}^*)$:
+
+$$
+f(\mathbf{w}^*) =  \min_{\mathbf{w}} f(\mathbf{w}) + \alpha^{*T} g(\mathbf{w})
+$$
+
+Substituting $\mathbf{w}^*$ for $\mathbf{w}$ in the right-hand side yields a new right-hand side that is greater than or equal to the current one:
+
+$$
+f(\mathbf{w}^*) \le f(\mathbf{w}^*) + \alpha^{*T} g(\mathbf{w}^*)
+$$
+
+Hence, we can infer:
+
+$$
+\alpha^{*T} g(\mathbf{w}^*) \ge \mathbf{0}
+$$
+
+However, considering the constraints, where $\alpha^{*} \ge \mathbf{0}$ and $g(\mathbf{w}^*)\le \mathbf{0}$, we arrive at:
+
+$$
+\alpha^{*T} g(\mathbf{w}^*) \le \mathbf{0}
+$$
+
+From this, we deduce:
+
+$$
+\alpha^{*T} g(\mathbf{w}^*) = \mathbf{0}
+$$
+
+Extending this equation for multiple constraints, we obtain:
+
+$$
+\alpha_i^{*} g(w^*_i) = 0 \quad \forall i
+$$
+
+Hence, if one of the two values is greater than zero, the other must be zero. Considering $g(\mathbf{w}^*) = 1-(\mathbf{w}^T\mathbf{x}_i)y_i$, we can express this as:
+
+$$
+\alpha_i^{*} (1-(\mathbf{w}^T\mathbf{x}_i)y_i) = 0 \quad \forall i
+$$
+
+Importantly, when $\alpha_i > \mathbf{0}$, we deduce:
+
+$$
+(\mathbf{w}^T\mathbf{x}_i)y_i = 1
+$$
+
+This implies that the $i^{th}$ data point resides on the **"Supporting"** hyperplane and significantly contributes to the determination of $\mathbf{w}^*$.
+
+Consequently, data points with $\alpha_i > \mathbf{0}$ earn the title of **Support Vectors**, and this algorithm is known as the **Support Vector Machine (SVM)**.
+
+## Definition of Support Vector Machines (SVMs)
+
+**Support Vector Machines (SVMs)** stand as a category of supervised learning algorithms designed for classification and regression analysis. SVMs aim to identify the optimal hyperplane that maximizes the margin between data points from different classes. In scenarios where data is not linearly separable, SVMs employ kernel functions to map the data into a higher-dimensional space where a linear decision boundary can effectively segregate the classes.
+
+**Insight**: $\mathbf{w}^*$ represents a sparse linear combination of data points.
 
 ## Hard-Margin SVM Algorithm
-This algorithm only works if the dataset is linearly separable with a $\gamma > 0$.
 
-1. Calculate $Q=X^TX$ directly or using a kernel as per the dataset.
-2.  Use the gradient of the dual formula ($\alpha^T1 -  \frac{1}{2}\alpha^TY^TQY\alpha$), in the gradient descent algorithm to find a satisfactory $\alpha$. Let the intial $\alpha$ be a zero vector $\in \mathbb{R}^n_+$.
-3. To predict:
-	* For non-kernelized SVM: $\text{label}(x_{test}) = \text{sign}( w^Tx_{test}) = \text{sign}\left(\sum _{i=1} ^n \alpha _i y_i(x_i^Tx_{test})\right)$
-	* For kernelized SVM: $\text{label}(x_{test}) = \text{sign}(w^T\phi(x_{test})) = \text{sign}\left(\sum _{i=1} ^n \alpha _i y_ik(x_i^Tx_{test})\right)$
+The Hard-Margin SVM algorithm is applicable only when the dataset is linearly separable with a margin parameter $\gamma > 0$. Its key steps include:
+
+1. **Direct or Kernelized Calculation of Q:** Compute the matrix $Q=\mathbf{X}^T\mathbf{X}$ directly or using a kernel, based on the dataset.
+
+2. **Gradient Descent:** Employ the gradient of the dual formula, $\alpha^T\mathbf{1} -  \frac{1}{2}\alpha^T\mathbf{Y}^T Q\mathbf{Y}\alpha$, in a gradient descent algorithm to iteratively find a satisfactory set of Lagrange multipliers $\alpha$. Initialize $\alpha$ as a zero vector in $\mathbb{R}^n_+$.
+
+3. **Prediction:** For prediction, follow these formulas:
+    * For non-kernelized SVM: $\text{label}(\mathbf{x}_{\text{test}}) = \text{sign}( \mathbf{w}^T\mathbf{x}_{\text{test}}) = \text{sign}\left(\sum _{i=1} ^n \alpha _i y_i(\mathbf{x}_i^T\mathbf{x}_{\text{test}})\right)$
+    * For kernelized SVM: $\text{label}(\mathbf{x}_{\text{test}}) = \text{sign}(\mathbf{w}^T\boldsymbol{\phi}(\mathbf{x}_{\text{test}})) = \text{sign}\left(\sum _{i=1} ^n \alpha _i y_i k(\mathbf{x}_i^T\mathbf{x}_{\text{test}})\right)$
 
 # Soft-Margin SVM
-**Soft-Margin SVM** is an extension of the standard SVM algorithm that allows for some misclassifications in the training data. This is useful when the data is not linearly separable, as it allows the SVM to still find a decision boundary that separates the classes as best as possible while allowing for some errors. The degree to which misclassifications are allowed is controlled by a regularization parameter($C$), which is used to balance the trade-off between maximizing the margin and minimizing the number of misclassifications.
 
-The primal formulation for this is given by,
-$$
-\min_{w, \epsilon}  \frac{1}{2}||w||^2_2 + C\sum _{i=1} ^n\epsilon_i \quad s.t. \quad (w^Tx_i)y_i + \epsilon_i \ge 1;\quad \epsilon_i \ge 0\quad \forall i
-$$
-where $C$ is the hyperparameter that is used to balance the trade-off between maximizing the margin and minimizing the number of misclassifications, and $\epsilon_i$ is the additional value required to satisy the constraints.
+**Soft-Margin SVM** extends the standard SVM algorithm to accommodate some misclassifications in the training data. This extension is particularly useful when dealing with non-linearly separable data. It introduces a regularization parameter ($C$) to control the balance between maximizing the margin and allowing for misclassifications. 
 
-# Credits
-Professor Arun Rajkumar: The content as well as the notations are from his slides and lecture.
+The primal formulation for this extension can be expressed as:
+
+$$
+\min_{\mathbf{w}, \boldsymbol{\epsilon}}  \frac{1}{2}||\mathbf{w}||^2_2 + C\sum _{i=1} ^n\epsilon_i \quad s.t. \quad (\mathbf{w}^T\mathbf{x}_i)y_i + \epsilon_i \ge 1;\quad \epsilon_i \ge 0\quad \forall i
+$$
+
+Here, $C$ serves as a hyperparameter governing the trade-off between maximizing the margin and minimizing misclassifications. The additional variable $\epsilon_i$ represents the adjustment needed to satisfy the constraints.required to satisfy the constraints.
+
