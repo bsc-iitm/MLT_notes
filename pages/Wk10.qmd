@@ -65,9 +65,10 @@ Let $x_1$ and $x_2$ be two points which lie on opposite side of the decision bou
 
 Therefore, the width is given by,
 \begin{align*}
-||x_1^Tw - x_2^Tw||_2^2 &= 2 \\
-||x_1-x_2||_2^2||w||^2_2 &= 2\\
-\therefore ||x_1 - x_2||^2_2 &= \frac{2}{||w||^2_2}
+x_1^Tw - x_2^Tw &= 2 \\
+(x_1-x_2)^Tw &= 2\\
+|x_1 - x_2||_2||w||_2 \cos(\theta) &= 2 \\ 
+\therefore ||x_1 - x_2||_2 &= \frac{2}{||w||_2}
 \end{align*}
 
 Therefore, our objective function can be written as,
@@ -221,8 +222,8 @@ This algorithm only works if the dataset is linearly separable with a $\gamma > 
 1. Calculate $Q=X^TX$ directly or using a kernel as per the dataset.
 2.  Use the gradient of the dual formula ($\alpha^T1 -  \frac{1}{2}\alpha^TY^TQY\alpha$), in the gradient descent algorithm to find a satisfactory $\alpha$. Let the intial $\alpha$ be a zero vector $\in \mathbb{R}^n_+$.
 3. To predict:
-	* For non-kernelized SVM: $\text{label}(x_{test}) = w^Tx_{test} = \sum _{i=1} ^n \alpha _i y_i(x_i^Tx_{test})$
-	* For kernelized SVM: $\text{label}(x_{test}) = w^T\phi(x_{test}) = \sum _{i=1} ^n \alpha _i y_ik(x_i^Tx_{test})$
+	* For non-kernelized SVM: $\text{label}(x_{test}) = \text{sign}( w^Tx_{test}) = \text{sign}\left(\sum _{i=1} ^n \alpha _i y_i(x_i^Tx_{test})\right)$
+	* For kernelized SVM: $\text{label}(x_{test}) = \text{sign}(w^T\phi(x_{test})) = \text{sign}\left(\sum _{i=1} ^n \alpha _i y_ik(x_i^Tx_{test})\right)$
 
 # Soft-Margin SVM
 **Soft-Margin SVM** is an extension of the standard SVM algorithm that allows for some misclassifications in the training data. This is useful when the data is not linearly separable, as it allows the SVM to still find a decision boundary that separates the classes as best as possible while allowing for some errors. The degree to which misclassifications are allowed is controlled by a regularization parameter($C$), which is used to balance the trade-off between maximizing the margin and minimizing the number of misclassifications.
