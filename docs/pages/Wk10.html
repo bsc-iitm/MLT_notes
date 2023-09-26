@@ -322,8 +322,7 @@ Note
 <li><p><strong>Weight Vector</strong>: Let <span class="math inline">\(\mathbf{w^*} \in \mathbb{R}^d\)</span> be the weight vector such that <span class="math inline">\((\mathbf{w^{*T}x_i})y_i\ge\gamma\)</span> for all <span class="math inline">\(i\)</span>. This weight vector ensures the desired margin <span class="math inline">\(\gamma\)</span>.</p></li>
 <li><p><strong>Bounding Radius</strong>: We define <span class="math inline">\(R&gt;0 \in \mathbb{R}\)</span> such that for all <span class="math inline">\(i\)</span>, <span class="math inline">\(||\mathbf{x_i}||\le R\)</span>. This represents a constraint on the norm of input data.</p></li>
 </ol>
-<p>With these parameters established, we can formulate the upper bound on the number of mistakes made by the perceptron learning algorithm:</p>
-<p><span class="math display">\[
+<p>With these parameters established, we can formulate the upper bound on the number of mistakes made by the perceptron learning algorithm: <span class="math display">\[
 \text{\#mistakes} \le \frac{R^2}{\gamma^2}
 \]</span></p>
 </section>
@@ -347,12 +346,10 @@ Note
 <figcaption class="figure-caption">Multiple Classifiers</figcaption>
 </figure>
 </div>
-<p>To formalize our objective, we aim to maximize the margin <span class="math inline">\(\gamma\)</span>:</p>
-<p><span class="math display">\[
+<p>To formalize our objective, we aim to maximize the margin <span class="math inline">\(\gamma\)</span>: <span class="math display">\[
 \max_{\mathbf{w},\gamma} \gamma
 \]</span></p>
-<p>Subject to the following constraints:</p>
-<p><span class="math display">\[\begin{align*}
+<p>Subject to the following constraints: <span class="math display">\[\begin{align*}
 (\mathbf{w^T x_i})y_i &amp;\ge \gamma \quad \text{for all } i \\
 ||\mathbf{w}||^2 &amp;= 1
 \end{align*}\]</span></p>
@@ -360,12 +357,10 @@ Note
 </section>
 <section id="reformulating-the-objective" class="level2">
 <h2 class="anchored" data-anchor-id="reformulating-the-objective">Reformulating the Objective</h2>
-<p>To simplify our objective, we can express <span class="math inline">\(\gamma\)</span> in terms of the width of <span class="math inline">\(\mathbf{w}\)</span>:</p>
-<p><span class="math display">\[
+<p>To simplify our objective, we can express <span class="math inline">\(\gamma\)</span> in terms of the width of <span class="math inline">\(\mathbf{w}\)</span>: <span class="math display">\[
 \max_{\mathbf{w}} \text{width}(\mathbf{w})
 \]</span></p>
-<p>Subject to the constraint:</p>
-<p><span class="math display">\[
+<p>Subject to the constraint: <span class="math display">\[
 (\mathbf{w^T x_i})y_i \ge 1 \quad \text{for all } i
 \]</span></p>
 <section id="width-calculation" class="level3">
@@ -378,19 +373,16 @@ Note
 <figcaption class="figure-caption">Margin Width</figcaption>
 </figure>
 </div>
-<p>The width is given by:</p>
-<p><span class="math display">\[\begin{align*}
+<p>The width is given by: <span class="math display">\[\begin{align*}
 \mathbf{x_1^T w} - \mathbf{x_2^T w} &amp;= 2 \\
 (\mathbf{x_1}-\mathbf{x_2})^T\mathbf{w} &amp;= 2\\
 ||\mathbf{x_1} - \mathbf{x_2}||_2||\mathbf{w}||_2 \cos(\theta) &amp;= 2 \\
 \therefore ||\mathbf{x_1} - \mathbf{x_2}||_2 &amp;= \frac{2}{||\mathbf{w}||_2}
 \end{align*}\]</span></p>
-<p>Hence, our objective can be restated as:</p>
-<p><span class="math display">\[
+<p>Hence, our objective can be restated as: <span class="math display">\[
 \max_{\mathbf{w}}  \frac{2}{||\mathbf{w}||^2_2} \quad \text{subject to} \quad (\mathbf{w^T x_i})y_i \ge 1 \quad \text{for all } i
 \]</span></p>
-<p>Equivalently, we can frame it as a minimization problem:</p>
-<p><span class="math display">\[
+<p>Equivalently, we can frame it as a minimization problem: <span class="math display">\[
 \min_{\mathbf{w}}  \frac{1}{2}||\mathbf{w}||^2_2 \quad \text{subject to} \quad (\mathbf{w^T x_i})y_i \ge 1 \quad \text{for all } i
 \]</span></p>
 <p>In summary, finding the separating hyperplane with the maximum margin is equivalent to finding the one with the smallest possible normal vector <span class="math inline">\(\mathbf{w}\)</span>.</p>
@@ -399,91 +391,78 @@ Note
 </section>
 <section id="constrained-optimization-and-dual-problem-in-lagrange-multipliers" class="level1">
 <h1>Constrained Optimization and Dual Problem in Lagrange Multipliers</h1>
-<p>In the realm of constrained optimization, we encounter problems formulated as follows:</p>
-<p><span class="math display">\[\begin{align*}
+<p>In the realm of constrained optimization, we encounter problems formulated as follows: <span class="math display">\[\begin{align*}
 \min_{\mathbf{w}} f(\mathbf{w}) \\
 s.t. \ g(\mathbf{w}) \le 0
 \end{align*}\]</span></p>
 <p>To tackle such problems effectively, the method of <strong>Lagrange Multipliers</strong> comes into play. Lagrange multipliers are instrumental in solving constrained optimization problems by identifying optimal values of an objective function while adhering to a set of constraints. In this method, the constraints are seamlessly integrated into the objective function through the introduction of auxiliary variables known as Lagrange multipliers.</p>
 <section id="lagrange-function" class="level2">
 <h2 class="anchored" data-anchor-id="lagrange-function">Lagrange Function</h2>
-<p>For the optimization problem described above, the Lagrange function, denoted as <span class="math inline">\(\mathcal{L}(\mathbf{w}, \alpha)\)</span>, is defined as follows:</p>
-<p><span class="math display">\[
-\mathcal{L}(\mathbf{w}, \alpha) = f(\mathbf{w}) + \alpha^T g(\mathbf{w}) \quad \text{for all } \mathbf{w}
+<p>For the optimization problem described above, the Lagrange function, denoted as <span class="math inline">\(\mathcal{L}(\mathbf{w}, \boldsymbol{\alpha})\)</span>, is defined as follows: <span class="math display">\[
+\mathcal{L}(\mathbf{w}, \boldsymbol{\alpha}) = f(\mathbf{w}) + \boldsymbol{\alpha}^T g(\mathbf{w}) \quad \text{for all } \mathbf{w}
 \]</span></p>
-<p>Here, <span class="math inline">\(\alpha\)</span> is a vector of Lagrange multipliers, constrained to be non-negative (<span class="math inline">\(\alpha \ge \mathbf{0}\)</span>).</p>
-<p>Maximizing the Lagrange function with respect to <span class="math inline">\(\alpha\)</span> leads us to the following formulation:</p>
-<p><span class="math display">\[\begin{align*}
-\max_{\alpha \ge \mathbf{0}} \mathcal{L}(\mathbf{w}, \alpha) &amp;= \max_{\alpha \ge \mathbf{0}} \left(f(\mathbf{w}) + \alpha^T g(\mathbf{w})\right) \\
+<p>Here, <span class="math inline">\(\boldsymbol{\alpha}\)</span> is a vector of Lagrange multipliers, constrained to be non-negative (<span class="math inline">\(\boldsymbol{\alpha} \ge \mathbf{0}\)</span>).</p>
+<p>Maximizing the Lagrange function with respect to <span class="math inline">\(\boldsymbol{\alpha}\)</span> leads us to the following formulation: <span class="math display">\[\begin{align*}
+\max_{\boldsymbol{\alpha} \ge \mathbf{0}} \mathcal{L}(\mathbf{w}, \boldsymbol{\alpha}) &amp;= \max_{\boldsymbol{\alpha} \ge \mathbf{0}} \left(f(\mathbf{w}) + \boldsymbol{\alpha}^T g(\mathbf{w})\right) \\
 &amp;=
 \begin{cases}
 \infty &amp; \text{if } g(\mathbf{w}) &gt; \mathbf{0} \\
 f(\mathbf{w}) &amp; \text{if } g(\mathbf{w}) \le \mathbf{0}
 \end{cases}
 \end{align*}\]</span></p>
-<p>Since the Lagrange function is equivalent to <span class="math inline">\(f(\mathbf{w})\)</span> when <span class="math inline">\(g(\mathbf{w}) \le \mathbf{0}\)</span>, we can rewrite our original problem as follows:</p>
-<p><span class="math display">\[\begin{align*}
-\min_{\mathbf{w}} f(\mathbf{w}) &amp;= \min_{\mathbf{w}} \left[\max_{\alpha \ge \mathbf{0}} \mathcal{L}(\mathbf{w}, \alpha)\right] \\
-&amp;= \min_{\mathbf{w}} \left[\max_{\alpha \ge \mathbf{0}} \left(f(\mathbf{w}) + \alpha^T g(\mathbf{w})\right)\right]
+<p>Since the Lagrange function is equivalent to <span class="math inline">\(f(\mathbf{w})\)</span> when <span class="math inline">\(g(\mathbf{w}) \le \mathbf{0}\)</span>, we can rewrite our original problem as follows: <span class="math display">\[\begin{align*}
+\min_{\mathbf{w}} f(\mathbf{w}) &amp;= \min_{\mathbf{w}} \left[\max_{\boldsymbol{\alpha} \ge \mathbf{0}} \mathcal{L}(\mathbf{w}, \boldsymbol{\alpha})\right] \\
+&amp;= \min_{\mathbf{w}} \left[\max_{\boldsymbol{\alpha} \ge \mathbf{0}} \left(f(\mathbf{w}) + \boldsymbol{\alpha}^T g(\mathbf{w})\right)\right]
 \end{align*}\]</span></p>
-<p>In general, interchanging the positions of the min and max functions is not permissible unless all involved functions are convex. In our case, both <span class="math inline">\(f\)</span> and <span class="math inline">\(g\)</span> are convex functions, allowing us to express this as:</p>
-<p><span class="math display">\[
-\min_{\mathbf{w}} \left[\max_{\alpha \ge \mathbf{0}} \left(f(\mathbf{w}) + \alpha^T g(\mathbf{w})\right)\right] \equiv \max_{\alpha \ge \mathbf{0}} \left[\min_{\mathbf{w}} \left(f(\mathbf{w}) + \alpha^T g(\mathbf{w})\right)\right]
+<p>In general, interchanging the positions of the min and max functions is not permissible unless all involved functions are convex. In our case, both <span class="math inline">\(f\)</span> and <span class="math inline">\(g\)</span> are convex functions, allowing us to express this as: <span class="math display">\[
+\min_{\mathbf{w}} \left[\max_{\boldsymbol{\alpha} \ge \mathbf{0}} \left(f(\mathbf{w}) + \boldsymbol{\alpha}^T g(\mathbf{w})\right)\right] \equiv \max_{\boldsymbol{\alpha} \ge \mathbf{0}} \left[\min_{\mathbf{w}} \left(f(\mathbf{w}) + \boldsymbol{\alpha}^T g(\mathbf{w})\right)\right]
 \]</span></p>
 </section>
 <section id="multiple-constraints" class="level2">
 <h2 class="anchored" data-anchor-id="multiple-constraints">Multiple Constraints</h2>
-<p>Now, extending our discussion to scenarios with <span class="math inline">\(m\)</span> constraints, denoted as <span class="math inline">\(g_i(\mathbf{w}) \le \mathbf{0}\)</span> for <span class="math inline">\(i \in [1, m]\)</span>, we can represent the problem as follows:</p>
-<p><span class="math display">\[\begin{align*}
-\min_{\mathbf{w}} f(\mathbf{w}) &amp;\equiv \min_{\mathbf{w}} \left[\max_{\alpha \ge \mathbf{0}} f(\mathbf{w}) + \sum _{i=1} ^m \alpha _i g_i(\mathbf{w})\right] \\
-&amp;\equiv \max_{\alpha \ge \mathbf{0}} \left[\min_{\mathbf{w}} f(\mathbf{w}) + \sum _{i=1} ^m \alpha _i g_i(\mathbf{w})\right]
+<p>Now, extending our discussion to scenarios with <span class="math inline">\(m\)</span> constraints, denoted as <span class="math inline">\(g_i(\mathbf{w}) \le \mathbf{0}\)</span> for <span class="math inline">\(i \in [1, m]\)</span>, we can represent the problem as follows: <span class="math display">\[\begin{align*}
+\min_{\mathbf{w}} f(\mathbf{w}) &amp;\equiv \min_{\mathbf{w}} \left[\max_{\boldsymbol{\alpha} \ge \mathbf{0}} f(\mathbf{w}) + \sum _{i=1} ^m \alpha _i g_i(\mathbf{w})\right] \\
+&amp;\equiv \max_{\boldsymbol{\alpha} \ge \mathbf{0}} \left[\min_{\mathbf{w}} f(\mathbf{w}) + \sum _{i=1} ^m \alpha _i g_i(\mathbf{w})\right]
 \end{align*}\]</span></p>
 </section>
 </section>
 <section id="formulating-the-dual-problem" class="level1">
 <h1>Formulating the Dual Problem</h1>
-<p>To formalize the dual problem, we start with our objective function:</p>
-<p><span class="math display">\[
+<p>To formalize the dual problem, we start with our objective function: <span class="math display">\[
 \min_{\mathbf{w}}  \frac{1}{2}||\mathbf{w}||^2_2 \quad \text{s.t.} \ (\mathbf{w}^T\mathbf{x}_i)y_i \ge 1 \quad \forall i
 \]</span></p>
-<p>The constraints can be expressed as:</p>
-<p><span class="math display">\[\begin{align*}
+<p>The constraints can be expressed as: <span class="math display">\[\begin{align*}
 (\mathbf{w}^T\mathbf{x}_i)y_i &amp;\ge 1 \quad \forall i \\
 1 - (\mathbf{w}^T\mathbf{x}_i)y_i &amp;\le 0 \quad \forall i
 \end{align*}\]</span></p>
-<p>Introducing Lagrange multipliers <span class="math inline">\(\alpha \in \mathbb{R}^d\)</span>, we construct the Lagrange function:</p>
-<p><span class="math display">\[\begin{align*}
-\mathcal{L}(\mathbf{w}, \alpha) &amp;= \frac{1}{2}||\mathbf{w}||^2_2 + \sum _{i=1} ^n \alpha _i (1 - (\mathbf{w}^T\mathbf{x}_i)y_i)
+<p>Introducing Lagrange multipliers <span class="math inline">\(\boldsymbol{\alpha} \in \mathbb{R}^d\)</span>, we construct the Lagrange function: <span class="math display">\[\begin{align*}
+\mathcal{L}(\mathbf{w}, \boldsymbol{\alpha}) &amp;= \frac{1}{2}||\mathbf{w}||^2_2 + \sum _{i=1} ^n \alpha _i (1 - (\mathbf{w}^T\mathbf{x}_i)y_i)
 \end{align*}\]</span></p>
-<p>Now, considering the duality principle, we arrive at:</p>
-<p><span class="math display">\[\begin{align*}
-\min_{\mathbf{w}} \max_{\alpha \ge \mathbf{0}} \left[\frac{1}{2}||\mathbf{w}||^2_2 + \sum _{i=1} ^n \alpha _i (1 - (\mathbf{w}^T\mathbf{x}_i)y_i)\right] &amp;\equiv \max_{\alpha \ge \mathbf{0}} \min_{\mathbf{w}} \left[\frac{1}{2}||\mathbf{w}||^2_2 + \sum _{i=1} ^n \alpha _i (1 - (\mathbf{w}^T\mathbf{x}_i)y_i)\right]
+<p>Now, considering the duality principle, we arrive at: <span class="math display">\[\begin{align*}
+\min_{\mathbf{w}} \max_{\boldsymbol{\alpha} \ge \mathbf{0}} \left[\frac{1}{2}||\mathbf{w}||^2_2 + \sum _{i=1} ^n \alpha _i (1 - (\mathbf{w}^T\mathbf{x}_i)y_i)\right] &amp;\equiv \max_{\boldsymbol{\alpha} \ge \mathbf{0}} \min_{\mathbf{w}} \left[\frac{1}{2}||\mathbf{w}||^2_2 + \sum _{i=1} ^n \alpha _i (1 - (\mathbf{w}^T\mathbf{x}_i)y_i)\right]
 \end{align*}\]</span></p>
-<p>Solving for the inner function of the dual problem, we obtain:</p>
-<p><span class="math display">\[\begin{align*}
-\mathbf{w}_{\alpha}^* - \sum _{i=1} ^n \alpha _i \mathbf{x}_i y_i = 0
+<p>Solving for the inner function of the dual problem, we obtain: <span class="math display">\[\begin{align*}
+\mathbf{w}_{\boldsymbol{\alpha}}^* - \sum _{i=1} ^n \alpha _i \mathbf{x}_i y_i = 0
 \end{align*}\]</span></p>
-<p>This leads to a vectorized form:</p>
-<p><span class="math display">\[
-\mathbf{w}_{\alpha}^* = \mathbf{XY}\alpha \quad \ldots[1]
+<p>This leads to a vectorized form: <span class="math display">\[
+\mathbf{w}_{\boldsymbol{\alpha}}^* = \mathbf{XY}\boldsymbol{\alpha} \quad \ldots[1]
 \]</span></p>
-<p>Here, <span class="math inline">\(\mathbf{X} \in \mathbb{R}^{d \times n}\)</span> represents the dataset, <span class="math inline">\(\mathbf{Y} \in \mathbb{R}^{n \times n}\)</span> is a diagonal matrix with label values on its diagonals, and <span class="math inline">\(\alpha \in \mathbb{R}^{n}\)</span>.</p>
+<p>Here, <span class="math inline">\(\mathbf{X} \in \mathbb{R}^{d \times n}\)</span> represents the dataset, <span class="math inline">\(\mathbf{Y} \in \mathbb{R}^{n \times n}\)</span> is a diagonal matrix with label values on its diagonals, and <span class="math inline">\(\boldsymbol{\alpha} \in \mathbb{R}^{n}\)</span>.</p>
 <p>Rewriting the outer dual function, we get, <span class="math display">\[\begin{align*}
-&amp;\max_{\alpha \ge \mathbf{0}} \left[ \frac{1}{2}||\mathbf{w}||^2_2 + \sum _{i=1} ^n \alpha _i (1 - (\mathbf{w}^T\mathbf{x}_i)y_i) \right] \\
-&amp;= \max_{\alpha \ge \mathbf{0}} \left[ \frac{1}{2}\mathbf{w}^T\mathbf{w} + \sum _{i=1} ^n \alpha_i -  \mathbf{w}^T\mathbf{XY}\alpha \right] \\
-&amp;= \max_{\alpha \ge \mathbf{0}} \left[ \frac{1}{2}(\mathbf{XY}\alpha)^T(\mathbf{XY}\alpha) + \sum _{i=1} ^n \alpha_i -  (\mathbf{XY}\alpha)^T(\mathbf{XY}\alpha) \right] \quad \ldots\text{from }[1] \\
-&amp;= \max_{\alpha \ge \mathbf{0}} \left[ \sum _{i=1} ^n \alpha_i -  \frac{1}{2}(\mathbf{XY}\alpha)^T(\mathbf{XY}\alpha) \right] \\
+&amp;\max_{\boldsymbol{\alpha} \ge \mathbf{0}} \left[ \frac{1}{2}||\mathbf{w}||^2_2 + \sum _{i=1} ^n \alpha _i (1 - (\mathbf{w}^T\mathbf{x}_i)y_i) \right] \\
+&amp;= \max_{\boldsymbol{\alpha} \ge \mathbf{0}} \left[ \frac{1}{2}\mathbf{w}^T\mathbf{w} + \sum _{i=1} ^n \alpha_i -  \mathbf{w}^T\mathbf{XY}\boldsymbol{\alpha} \right] \\
+&amp;= \max_{\boldsymbol{\alpha} \ge \mathbf{0}} \left[ \frac{1}{2}(\mathbf{XY}\boldsymbol{\alpha})^T(\mathbf{XY}\boldsymbol{\alpha}) + \sum _{i=1} ^n \alpha_i -  (\mathbf{XY}\boldsymbol{\alpha})^T(\mathbf{XY}\boldsymbol{\alpha}) \right] \quad \ldots\text{from }[1] \\
+&amp;= \max_{\boldsymbol{\alpha} \ge \mathbf{0}} \left[ \sum _{i=1} ^n \alpha_i -  \frac{1}{2}(\mathbf{XY}\boldsymbol{\alpha})^T(\mathbf{XY}\boldsymbol{\alpha}) \right] \\
 \end{align*}\]</span></p>
 </section>
 <section id="observations-1" class="level1">
 <h1>Observations</h1>
 <ol type="1">
-<li><p><strong>Dual and Primal Variables:</strong> The duality of the SVM problem manifests in the dimensions of its variables. The dual problem is characterized by <span class="math inline">\(\alpha \ge \mathbf{0}\)</span>, residing in <span class="math inline">\(\mathbb{R}^n_+\)</span>, while the primal problem deals with <span class="math inline">\(\mathbf{w}\)</span> in <span class="math inline">\(\mathbb{R}^d\)</span>.</p></li>
+<li><p><strong>Dual and Primal Variables:</strong> The duality of the SVM problem manifests in the dimensions of its variables. The dual problem is characterized by <span class="math inline">\(\boldsymbol{\alpha} \ge \mathbf{0}\)</span>, residing in <span class="math inline">\(\mathbb{R}^n\)</span>, while the primal problem deals with <span class="math inline">\(\mathbf{w}\)</span> in <span class="math inline">\(\mathbb{R}^d\)</span>.</p></li>
 <li><p><strong>Simplicity of Dual Problem:</strong> Solving the dual problem is often considered “easier” compared to the primal problem.</p></li>
 <li><p><strong>Kernelization Potential:</strong> The dual problem’s dependence on <span class="math inline">\(\mathbf{X}^T\mathbf{X}\)</span> opens the door for kernelization techniques.</p></li>
 </ol>
-<p>Let’s now examine the equation:</p>
-<p><span class="math display">\[
+<p>Let’s now examine the equation: <span class="math display">\[
 \mathbf{w}^* = \sum _{i=1} ^n \alpha _i \mathbf{x}_i y_i
 \]</span></p>
 <section id="observations-on-the-equation" class="level3">
@@ -498,44 +477,34 @@ f(\mathbf{w}) &amp; \text{if } g(\mathbf{w}) \le \mathbf{0}
 <h1>Support Vector Machine (SVM)</h1>
 <section id="duality-revisited" class="level2">
 <h2 class="anchored" data-anchor-id="duality-revisited">Duality Revisited</h2>
-<p>Revisiting the Lagrangian function:</p>
-<p><span class="math display">\[
-\min_{\mathbf{w}} \left [\max_{\alpha \ge \mathbf{0}} f(\mathbf{w}) + \alpha^T g(\mathbf{w}) \right ] \equiv \max_{\alpha \ge \mathbf{0}} \left [ \min_{\mathbf{w}} f(\mathbf{w}) + \alpha^T g(\mathbf{w}) \right ]
+<p>Revisiting the Lagrangian function: <span class="math display">\[
+\min_{\mathbf{w}} \left [\max_{\boldsymbol{\alpha} \ge \mathbf{0}} f(\mathbf{w}) + \boldsymbol{\alpha}^T g(\mathbf{w}) \right ] \equiv \max_{\boldsymbol{\alpha} \ge \mathbf{0}} \left [ \min_{\mathbf{w}} f(\mathbf{w}) + \boldsymbol{\alpha}^T g(\mathbf{w}) \right ]
 \]</span></p>
-<p>Here, the primal function is on the left-hand side, and the dual function is on the right. The solutions for the primal and dual functions are denoted as <span class="math inline">\(\mathbf{w}^∗\)</span> and <span class="math inline">\(\alpha^*\)</span>, respectively. When these solutions are substituted into the equation, we obtain:</p>
-<p><span class="math display">\[
-\max_{\alpha \ge \mathbf{0}} f(\mathbf{w}^*) + \alpha^T g(\mathbf{w}^*) =  \min_{\mathbf{w}} f(\mathbf{w}) + \alpha^{*T} g(\mathbf{w})
+<p>Here, the primal function is on the left-hand side, and the dual function is on the right. The solutions for the primal and dual functions are denoted as <span class="math inline">\(\mathbf{w}^∗\)</span> and <span class="math inline">\(\boldsymbol{\alpha}^*\)</span>, respectively. When these solutions are substituted into the equation, we obtain: <span class="math display">\[
+\max_{\boldsymbol{\alpha} \ge \mathbf{0}} f(\mathbf{w}^*) + \boldsymbol{\alpha}^T g(\mathbf{w}^*) =  \min_{\mathbf{w}} f(\mathbf{w}) + \boldsymbol{\alpha}^{*T} g(\mathbf{w})
 \]</span></p>
-<p>Given that <span class="math inline">\(g(\mathbf{w}^*) \le \mathbf{0}\)</span>, the left-hand side simplifies to <span class="math inline">\(f(\mathbf{w}^*)\)</span>:</p>
-<p><span class="math display">\[
-f(\mathbf{w}^*) =  \min_{\mathbf{w}} f(\mathbf{w}) + \alpha^{*T} g(\mathbf{w})
+<p>Given that <span class="math inline">\(g(\mathbf{w}^*) \le \mathbf{0}\)</span>, the left-hand side simplifies to <span class="math inline">\(f(\mathbf{w}^*)\)</span>: <span class="math display">\[
+f(\mathbf{w}^*) =  \min_{\mathbf{w}} f(\mathbf{w}) + \boldsymbol{\alpha}^{*T} g(\mathbf{w})
 \]</span></p>
-<p>Substituting <span class="math inline">\(\mathbf{w}^*\)</span> for <span class="math inline">\(\mathbf{w}\)</span> in the right-hand side yields a new right-hand side that is greater than or equal to the current one:</p>
-<p><span class="math display">\[
-f(\mathbf{w}^*) \le f(\mathbf{w}^*) + \alpha^{*T} g(\mathbf{w}^*)
+<p>Substituting <span class="math inline">\(\mathbf{w}^*\)</span> for <span class="math inline">\(\mathbf{w}\)</span> in the right-hand side yields a new right-hand side that is greater than or equal to the current one: <span class="math display">\[
+f(\mathbf{w}^*) \le f(\mathbf{w}^*) + \boldsymbol{\alpha}^{*T} g(\mathbf{w}^*)
 \]</span></p>
-<p>Hence, we can infer:</p>
-<p><span class="math display">\[
-\alpha^{*T} g(\mathbf{w}^*) \ge \mathbf{0}
+<p>Hence, we can infer: <span class="math display">\[
+\boldsymbol{\alpha}^{*T} g(\mathbf{w}^*) \ge \mathbf{0}
 \]</span></p>
-<p>However, considering the constraints, where <span class="math inline">\(\alpha^{*} \ge \mathbf{0}\)</span> and <span class="math inline">\(g(\mathbf{w}^*)\le \mathbf{0}\)</span>, we arrive at:</p>
-<p><span class="math display">\[
-\alpha^{*T} g(\mathbf{w}^*) \le \mathbf{0}
+<p>However, considering the constraints, where <span class="math inline">\(\boldsymbol{\alpha}^{*} \ge \mathbf{0}\)</span> and <span class="math inline">\(g(\mathbf{w}^*)\le \mathbf{0}\)</span>, we arrive at: <span class="math display">\[
+\boldsymbol{\alpha}^{*T} g(\mathbf{w}^*) \le \mathbf{0}
 \]</span></p>
-<p>From this, we deduce:</p>
-<p><span class="math display">\[
-\alpha^{*T} g(\mathbf{w}^*) = \mathbf{0}
+<p>From this, we deduce: <span class="math display">\[
+\boldsymbol{\alpha}^{*T} g(\mathbf{w}^*) = \mathbf{0}
 \]</span></p>
-<p>Extending this equation for multiple constraints, we obtain:</p>
-<p><span class="math display">\[
+<p>Extending this equation for multiple constraints, we obtain: <span class="math display">\[
 \alpha_i^{*} g(w^*_i) = 0 \quad \forall i
 \]</span></p>
-<p>Hence, if one of the two values is greater than zero, the other must be zero. Considering <span class="math inline">\(g(\mathbf{w}^*) = 1-(\mathbf{w}^T\mathbf{x}_i)y_i\)</span>, we can express this as:</p>
-<p><span class="math display">\[
+<p>Hence, if one of the two values is greater than zero, the other must be zero. Considering <span class="math inline">\(g(\mathbf{w}^*) = 1-(\mathbf{w}^T\mathbf{x}_i)y_i\)</span>, we can express this as: <span class="math display">\[
 \alpha_i^{*} (1-(\mathbf{w}^T\mathbf{x}_i)y_i) = 0 \quad \forall i
 \]</span></p>
-<p>Importantly, when <span class="math inline">\(\alpha_i &gt; \mathbf{0}\)</span>, we deduce:</p>
-<p><span class="math display">\[
+<p>Importantly, when <span class="math inline">\(\alpha_i &gt; \mathbf{0}\)</span>, we deduce: <span class="math display">\[
 (\mathbf{w}^T\mathbf{x}_i)y_i = 1
 \]</span></p>
 <p>This implies that the <span class="math inline">\(i^{th}\)</span> data point resides on the <strong>“Supporting”</strong> hyperplane and significantly contributes to the determination of <span class="math inline">\(\mathbf{w}^*\)</span>.</p>
@@ -551,20 +520,23 @@ f(\mathbf{w}^*) \le f(\mathbf{w}^*) + \alpha^{*T} g(\mathbf{w}^*)
 <p>The Hard-Margin SVM algorithm is applicable only when the dataset is linearly separable with a margin parameter <span class="math inline">\(\gamma &gt; 0\)</span>. Its key steps include:</p>
 <ol type="1">
 <li><p><strong>Direct or Kernelized Calculation of Q:</strong> Compute the matrix <span class="math inline">\(Q=\mathbf{X}^T\mathbf{X}\)</span> directly or using a kernel, based on the dataset.</p></li>
-<li><p><strong>Gradient Descent:</strong> Employ the gradient of the dual formula, <span class="math inline">\(\alpha^T\mathbf{1} - \frac{1}{2}\alpha^T\mathbf{Y}^T Q\mathbf{Y}\alpha\)</span>, in a gradient descent algorithm to iteratively find a satisfactory set of Lagrange multipliers <span class="math inline">\(\alpha\)</span>. Initialize <span class="math inline">\(\alpha\)</span> as a zero vector in <span class="math inline">\(\mathbb{R}^n_+\)</span>.</p></li>
+<li><p><strong>Gradient Descent:</strong> Employ the gradient of the dual formula, <span class="math inline">\(\boldsymbol{\alpha}^T\mathbf{1} - \frac{1}{2}\boldsymbol{\alpha}^T\mathbf{Y}^T Q\mathbf{Y}\boldsymbol{\alpha}\)</span>, in a gradient descent algorithm to iteratively find a satisfactory set of Lagrange multipliers <span class="math inline">\(\boldsymbol{\alpha}\)</span>. Initialize <span class="math inline">\(\boldsymbol{\alpha}\)</span> as a zero vector in <span class="math inline">\(\mathbb{R}^n_+\)</span>.</p></li>
 <li><p><strong>Prediction:</strong> For prediction, follow these formulas:</p>
 <ul>
-<li>For non-kernelized SVM: <span class="math inline">\(\text{label}(\mathbf{x}_{\text{test}}) = \text{sign}( \mathbf{w}^T\mathbf{x}_{\text{test}}) = \text{sign}\left(\sum _{i=1} ^n \alpha _i y_i(\mathbf{x}_i^T\mathbf{x}_{\text{test}})\right)\)</span></li>
-<li>For kernelized SVM: <span class="math inline">\(\text{label}(\mathbf{x}_{\text{test}}) = \text{sign}(\mathbf{w}^T\boldsymbol{\phi}(\mathbf{x}_{\text{test}})) = \text{sign}\left(\sum _{i=1} ^n \alpha _i y_i k(\mathbf{x}_i^T\mathbf{x}_{\text{test}})\right)\)</span></li>
-</ul></li>
+<li>For non-kernelized SVM:</li>
+</ul>
+<p><span class="math inline">\(\textbf{label}(\mathbf{x}_{\text{test}}) = \text{sign}( \mathbf{w}^T\mathbf{x}_{\text{test}}) = \text{sign}\left(\displaystyle\sum _{i=1} ^n \alpha _i y_i(\mathbf{x}_i^T\mathbf{x}_{\text{test}})\right)\)</span></p>
+<ul>
+<li>For kernelized SVM:</li>
+</ul>
+<p><span class="math inline">\(\textbf{label}(\mathbf{x}_{\text{test}}) = \text{sign}(\mathbf{w}^T\boldsymbol{\phi}(\mathbf{x}_{\text{test}})) = \text{sign}\left(\displaystyle\sum _{i=1} ^n \alpha _i y_i k(\mathbf{x}_i^T\mathbf{x}_{\text{test}})\right)\)</span></p></li>
 </ol>
 </section>
 </section>
 <section id="soft-margin-svm" class="level1">
 <h1>Soft-Margin SVM</h1>
 <p><strong>Soft-Margin SVM</strong> extends the standard SVM algorithm to accommodate some misclassifications in the training data. This extension is particularly useful when dealing with non-linearly separable data. It introduces a regularization parameter (<span class="math inline">\(C\)</span>) to control the balance between maximizing the margin and allowing for misclassifications.</p>
-<p>The primal formulation for this extension can be expressed as:</p>
-<p><span class="math display">\[
+<p>The primal formulation for this extension can be expressed as: <span class="math display">\[
 \min_{\mathbf{w}, \boldsymbol{\epsilon}}  \frac{1}{2}||\mathbf{w}||^2_2 + C\sum _{i=1} ^n\epsilon_i \quad s.t. \quad (\mathbf{w}^T\mathbf{x}_i)y_i + \epsilon_i \ge 1;\quad \epsilon_i \ge 0\quad \forall i
 \]</span></p>
 <p>Here, <span class="math inline">\(C\)</span> serves as a hyperparameter governing the trade-off between maximizing the margin and minimizing misclassifications. The additional variable <span class="math inline">\(\epsilon_i\)</span> represents the adjustment needed to satisfy the constraints.required to satisfy the constraints.</p>
