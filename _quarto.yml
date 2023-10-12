@@ -56,6 +56,8 @@ website:
         contents:
           - href: ./notes/Not01.html
             text: Tutorial-01
+          - href: ./notes/Not02.html
+            text: Tutorial-02
           - href: ./notes/Not03.html
             text: Tutorial-03
           - href: ./notes/Not05.html
