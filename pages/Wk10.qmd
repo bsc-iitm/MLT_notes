@@ -292,5 +292,5 @@ $$
 \min_{\mathbf{w}, \boldsymbol{\epsilon}}  \frac{1}{2}||\mathbf{w}||^2_2 + C\sum _{i=1} ^n\epsilon_i \quad s.t. \quad (\mathbf{w}^T\mathbf{x}_i)y_i + \epsilon_i \ge 1;\quad \epsilon_i \ge 0\quad \forall i
 $$
 
-Here, $C$ serves as a hyperparameter governing the trade-off between maximizing the margin and minimizing misclassifications. The additional variable $\epsilon_i$ represents the adjustment needed to satisfy the constraints.required to satisfy the constraints.
+Here, $C$ serves as a hyperparameter governing the trade-off between maximizing the margin and minimizing misclassifications. The additional variable $\epsilon_i$ represents the adjustment needed to satisfy the constraints.
 

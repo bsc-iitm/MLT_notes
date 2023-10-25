@@ -54,13 +54,13 @@ website:
 
       - section: "Supplemental Notes"
         contents:
-          - href: ./notes/Not01.html
+          - href: pages/Not01.ipynb
             text: Tutorial-01
-          - href: ./notes/Not02.html
+          - href: pages/Not02.ipynb
             text: Tutorial-02
-          - href: ./notes/Not03.html
+          - href: pages/Not03.ipynb
             text: Tutorial-03
-          - href: ./notes/Not05.html
+          - href: pages/Not05.ipynb
             text: Tutorial-05
 
 format:
