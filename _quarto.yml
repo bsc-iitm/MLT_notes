@@ -60,6 +60,8 @@ website:
             text: Tutorial-02
           - href: pages/Not03.ipynb
             text: Tutorial-03
+          - href: pages/Not04.ipynb
+            text: Tutorial-04
           - href: pages/Not05.ipynb
             text: Tutorial-05
 

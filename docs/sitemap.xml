@@ -2,70 +2,74 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://bsc-iitm.github.io/MLT_notes/index.html</loc>
-    <lastmod>2023-10-25T15:37:09.266Z</lastmod>
+    <lastmod>2023-10-26T13:12:08.402Z</lastmod>
   </url>
   <url>
-    <loc>https://bsc-iitm.github.io/MLT_notes/pages/Wk10.html</loc>
-    <lastmod>2023-10-25T15:37:08.437Z</lastmod>
-  </url>
-  <url>
-    <loc>https://bsc-iitm.github.io/MLT_notes/pages/Not03.html</loc>
-    <lastmod>2023-10-25T15:37:07.398Z</lastmod>
-  </url>
-  <url>
-    <loc>https://bsc-iitm.github.io/MLT_notes/pages/Not01.html</loc>
-    <lastmod>2023-10-25T15:37:04.268Z</lastmod>
-  </url>
-  <url>
-    <loc>https://bsc-iitm.github.io/MLT_notes/pages/Wk02.html</loc>
-    <lastmod>2023-10-25T15:37:03.167Z</lastmod>
-  </url>
-  <url>
-    <loc>https://bsc-iitm.github.io/MLT_notes/pages/Wk08.html</loc>
-    <lastmod>2023-10-25T15:37:02.368Z</lastmod>
-  </url>
-  <url>
-    <loc>https://bsc-iitm.github.io/MLT_notes/pages/Wk06.html</loc>
-    <lastmod>2023-10-25T15:37:01.230Z</lastmod>
-  </url>
-  <url>
-    <loc>https://bsc-iitm.github.io/MLT_notes/pages/Wk04.html</loc>
-    <lastmod>2023-10-25T15:37:00.174Z</lastmod>
-  </url>
-  <url>
-    <loc>https://bsc-iitm.github.io/MLT_notes/pages/Wk01.html</loc>
-    <lastmod>2023-10-25T15:36:59.234Z</lastmod>
-  </url>
-  <url>
-    <loc>https://bsc-iitm.github.io/MLT_notes/pages/Wk03.html</loc>
-    <lastmod>2023-10-25T15:36:59.717Z</lastmod>
-  </url>
-  <url>
-    <loc>https://bsc-iitm.github.io/MLT_notes/pages/Wk05.html</loc>
-    <lastmod>2023-10-25T15:37:00.720Z</lastmod>
-  </url>
-  <url>
-    <loc>https://bsc-iitm.github.io/MLT_notes/pages/Wk07.html</loc>
-    <lastmod>2023-10-25T15:37:01.748Z</lastmod>
-  </url>
-  <url>
-    <loc>https://bsc-iitm.github.io/MLT_notes/pages/Wk11.html</loc>
-    <lastmod>2023-10-25T15:37:02.704Z</lastmod>
-  </url>
-  <url>
-    <loc>https://bsc-iitm.github.io/MLT_notes/pages/Wk09.html</loc>
-    <lastmod>2023-10-25T15:37:03.714Z</lastmod>
-  </url>
-  <url>
-    <loc>https://bsc-iitm.github.io/MLT_notes/pages/Not02.html</loc>
-    <lastmod>2023-10-25T15:37:04.740Z</lastmod>
+    <loc>https://bsc-iitm.github.io/MLT_notes/pages/Not04.html</loc>
+    <lastmod>2023-10-26T13:12:07.635Z</lastmod>
   </url>
   <url>
     <loc>https://bsc-iitm.github.io/MLT_notes/pages/Not05.html</loc>
-    <lastmod>2023-10-25T15:37:07.859Z</lastmod>
+    <lastmod>2023-10-26T13:12:06.739Z</lastmod>
+  </url>
+  <url>
+    <loc>https://bsc-iitm.github.io/MLT_notes/pages/Not02.html</loc>
+    <lastmod>2023-10-26T13:12:03.913Z</lastmod>
+  </url>
+  <url>
+    <loc>https://bsc-iitm.github.io/MLT_notes/pages/Wk09.html</loc>
+    <lastmod>2023-10-26T13:12:02.965Z</lastmod>
+  </url>
+  <url>
+    <loc>https://bsc-iitm.github.io/MLT_notes/pages/Wk11.html</loc>
+    <lastmod>2023-10-26T13:12:02.050Z</lastmod>
+  </url>
+  <url>
+    <loc>https://bsc-iitm.github.io/MLT_notes/pages/Wk07.html</loc>
+    <lastmod>2023-10-26T13:12:01.164Z</lastmod>
+  </url>
+  <url>
+    <loc>https://bsc-iitm.github.io/MLT_notes/pages/Wk05.html</loc>
+    <lastmod>2023-10-26T13:12:00.240Z</lastmod>
+  </url>
+  <url>
+    <loc>https://bsc-iitm.github.io/MLT_notes/pages/Wk03.html</loc>
+    <lastmod>2023-10-26T13:11:59.306Z</lastmod>
+  </url>
+  <url>
+    <loc>https://bsc-iitm.github.io/MLT_notes/pages/Wk01.html</loc>
+    <lastmod>2023-10-26T13:11:58.855Z</lastmod>
+  </url>
+  <url>
+    <loc>https://bsc-iitm.github.io/MLT_notes/pages/Wk04.html</loc>
+    <lastmod>2023-10-26T13:11:59.748Z</lastmod>
+  </url>
+  <url>
+    <loc>https://bsc-iitm.github.io/MLT_notes/pages/Wk06.html</loc>
+    <lastmod>2023-10-26T13:12:00.697Z</lastmod>
+  </url>
+  <url>
+    <loc>https://bsc-iitm.github.io/MLT_notes/pages/Wk08.html</loc>
+    <lastmod>2023-10-26T13:12:01.725Z</lastmod>
+  </url>
+  <url>
+    <loc>https://bsc-iitm.github.io/MLT_notes/pages/Wk02.html</loc>
+    <lastmod>2023-10-26T13:12:02.470Z</lastmod>
+  </url>
+  <url>
+    <loc>https://bsc-iitm.github.io/MLT_notes/pages/Not01.html</loc>
+    <lastmod>2023-10-26T13:12:03.476Z</lastmod>
+  </url>
+  <url>
+    <loc>https://bsc-iitm.github.io/MLT_notes/pages/Not03.html</loc>
+    <lastmod>2023-10-26T13:12:06.313Z</lastmod>
+  </url>
+  <url>
+    <loc>https://bsc-iitm.github.io/MLT_notes/pages/Wk10.html</loc>
+    <lastmod>2023-10-26T13:12:07.273Z</lastmod>
   </url>
   <url>
     <loc>https://bsc-iitm.github.io/MLT_notes/about.html</loc>
-    <lastmod>2023-10-25T15:37:08.785Z</lastmod>
+    <lastmod>2023-10-26T13:12:07.967Z</lastmod>
   </url>
 </urlset>
