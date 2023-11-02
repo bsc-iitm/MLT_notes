@@ -1,0 +1,1129 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.450">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Vivek Sivaramakrishnan">
+
+<title>CS2007: Machine Learning Techniques - Week 6: Ridge, Lasso Regression &amp; Cross Validation Methods</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../pages/Not05.html" rel="prev">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js"></script>
+  <script>document.addEventListener("DOMContentLoaded", function () {
+ var mathElements = document.getElementsByClassName("math");
+ var macros = [];
+ for (var i = 0; i < mathElements.length; i++) {
+  var texText = mathElements[i].firstChild;
+  if (mathElements[i].tagName == "SPAN") {
+   katex.render(texText.data, mathElements[i], {
+    displayMode: mathElements[i].classList.contains('display'),
+    throwOnError: false,
+    macros: macros,
+    fleqn: false
+   });
+}}});
+  </script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css">
+
+<meta property="og:title" content="CS2007: Machine Learning Techniques - Week 6: Ridge, Lasso Regression &amp; Cross Validation Methods">
+<meta property="og:description" content="">
+<meta property="og:image" content="https://bsc-iitm.github.io/MLT_notes/pages/Not06_files/figure-html/cell-2-output-1.png">
+<meta property="og:site-name" content="CS2007: Machine Learning Techniques">
+<meta property="og:image:height" content="409">
+<meta property="og:image:width" content="434">
+</head>
+
+<body class="nav-sidebar docked">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../pages/Not01.html">Supplemental Notes</a></li><li class="breadcrumb-item"><a href="../pages/Not06.html">Tutorial-06</a></li></ol></nav>
+      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+      </a>
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation docked overflow-auto">
+    <div class="pt-lg-2 mt-2 text-center sidebar-header">
+      <a href="../index.html" class="sidebar-logo-link">
+      <img src="../images/logo.png" alt="" class="sidebar-logo py-0 d-lg-inline d-none">
+      </a>
+      <div class="sidebar-tools-main">
+    <a href="https://github.com/bsc-iitm/MLT_notes" rel="" title="" class="quarto-navigation-tool px-1" aria-label=""><i class="bi bi-github"></i></a>
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="false">
+ <span class="menu-text">Home</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Content</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../about.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">About</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="false">
+ <span class="menu-text">Notes</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../pages/Wk01.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Week-01</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../pages/Wk02.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Week-02</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../pages/Wk03.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Week-03</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../pages/Wk04.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Week-04</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../pages/Wk05.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Week-05</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../pages/Wk06.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Week-06</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../pages/Wk07.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Week-07</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../pages/Wk08.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Week-08</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../pages/Wk09.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Week-09</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../pages/Wk10.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Week-10</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+ <span class="menu-text">Supplemental Notes</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../pages/Not01.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Tutorial-01</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../pages/Not02.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Tutorial-02</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../pages/Not03.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Tutorial-03</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../pages/Not04.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Tutorial-04</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../pages/Not05.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Tutorial-05</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../pages/Not06.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Tutorial-06</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#data-generation-with-correlated-features" id="toc-data-generation-with-correlated-features" class="nav-link active" data-scroll-target="#data-generation-with-correlated-features">Data Generation with correlated features</a></li>
+  <li><a href="#maximum-likelihood-estimator-for-finding-w" id="toc-maximum-likelihood-estimator-for-finding-w" class="nav-link" data-scroll-target="#maximum-likelihood-estimator-for-finding-w">Maximum-Likelihood Estimator for finding <strong>w</strong></a></li>
+  <li><a href="#goodness-of-ml-estimator" id="toc-goodness-of-ml-estimator" class="nav-link" data-scroll-target="#goodness-of-ml-estimator">Goodness of ML Estimator</a>
+  <ul class="collapse">
+  <li><a href="#bias-variance-decomposition-of-mse" id="toc-bias-variance-decomposition-of-mse" class="nav-link" data-scroll-target="#bias-variance-decomposition-of-mse">Bias-Variance Decomposition of MSE</a>
+  <ul class="collapse">
+  <li><a href="#applying-bias-variance-decomposition-on-ml-estimator-of-w" id="toc-applying-bias-variance-decomposition-on-ml-estimator-of-w" class="nav-link" data-scroll-target="#applying-bias-variance-decomposition-on-ml-estimator-of-w">Applying Bias-Variance decomposition on ML Estimator of <strong>w</strong></a></li>
+  <li><a href="#derivation-of-decomposition" id="toc-derivation-of-decomposition" class="nav-link" data-scroll-target="#derivation-of-decomposition">Derivation of decomposition</a></li>
+  </ul></li>
+  <li><a href="#in-pursuit-of-a-better-estimator" id="toc-in-pursuit-of-a-better-estimator" class="nav-link" data-scroll-target="#in-pursuit-of-a-better-estimator">In pursuit of a <em>better</em> estimator</a>
+  <ul class="collapse">
+  <li><a href="#reducing-the-trace-value" id="toc-reducing-the-trace-value" class="nav-link" data-scroll-target="#reducing-the-trace-value">Reducing the Trace value</a></li>
+  </ul></li>
+  </ul></li>
+  <li><a href="#ridge-regression" id="toc-ridge-regression" class="nav-link" data-scroll-target="#ridge-regression">Ridge Regression</a>
+  <ul class="collapse">
+  <li><a href="#closed-form-solution-for-ridge-estimator" id="toc-closed-form-solution-for-ridge-estimator" class="nav-link" data-scroll-target="#closed-form-solution-for-ridge-estimator">Closed-Form Solution for Ridge Estimator</a></li>
+  </ul></li>
+  <li><a href="#comparison-of-ridge-and-linear-regression-solutions" id="toc-comparison-of-ridge-and-linear-regression-solutions" class="nav-link" data-scroll-target="#comparison-of-ridge-and-linear-regression-solutions">Comparison of Ridge and Linear Regression Solutions</a></li>
+  <li><a href="#lasso-regression" id="toc-lasso-regression" class="nav-link" data-scroll-target="#lasso-regression">Lasso Regression</a>
+  <ul class="collapse">
+  <li><a href="#solution-for-lasso-regression" id="toc-solution-for-lasso-regression" class="nav-link" data-scroll-target="#solution-for-lasso-regression">Solution for Lasso Regression</a></li>
+  </ul></li>
+  <li><a href="#best-λ" id="toc-best-λ" class="nav-link" data-scroll-target="#best-λ">Best λ?</a>
+  <ul class="collapse">
+  <li><a href="#validation" id="toc-validation" class="nav-link" data-scroll-target="#validation">Validation</a></li>
+  <li><a href="#k-fold-cross-validation" id="toc-k-fold-cross-validation" class="nav-link" data-scroll-target="#k-fold-cross-validation">K-Fold Cross Validation</a></li>
+  <li><a href="#leave-one-out-cross-validation" id="toc-leave-one-out-cross-validation" class="nav-link" data-scroll-target="#leave-one-out-cross-validation">Leave-one-out Cross Validation</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Week 6: Ridge, Lasso Regression &amp; Cross Validation Methods</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Vivek Sivaramakrishnan </p>
+          </div>
+  </div>
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<p>Colab Link: <a href="https://colab.research.google.com/drive/1gV9xnh9etjWpUqTgwQiewSbEvc6WpZ-e?usp=sharing" target="_blank">Click here!</a></p>
+<section id="data-generation-with-correlated-features" class="level1">
+<h1>Data Generation with correlated features</h1>
+<p>For an input <span class="math inline">x_i</span>, we generate a label <span class="math inline">y_i</span> by using a fixed <span class="math inline">\mathbf{w}</span> and a random normal variable <span class="math inline">ϵ ∼ N(0, 0.1^2)</span> in the following fashion:</p>
+<p><span class="math display"> y_i = \mathbf{w}^{T}x_i + ϵ</span></p>
+<p>We generate a dataset with 100 samples, each having 50 features. We sample the first 25 features from a gaussian - meaning they are uncorrelated, and add 25 more features that are linearly correlated with the current ones.</p>
+<div class="cell" data-outputid="c20cb981-7c23-4bfc-cd21-d8e2827c5dee">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.datasets <span class="im">import</span> make_regression</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>n <span class="op">=</span> <span class="dv">100</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>d <span class="op">=</span> <span class="dv">25</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Dataset with 25 uncorrelated features</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>np.random.seed(<span class="dv">7</span>)</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="co"># X = np.random.normal(size=(n, d))</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>X, y <span class="op">=</span> make_regression(n_samples<span class="op">=</span>n, n_features<span class="op">=</span>d, noise<span class="op">=</span><span class="dv">1</span>, random_state<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Add 25 correlated features:</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> j <span class="kw">in</span> <span class="bu">range</span>(d):</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>  a <span class="op">=</span> np.random.normal(size<span class="op">=</span>d<span class="op">+</span>j)</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>  new_feature <span class="op">=</span> X<span class="op">@</span>np.vectorize(<span class="kw">lambda</span> i: <span class="bu">int</span>(i)<span class="op">*</span>np.random.randint(<span class="op">-</span><span class="dv">2</span>, high<span class="op">=</span><span class="dv">2</span>))(a<span class="op">&gt;</span><span class="dv">1</span>)</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>  X <span class="op">=</span> np.c_[X, new_feature]</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> X.T</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>plt.matshow(np.corrcoef(X))</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>cb <span class="op">=</span> plt.colorbar()</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>cb.ax.tick_params()</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Correlation Matrix'</span>)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="Not06_files/figure-html/cell-2-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+<p>We then make a sparse <span class="math inline">\mathbf{w}</span> vector with 10/50 features non-zero. We use this to generate <span class="math inline">\mathbf{y}</span> using the model discussed above.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>d <span class="op">*=</span> <span class="dv">2</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>np.random.seed(<span class="dv">69</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>r_d <span class="op">=</span> <span class="dv">10</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Make sparse w with 10 features</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>w <span class="op">=</span> np.zeros(d)</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>relevant <span class="op">=</span> np.random.randint(<span class="dv">0</span>, high<span class="op">=</span>d<span class="op">-</span><span class="dv">1</span>, size<span class="op">=</span>r_d)</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Assign some weight to these features only</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>w[relevant] <span class="op">=</span> np.random.normal(scale<span class="op">=</span><span class="dv">2</span>, size<span class="op">=</span>r_d)</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Create some noise, and find predictors</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> w.T <span class="op">@</span> X <span class="op">+</span> np.random.normal(scale<span class="op">=</span><span class="fl">0.01</span>, size<span class="op">=</span>n)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="maximum-likelihood-estimator-for-finding-w" class="level1">
+<h1>Maximum-Likelihood Estimator for finding <strong>w</strong></h1>
+<p>The closed form solution for the ML estimator to solve the linear regression problem with the given probabilistic model is the following:</p>
+<p><span class="math display">\hat{\mathbf{w}}_{ML} = (XX^T)^†Xy</span></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>w_hat_ml <span class="op">=</span> np.linalg.pinv(X <span class="op">@</span> X.T) <span class="op">@</span> X <span class="op">@</span> y</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="goodness-of-ml-estimator" class="level1">
+<h1>Goodness of ML Estimator</h1>
+<p>To quantify “goodness” of our estimator, we look at the <strong>Mean Squared Error</strong>.</p>
+<p><strong>Mean Squared Error</strong>: Let <span class="math inline">\mathbf{\hat{w}}</span> be an estimator of an unknown parameter <span class="math inline">\mathbf{w}</span>. Then we define</p>
+<p><span class="math display">\text{MSE}(\mathbf{\hat{w}}) = \mathbb{E}[||\mathbf{\hat{w}} - \mathbf{w}||^2]</span></p>
+<p>as the Mean Squared Error of our estimator.</p>
+<section id="bias-variance-decomposition-of-mse" class="level2">
+<h2 class="anchored" data-anchor-id="bias-variance-decomposition-of-mse">Bias-Variance Decomposition of MSE</h2>
+<p>The above formula for mean squared error can be rewritten as</p>
+<p><span class="math display">\text{MSE}(\mathbf{\hat{w}}) = \text{tr}(\text{Var}(\mathbf{\hat{w}})) + ||\text{Bias}(\mathbf{\hat{w}})||^2</span></p>
+<p>where <span class="math inline">\text{tr}(\text{Var}(\mathbf{\hat{w}}))</span> is the trace of the covariance matrix, and <span class="math display">\text{Bias}(\mathbf{\hat{w}}) = \mathbb{E}[\mathbf{\hat{w}}] - \mathbf{w}</span></p>
+<p>is the bias, i.e, the expected difference between the estimator <span class="math inline">\mathbf{\hat{w}}</span> and true value <span class="math inline">\mathbf{w}</span>.</p>
+<section id="applying-bias-variance-decomposition-on-ml-estimator-of-w" class="level3">
+<h3 class="anchored" data-anchor-id="applying-bias-variance-decomposition-on-ml-estimator-of-w">Applying Bias-Variance decomposition on ML Estimator of <strong>w</strong></h3>
+<p>The ML Estimator has zero bias; so we get</p>
+<p><span class="math display">
+\begin{align*}
+\text{MSE}(\mathbf{\hat{w}}_{ML}) &amp;= \text{tr}(\text{Var}(\mathbf{\hat{w}}_{ML})) \\
+&amp;= \sigma^2 \times \text{tr}((XX^T)^{-1})
+\end{align*}
+</span></p>
+</section>
+<section id="derivation-of-decomposition" class="level3">
+<h3 class="anchored" data-anchor-id="derivation-of-decomposition">Derivation of decomposition</h3>
+<p>We use the below well-known formula relating the covariance matrix <span class="math inline">\text{Var}(X)</span> to the first and second moments: <span class="math display">\mathbb{E}[X^2] = (\mathbb{E}[X])^2 + \text{Var}(X)</span></p>
+<p>Therefore we have,</p>
+<p><span class="math display">
+\begin{alignat*}{2}
+&amp;&amp; \text{MSE}(\mathbf{\hat{w}})
+&amp; = \mathbb{E}[||\mathbf{\hat{w}} - \mathbf{w}||^2] \\
+&amp;&amp; &amp; = (\mathbb{E}[||\mathbf{\hat{w}} - \mathbf{w}||])^2 + \text{Var}(||\mathbf{\hat{w}} - \mathbf{w}||)\\
+&amp;&amp; &amp; = ||\mathbb{E}[\mathbf{\hat{w}}] - \mathbf{w}||^2 + \text{Var}(||\mathbf{\hat{w}}||) \\
+&amp;&amp; &amp; = ||\text{Bias}(\mathbf{\hat{w}})||^2 + \text{tr}(\text{Var}(\mathbf{\hat{w}}))
+\end{alignat*}
+</span></p>
+<p>Source: <a href="https://en.wikipedia.org/wiki/Mean_squared_error#Proof_of_variance_and_bias_relationship">Wikipedia</a></p>
+</section>
+</section>
+<section id="in-pursuit-of-a-better-estimator" class="level2">
+<h2 class="anchored" data-anchor-id="in-pursuit-of-a-better-estimator">In pursuit of a <em>better</em> estimator</h2>
+<p>We see that the goodness of the ML estimate depends on the variance of error <span class="math inline">σ^2</span> and <span class="math inline">\text{tr}((XX^T)^{-1})</span>. We would like to reduce this quantity.</p>
+<p>The variance of error is inherent to the experimental setup, and reduction of this quantity therefore depends on qualitative improvements of instruments/peripherals used to collect data. So we cannot hope to reduce this quantity from a mathematical perspective.</p>
+<p>The trace depends on <span class="math inline">(XX^T)^{-1}</span>, which denotes the inverse covariance matrix of the data <span class="math inline">X</span>. The covariance matrix captures how the features are related with each other, and it seems that this relation affects the goodness of our estimator. We may try to tweak this value to reduce the trace value, thereby increasing the goodness of our ML estimator.</p>
+<section id="reducing-the-trace-value" class="level3">
+<h3 class="anchored" data-anchor-id="reducing-the-trace-value">Reducing the Trace value</h3>
+<p>The trace of a matrix <span class="math inline">X</span> can also be represented as the sum of the eigenvalues of <span class="math inline">X</span>.</p>
+<p>Let <span class="math inline">\mathbf{λ}</span> denote the set of eigenvalues of <span class="math inline">XX^T</span>. Then <span class="math display">\{ \frac{1}{λ_i} \; ∀ \; i \; \epsilon \; \{1, 2, .., n\} \}</span> is the set of eigenvalues of <span class="math inline">(XX^T)^{-1}</span> and its trace thus is the following:</p>
+<p><span class="math display">\text{tr}((XX^T)^{-1}) = \sum_{i=1}^{d}\frac{1}{λ_i}</span></p>
+<p>Now, we’d like to reduce this value. A way forward would be to increase the eigenvalues of <span class="math inline">XX^T</span> by doing the following:</p>
+<p><span class="math display">\text{eigenvalues of } (XX^T + λI) = \{ λ_i + λ \; ∀ \; i \; \epsilon \; \{1, 2, .., n\} \}</span></p>
+<p>which will result in a smaller trace value (due to increase in denominator): <span class="math display">\text{tr}((XX^T + λI)^{-1}) = \sum_{i=1}^{d}\frac{1}{λ_i + λ}</span></p>
+<p>However, this process reformulates the problem the estimator is trying to solve (trade-off) to the following:</p>
+<p><span class="math display">\hat{\mathbf{w}}_{\lambda - ML} = (XX^T + λI)^{-1}Xy</span></p>
+<p>This induces a non-zero bias in our estimator:</p>
+<p><span class="math display">
+\begin{align*}
+\text{Bias}(\mathbf{\hat{w}}_{\lambda-ML})
+&amp; = \mathbb{E}[\mathbf{\hat{w}}_{\lambda-ML}] - \mathbf{w}\\
+&amp; = [(XX^T + λI)^{-1} - (XX^T)^†](XX^T)\mathbf{w}
+\end{align*}
+</span></p>
+<p>The difference between the MSE of our estimators is then:</p>
+<p><span class="math display">
+\begin{align*}{3}
+&amp;&amp;&amp; \text{MSE}(\mathbf{\hat{w}}) - \text{MSE}(\mathbf{\hat{w}}_{\lambda-ML})
+&amp;&amp; = \text{tr}(\text{Var}(\mathbf{\hat{w}})) - \text{tr}(\text{Var}(\mathbf{\hat{w}}_{\lambda-ML}))
+&amp; \quad - \quad\text{(A)} \\
+&amp;&amp;&amp; &amp;&amp; \quad - || \text{Bias}(\mathbf{\hat{w}}_{\lambda-ML}) ||^2
+&amp; \quad - \quad\text{(B)} \\
+\end{align*}
+</span></p>
+<p>Note that both <span class="math inline">\text{(A)}</span> and <span class="math inline">\text{(B)}</span> are <em>positive</em> quantities, hence the difference can either be <em>positive</em> or <em>negative</em>; The difference depends on the parameter <span class="math inline">\lambda</span>.</p>
+<p>The existence theorem asserts that there exists some <strong>non-zero</strong> <span class="math inline">λ</span> such that the MSE of <span class="math inline">\hat{\mathbf{w}}_{\lambda - ML}</span> is lower than that of <span class="math inline">\hat{\mathbf{w}}_{ML}</span>, i.e we get <span class="math inline">\text{(A)} &gt; \text{(B)}</span>.</p>
+</section>
+</section>
+</section>
+<section id="ridge-regression" class="level1">
+<h1>Ridge Regression</h1>
+<p>The method of estimating <span class="math inline">w</span> while reducing the effect inter-correlated variables have on the ML estimator for linear regression is called Ridge Regression.</p>
+<p>The objective of the ridge regression problem is given as follows:</p>
+<p><span class="math display">\underset{w}{arg \; min} \sum_{i=1}^{n}(w^Tx_i-y_i)^2 + λ||w||^2_2</span></p>
+<p>The <span class="math inline">λ</span> term is called the regularizer, and is a hyperparameter, which can be chosen through the cross-validation technique, described at the end of this notebook.</p>
+<section id="closed-form-solution-for-ridge-estimator" class="level2">
+<h2 class="anchored" data-anchor-id="closed-form-solution-for-ridge-estimator">Closed-Form Solution for Ridge Estimator</h2>
+<p>It is the same as the aforementioned <span class="math inline">\hat{\mathbf{w}}_{\lambda - ML}</span>:</p>
+<p><span class="math display">\hat{\mathbf{w}}_{\lambda - ML} = (XX^T + λI)^{-1}Xy</span></p>
+<p>It’s good to know that the inverse of <span class="math inline">(XX^T + λI)</span> always exists since: 1. <span class="math inline">(XX^T)</span> is positive semi-definite 2. <span class="math inline">\lambda &gt; 0</span></p>
+<p>Hence <span class="math inline">(XX^T + λI)</span> is a positive definite matrix (i.e.&nbsp;all eigenvalues are strictly positive - full rank) - indicating its inverse <strong>exists</strong>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>l <span class="op">=</span> <span class="dv">10</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>w_hat_ridge <span class="op">=</span> np.linalg.inv(X <span class="op">@</span> X.T <span class="op">+</span> l <span class="op">*</span> np.eye(d)) <span class="op">@</span> X <span class="op">@</span> y</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+<section id="comparison-of-ridge-and-linear-regression-solutions" class="level1">
+<h1>Comparison of Ridge and Linear Regression Solutions</h1>
+<p>The <span class="math inline">\lambda ||w||^2_2</span> term in the objective function for Ridge regression penalizes the score for <span class="math inline">w</span>’s with greater length. This thus pushes the ridge estimator closer to the origin, resulting in smaller values in its components.</p>
+<p>We show the effect of varying <span class="math inline">\lambda</span> over the coefficients of ridge</p>
+<div class="cell" data-outputid="f983bddc-e798-4d5d-c7bd-bbf587c869d9">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>lambdas <span class="op">=</span> np.logspace(<span class="op">-</span><span class="dv">1</span>, <span class="dv">10</span> , <span class="dv">200</span>)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.linear_model <span class="im">import</span> Ridge</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>coefs <span class="op">=</span> []</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> l <span class="kw">in</span> lambdas:</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  w_hat_ridge <span class="op">=</span> np.linalg.pinv(X <span class="op">@</span> X.T <span class="op">+</span> l <span class="op">*</span> np.eye(d)) <span class="op">@</span> X <span class="op">@</span> y</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  coefs.append(w_hat_ridge)</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">15</span>, <span class="dv">5</span>))</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>ax.plot(lambdas, coefs)</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>ax.set_xscale(<span class="st">"log"</span>)</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a><span class="co"># ax.set_xlim(ax.get_xlim()[::-1])  # reverse axis</span></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"λ (log scale)"</span>)</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"weights"</span>)</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Ridge coefficients w.r.t λ"</span>)</span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>plt.axis(<span class="st">"tight"</span>)</span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="Not06_files/figure-html/cell-6-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+</section>
+<section id="lasso-regression" class="level1">
+<h1>Lasso Regression</h1>
+<p>The objective for the lasso regression problem is as follows:</p>
+<p><span class="math display">\underset{w}{arg \; min} \sum_{i=1}^{n}(w^Tx_i-y_i)^2 + λ||w||^2_1</span></p>
+<p>The only difference between Lasso and Ridge is that Lasso uses the L1 norm (manhattan distance), in contrast to the L2 norm (euclidean distance) used by Ridge regression. This difference adds sparsity to the Lasso estimator; i.e, some feature co-efficients are pushed to 0; these features do not play a role in the final prediction.</p>
+<p>In this context, Lasso can be said to perform feature-selection. Lasso also acts as a regularizer, in terms of constraining the length of the estimator.</p>
+<section id="solution-for-lasso-regression" class="level2">
+<h2 class="anchored" data-anchor-id="solution-for-lasso-regression">Solution for Lasso Regression</h2>
+<p>There exists no closed form solution for Lasso, due to the constraint boundaries having points which are not differentiable.</p>
+<p>Hence we may use the method of gradient descent, with the help of subgradients to find the Lasso estimator.</p>
+<p>In this notebook we use scikit-learn’s implementation of Lasso to demonstrate the effect of the Lasso objective on our estimator.</p>
+<div class="cell" data-outputid="39be15c1-4c42-4eee-f97a-ef5aa0ecef79">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> warnings</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>warnings.filterwarnings(<span class="st">"ignore"</span>)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>lambdas <span class="op">=</span> np.logspace(<span class="op">-</span><span class="dv">4</span>, <span class="dv">3</span> , <span class="dv">200</span>)</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.linear_model <span class="im">import</span> Lasso</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>coefs <span class="op">=</span> []</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> l <span class="kw">in</span> lambdas:</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>  lasso <span class="op">=</span> Lasso(alpha<span class="op">=</span>l, max_iter<span class="op">=</span><span class="bu">int</span>(<span class="fl">1e3</span>)).fit(X.T, y)</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>  coefs.append(lasso.coef_)</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">15</span>, <span class="dv">5</span>))</span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>ax.plot(lambdas, coefs)</span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>ax.set_xscale(<span class="st">"log"</span>)</span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a><span class="co"># ax.set_xlim(ax.get_xlim()[::-1])  # reverse axis</span></span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"λ (log scale)"</span>)</span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"weights"</span>)</span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Lasso coefficients w.r.t λ"</span>)</span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>plt.axis(<span class="st">"tight"</span>)</span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="Not06_files/figure-html/cell-7-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+</section>
+</section>
+<section id="best-λ" class="level1">
+<h1>Best λ?</h1>
+<p>We discuss strategies that can be used to find λ which reduces the MSE for our linear regression problem.</p>
+<section id="validation" class="level2">
+<h2 class="anchored" data-anchor-id="validation">Validation</h2>
+<ul>
+<li>We partition our dataset (features and labels) into 2 - the train and validation sets respectively.</li>
+<li>We construct a set of candidate values for λ and find their corresponding estimators <span class="math inline">\hat{\mathbf{w}}_{\lambda - ML}</span> using the train dataset.</li>
+<li>We then use these estimators on the validation dataset and find the MSE.</li>
+<li>We choose the <span class="math inline">λ</span> that gives the least MSE.</li>
+</ul>
+<div class="cell" data-outputid="11a7636a-47ed-4803-9571-089bd5f71b34">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>candidate_lambdas <span class="op">=</span> <span class="bu">list</span>(np.logspace(<span class="op">-</span><span class="dv">9</span>, <span class="dv">2</span>, <span class="dv">1000</span>))</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>X_train, X_val, y_train, y_val <span class="op">=</span> X[:, :<span class="bu">int</span>(<span class="fl">0.66</span><span class="op">*</span>n)], X[:, <span class="bu">int</span>(<span class="fl">0.66</span><span class="op">*</span>n):], y[:<span class="bu">int</span>(<span class="fl">0.66</span><span class="op">*</span>n)], y[<span class="bu">int</span>(<span class="fl">0.66</span><span class="op">*</span>n):]</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> validate(X_train, X_val, y_train, y_val, l):</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  w_hat_l_ml <span class="op">=</span> np.linalg.pinv(X_train <span class="op">@</span> X_train.T <span class="op">+</span> l <span class="op">*</span> np.eye(d)) <span class="op">@</span> X_train <span class="op">@</span> y_train</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>  l_mse <span class="op">=</span> np.linalg.norm(X_val.T <span class="op">@</span> w_hat_l_ml <span class="op">-</span> y_val)<span class="op">**</span><span class="dv">2</span> <span class="op">/</span> <span class="bu">len</span>(y_val)</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> l_mse</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>lst <span class="op">=</span> [validate(X_train, X_val, y_train, y_val, l) <span class="cf">for</span> l <span class="kw">in</span> candidate_lambdas]</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">15</span>, <span class="dv">5</span>))</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>ax.plot(candidate_lambdas, lst)</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>ax.set_xscale(<span class="st">"log"</span>)</span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>best_lambda, best_loss <span class="op">=</span> <span class="bu">min</span>(<span class="bu">zip</span>(candidate_lambdas, lst), key<span class="op">=</span><span class="kw">lambda</span> i: i[<span class="op">-</span><span class="dv">1</span>])</span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>plt.axvline(x<span class="op">=</span>best_lambda, color<span class="op">=</span><span class="st">'red'</span>)</span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"λ (log scale)"</span>)</span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"Validation Loss"</span>)</span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Validation"</span>)</span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>plt.axis(<span class="st">"tight"</span>)<span class="op">;</span></span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'Best Lambda: </span><span class="sc">{</span>best_lambda<span class="sc">}</span><span class="ss">'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Best Lambda: 0.0986265846131283</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="Not06_files/figure-html/cell-8-output-2.png" class="img-fluid"></p>
+</div>
+</div>
+</section>
+<section id="k-fold-cross-validation" class="level2">
+<h2 class="anchored" data-anchor-id="k-fold-cross-validation">K-Fold Cross Validation</h2>
+<ul>
+<li>Partition dataset into K sets.</li>
+<li>For each candidate <span class="math inline">λ</span>:
+<ul>
+<li>For i=1 to K rounds:
+<ul>
+<li>Choose the ith partition as the validation set.</li>
+<li>Consider the union of the remaining sets as the train set.</li>
+<li>Follow aforementioned Cross Validation procedure to obtain MSE for chosen <span class="math inline">λ</span></li>
+</ul></li>
+<li>Return the average MSE</li>
+</ul></li>
+<li>Choose the <span class="math inline">λ</span> that gives the minimum average MSE.</li>
+</ul>
+<div class="cell" data-outputid="7e736c43-5105-4359-c252-35001704a0c7">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>candidate_lambdas <span class="op">=</span> <span class="bu">list</span>(np.logspace(<span class="op">-</span><span class="dv">9</span>, <span class="dv">2</span>, <span class="dv">1000</span>))</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> KFold(K, l):</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Construct Folds</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>  folds <span class="op">=</span> []</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>  n <span class="op">=</span> X.shape[<span class="dv">1</span>]<span class="op">//</span>K</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(K):</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>    folds.append((X[:, i<span class="op">*</span>n:(i<span class="op">+</span><span class="dv">1</span>)<span class="op">*</span>n], y[i<span class="op">*</span>n:(i<span class="op">+</span><span class="dv">1</span>)<span class="op">*</span>n]))</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>  l_mse <span class="op">=</span> np.array([])</span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Cross validate over every validation partition</span></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(K):</span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>    X_val, y_val <span class="op">=</span> folds[i]</span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>    X_train, y_train <span class="op">=</span> np.array([[] <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(d)]), np.array([])</span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> j <span class="kw">in</span> <span class="bu">range</span>(K):</span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> i <span class="op">!=</span> j:</span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a>        X_j, y_j <span class="op">=</span> folds[j]</span>
+<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a>        X_train <span class="op">=</span> np.column_stack((X_train, X_j))</span>
+<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a>        y_train <span class="op">=</span> np.concatenate((y_train, y_j))</span>
+<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a>    l_mse <span class="op">=</span> np.append(l_mse, validate(X_train, X_val, y_train, y_val, l))</span>
+<span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-29"><a href="#cb9-29" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span>(l_mse.mean())</span>
+<span id="cb9-30"><a href="#cb9-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-31"><a href="#cb9-31" aria-hidden="true" tabindex="-1"></a>lst <span class="op">=</span> []</span>
+<span id="cb9-32"><a href="#cb9-32" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> l <span class="kw">in</span> candidate_lambdas:</span>
+<span id="cb9-33"><a href="#cb9-33" aria-hidden="true" tabindex="-1"></a>  a <span class="op">=</span> KFold(<span class="dv">10</span>, l)</span>
+<span id="cb9-34"><a href="#cb9-34" aria-hidden="true" tabindex="-1"></a>  lst.append(a)</span>
+<span id="cb9-35"><a href="#cb9-35" aria-hidden="true" tabindex="-1"></a>  <span class="co"># print(l, '|', round(a, 10))</span></span>
+<span id="cb9-36"><a href="#cb9-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-37"><a href="#cb9-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-38"><a href="#cb9-38" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">15</span>, <span class="dv">5</span>))</span>
+<span id="cb9-39"><a href="#cb9-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-40"><a href="#cb9-40" aria-hidden="true" tabindex="-1"></a>ax.plot(candidate_lambdas, lst)</span>
+<span id="cb9-41"><a href="#cb9-41" aria-hidden="true" tabindex="-1"></a>ax.set_xscale(<span class="st">"log"</span>)</span>
+<span id="cb9-42"><a href="#cb9-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-43"><a href="#cb9-43" aria-hidden="true" tabindex="-1"></a>best_lambda, best_loss <span class="op">=</span> <span class="bu">min</span>(<span class="bu">zip</span>(candidate_lambdas, lst), key<span class="op">=</span><span class="kw">lambda</span> i: i[<span class="op">-</span><span class="dv">1</span>])</span>
+<span id="cb9-44"><a href="#cb9-44" aria-hidden="true" tabindex="-1"></a>plt.axvline(x<span class="op">=</span>best_lambda, color<span class="op">=</span><span class="st">'red'</span>)</span>
+<span id="cb9-45"><a href="#cb9-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-46"><a href="#cb9-46" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"λ (log scale)"</span>)</span>
+<span id="cb9-47"><a href="#cb9-47" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"K-Fold Loss"</span>)</span>
+<span id="cb9-48"><a href="#cb9-48" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"K-Fold CV with K=10"</span>)</span>
+<span id="cb9-49"><a href="#cb9-49" aria-hidden="true" tabindex="-1"></a>plt.axis(<span class="st">"tight"</span>)<span class="op">;</span></span>
+<span id="cb9-50"><a href="#cb9-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-51"><a href="#cb9-51" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'Best Lambda: </span><span class="sc">{</span>best_lambda<span class="sc">}</span><span class="ss">'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Best Lambda: 1.0399609139541203e-06</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="Not06_files/figure-html/cell-9-output-2.png" class="img-fluid"></p>
+</div>
+</div>
+</section>
+<section id="leave-one-out-cross-validation" class="level2">
+<h2 class="anchored" data-anchor-id="leave-one-out-cross-validation">Leave-one-out Cross Validation</h2>
+<ul>
+<li>Just K-Fold Validation, but with K set to the number of samples in our dataset.</li>
+<li>In other words, for n rounds, we choose just 1 element as the validation set, and the rest to be our train set.</li>
+<li>It is a computationally expensive procedure to perform, although it results in a reliable and unbiased estimate of model performance.</li>
+</ul>
+<div class="cell" data-outputid="7b395a8e-d0a4-4aac-f742-2c794a01b638">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>candidate_lambdas <span class="op">=</span> <span class="bu">list</span>(np.logspace(<span class="op">-</span><span class="dv">9</span>, <span class="dv">2</span>, <span class="dv">1000</span>))</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>lst <span class="op">=</span> [KFold(<span class="dv">100</span>, l) <span class="cf">for</span> l <span class="kw">in</span> candidate_lambdas]</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">15</span>, <span class="dv">5</span>))</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>ax.plot(candidate_lambdas, lst)</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>ax.set_xscale(<span class="st">"log"</span>)</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>best_lambda, best_loss <span class="op">=</span> <span class="bu">min</span>(<span class="bu">zip</span>(candidate_lambdas, lst), key<span class="op">=</span><span class="kw">lambda</span> i: i[<span class="op">-</span><span class="dv">1</span>])</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>plt.axvline(x<span class="op">=</span>best_lambda, color<span class="op">=</span><span class="st">'red'</span>)</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"λ (log scale)"</span>)</span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="ss">f"K-Fold (K=</span><span class="sc">{</span>n<span class="sc">}</span><span class="ss">) Loss"</span>)</span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"LOOCV"</span>)</span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>plt.axis(<span class="st">"tight"</span>)<span class="op">;</span></span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'Best Lambda: </span><span class="sc">{</span>best_lambda<span class="sc">}</span><span class="ss">'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Best Lambda: 5.659170163246243e-07</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="Not06_files/figure-html/cell-10-output-2.png" class="img-fluid"></p>
+</div>
+</div>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  let localAlternateSentinel = 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../pages/Not05.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Tutorial-05</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      &nbsp;
+    </div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    </div>
+    <div class="nav-footer-right">This page is built with ❤️ and <a href="https://quarto.org/">Quarto</a>.</div>
+  </div>
+</footer>
+
+
+
+</body></html>

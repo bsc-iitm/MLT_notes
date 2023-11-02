@@ -64,6 +64,8 @@ website:
             text: Tutorial-04
           - href: pages/Not05.ipynb
             text: Tutorial-05
+          - href: pages/Not06.ipynb
+            text: Tutorial-06
 
 format:
   html:
