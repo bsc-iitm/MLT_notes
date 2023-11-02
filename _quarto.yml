@@ -3,6 +3,7 @@ project:
   output-dir: docs
 
 website:
+  favicon: "images/logo.png"
   title: "CS2007: Machine Learning Techniques"
   page-footer:
     right: "This page is built with ❤️ and [Quarto](https://quarto.org/)."
