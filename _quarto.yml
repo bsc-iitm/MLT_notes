@@ -67,6 +67,12 @@ website:
             text: Tutorial-05
           - href: pages/Not06.ipynb
             text: Tutorial-06
+          - href: pages/Not07.ipynb
+            text: Tutorial-07
+          - href: pages/Not08.ipynb
+            text: Tutorial-08
+          - href: pages/Not09.ipynb
+            text: Tutorial-09
 
 format:
   html:
