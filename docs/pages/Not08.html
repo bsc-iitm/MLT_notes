@@ -1,0 +1,1141 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.450">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Sherry Thomas">
+
+<title>CS2007: Machine Learning Techniques - Week 5: Naive Bayes and Gaussian Naive Bayes Algorithm</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../images/logo.png" rel="icon" type="image/png">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js"></script>
+  <script>document.addEventListener("DOMContentLoaded", function () {
+ var mathElements = document.getElementsByClassName("math");
+ var macros = [];
+ for (var i = 0; i < mathElements.length; i++) {
+  var texText = mathElements[i].firstChild;
+  if (mathElements[i].tagName == "SPAN") {
+   katex.render(texText.data, mathElements[i], {
+    displayMode: mathElements[i].classList.contains('display'),
+    throwOnError: false,
+    macros: macros,
+    fleqn: false
+   });
+}}});
+  </script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css">
+
+<meta property="og:title" content="CS2007: Machine Learning Techniques - Week 5: Naive Bayes and Gaussian Naive Bayes Algorithm">
+<meta property="og:description" content="">
+<meta property="og:image" content="https://bsc-iitm.github.io/MLT_notes/pages/Not08_files/figure-html/cell-14-output-1.png">
+<meta property="og:site-name" content="CS2007: Machine Learning Techniques">
+<meta property="og:image:height" content="432">
+<meta property="og:image:width" content="567">
+</head>
+
+<body class="nav-sidebar docked">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">Week 5: Naive Bayes and Gaussian Naive Bayes Algorithm</li></ol></nav>
+      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+      </a>
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation docked overflow-auto">
+    <div class="pt-lg-2 mt-2 text-center sidebar-header">
+      <a href="../index.html" class="sidebar-logo-link">
+      <img src="../images/logo.png" alt="" class="sidebar-logo py-0 d-lg-inline d-none">
+      </a>
+      <div class="sidebar-tools-main">
+    <a href="https://github.com/bsc-iitm/MLT_notes" rel="" title="" class="quarto-navigation-tool px-1" aria-label=""><i class="bi bi-github"></i></a>
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="false">
+ <span class="menu-text">Home</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Content</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../about.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">About</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="false">
+ <span class="menu-text">Notes</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../pages/Wk01.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Week-01</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../pages/Wk02.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Week-02</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../pages/Wk03.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Week-03</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../pages/Wk04.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Week-04</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../pages/Wk05.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Week-05</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../pages/Wk06.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Week-06</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../pages/Wk07.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Week-07</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../pages/Wk08.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Week-08</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../pages/Wk09.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Week-09</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../pages/Wk10.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Week-10</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="false">
+ <span class="menu-text">Supplemental Notes</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../pages/Not01.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Tutorial-01</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../pages/Not02.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Tutorial-02</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../pages/Not03.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Tutorial-03</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../pages/Not04.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Tutorial-04</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../pages/Not05.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Tutorial-05</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../pages/Not06.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Tutorial-06</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#introduction-to-naive-bayes-algorithm" id="toc-introduction-to-naive-bayes-algorithm" class="nav-link active" data-scroll-target="#introduction-to-naive-bayes-algorithm">Introduction to Naive Bayes Algorithm</a>
+  <ul class="collapse">
+  <li><a href="#dataset-description" id="toc-dataset-description" class="nav-link" data-scroll-target="#dataset-description">Dataset Description</a></li>
+  <li><a href="#laplace-smoothing" id="toc-laplace-smoothing" class="nav-link" data-scroll-target="#laplace-smoothing">Laplace Smoothing</a></li>
+  <li><a href="#characteristics-of-naive-bayes-algorithm" id="toc-characteristics-of-naive-bayes-algorithm" class="nav-link" data-scroll-target="#characteristics-of-naive-bayes-algorithm">Characteristics of Naive Bayes Algorithm</a></li>
+  <li><a href="#parameter-estimation-using-maximum-likelihood-estimation-mle" id="toc-parameter-estimation-using-maximum-likelihood-estimation-mle" class="nav-link" data-scroll-target="#parameter-estimation-using-maximum-likelihood-estimation-mle">Parameter Estimation using Maximum Likelihood Estimation (MLE)</a></li>
+  <li><a href="#prediction-using-naive-bayes" id="toc-prediction-using-naive-bayes" class="nav-link" data-scroll-target="#prediction-using-naive-bayes">Prediction using Naive Bayes</a></li>
+  </ul></li>
+  <li><a href="#gaussian-naive-bayes-algorithm" id="toc-gaussian-naive-bayes-algorithm" class="nav-link" data-scroll-target="#gaussian-naive-bayes-algorithm">Gaussian Naive Bayes Algorithm</a>
+  <ul class="collapse">
+  <li><a href="#data-visualization" id="toc-data-visualization" class="nav-link" data-scroll-target="#data-visualization">Data Visualization</a></li>
+  <li><a href="#parameter-estimation" id="toc-parameter-estimation" class="nav-link" data-scroll-target="#parameter-estimation">Parameter Estimation</a></li>
+  <li><a href="#gaussian-naive-bayes-implementation" id="toc-gaussian-naive-bayes-implementation" class="nav-link" data-scroll-target="#gaussian-naive-bayes-implementation">Gaussian Naive Bayes Implementation</a></li>
+  <li><a href="#prediction-using-gaussian-naive-bayes" id="toc-prediction-using-gaussian-naive-bayes" class="nav-link" data-scroll-target="#prediction-using-gaussian-naive-bayes">Prediction using Gaussian Naive Bayes</a></li>
+  <li><a href="#decision-boundary-visualization" id="toc-decision-boundary-visualization" class="nav-link" data-scroll-target="#decision-boundary-visualization">Decision Boundary Visualization</a></li>
+  </ul></li>
+  <li><a href="#real-world-dataset-wine-dataset" id="toc-real-world-dataset-wine-dataset" class="nav-link" data-scroll-target="#real-world-dataset-wine-dataset">Real World Dataset: Wine Dataset</a>
+  <ul class="collapse">
+  <li><a href="#dataset-description-1" id="toc-dataset-description-1" class="nav-link" data-scroll-target="#dataset-description-1">Dataset Description</a></li>
+  <li><a href="#data-preprocessing" id="toc-data-preprocessing" class="nav-link" data-scroll-target="#data-preprocessing">Data Preprocessing</a></li>
+  <li><a href="#exploratory-data-analysis" id="toc-exploratory-data-analysis" class="nav-link" data-scroll-target="#exploratory-data-analysis">Exploratory Data Analysis</a></li>
+  <li><a href="#modelling-for-wine-dataset" id="toc-modelling-for-wine-dataset" class="nav-link" data-scroll-target="#modelling-for-wine-dataset">Modelling for Wine Dataset</a></li>
+  <li><a href="#decision-boundary" id="toc-decision-boundary" class="nav-link" data-scroll-target="#decision-boundary">Decision Boundary</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Week 5: Naive Bayes and Gaussian Naive Bayes Algorithm</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Sherry Thomas </p>
+          </div>
+  </div>
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<p>Colab Link: <a href="https://colab.research.google.com/drive/1mthg9xVeTCNOx1tS8mtpCgi2e3h2jvHP" target="_blank">Click here!</a></p>
+<section id="introduction-to-naive-bayes-algorithm" class="level2">
+<h2 class="anchored" data-anchor-id="introduction-to-naive-bayes-algorithm">Introduction to Naive Bayes Algorithm</h2>
+<p>The Naive Bayes algorithm is a classification technique based on Bayes’ theorem with the assumption of independence between every pair of features. This notebook demonstrates the implementation of the Naive Bayes algorithm on a binary dataset and introduces the concept of Laplace Smoothing to avoid zero probability estimates.</p>
+<section id="dataset-description" class="level3">
+<h3 class="anchored" data-anchor-id="dataset-description">Dataset Description</h3>
+<p>The dataset consists of <code>n</code> binary feature vectors <span class="math inline">\{\mathbf{x}_{1} ,\dotsc ,\mathbf{x}_{n} \}</span>, where each feature vector <span class="math inline">\mathbf{x}_{i} \in \{0,1\}^{d}</span>, and their corresponding labels <span class="math inline">\{y_{1} ,\dotsc ,y_{n} \}</span>, where each label <span class="math inline">y_{i} \in \{0,1\}</span>.</p>
+<p>Here’s a representation of the dataset:</p>
+<p><span class="math display">\begin{equation*}
+\mathbf{X} =\begin{bmatrix}
+1 &amp; 1 &amp; 0 &amp; 0\\
+0 &amp; 1 &amp; 0 &amp; 1\\
+0 &amp; 0 &amp; 0 &amp; 1
+\end{bmatrix} \quad \mathbf{y} \ =\ \begin{bmatrix}
+1\\
+1\\
+0\\
+0
+\end{bmatrix}
+\end{equation*}</span></p>
+<p>We can represent this dataset in Python as follows:</p>
+<div class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> np.array([[<span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">0</span>],[<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">0</span>],[<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>],[<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">1</span>]]).T</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> np.array([<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">0</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>X, y</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="2">
+<pre><code>(array([[1, 1, 0, 0],
+        [0, 1, 0, 1],
+        [0, 0, 0, 1]]),
+ array([1, 1, 0, 0]))</code></pre>
+</div>
+</div>
+</section>
+<section id="laplace-smoothing" class="level3">
+<h3 class="anchored" data-anchor-id="laplace-smoothing">Laplace Smoothing</h3>
+<p>In some cases, estimating the Gaussian Mixture Model (GMM) parameters for our dataset may result in parameters with zero values. To avoid this, we apply Laplace Smoothing.</p>
+<div class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> np.hstack((X, np.array([[<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>],[<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>],[<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>],[<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>]]).T))</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> np.hstack((y.T, np.array([<span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">0</span>])))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>X, y</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="4">
+<pre><code>(array([[1, 1, 0, 0, 1, 1, 0, 0],
+        [0, 1, 0, 1, 1, 1, 0, 0],
+        [0, 0, 0, 1, 1, 1, 0, 0]]),
+ array([1, 1, 0, 0, 1, 0, 1, 0]))</code></pre>
+</div>
+</div>
+<p>After applying Laplace smoothing, we ensure that the parameters do not end up as zero probability estimates.</p>
+</section>
+<section id="characteristics-of-naive-bayes-algorithm" class="level3">
+<h3 class="anchored" data-anchor-id="characteristics-of-naive-bayes-algorithm">Characteristics of Naive Bayes Algorithm</h3>
+<p>The Naive Bayes Algorithm is characterized by: 1. Class Conditional Independence Assumption: Each feature is assumed to be independent of each other given the class label. 2. Bayes Rule: It is used to compute the posterior probability from the prior probability, the likelihood, and the evidence.</p>
+<p>Based on the first characteristic, we get <span class="math inline">\displaystyle 2d+1</span> parameters where <span class="math inline">\displaystyle d</span> is the number of dimensions of the feature set.</p>
+</section>
+<section id="parameter-estimation-using-maximum-likelihood-estimation-mle" class="level3">
+<h3 class="anchored" data-anchor-id="parameter-estimation-using-maximum-likelihood-estimation-mle">Parameter Estimation using Maximum Likelihood Estimation (MLE)</h3>
+<p>The estimates of the parameters are given by,</p>
+<p><span class="math inline">\displaystyle \hat{p} =\displaystyle \frac{1}{n}\sum _{i=1}^{n} y_{i}</span></p>
+<p><span class="math inline">\displaystyle \hat{p}_{j}^{y} =\frac{{\displaystyle \sum _{i=1}^{n}\mathbb{1} (f_{j}^{i} =1,y_{i} =y)}}{{\displaystyle \sum _{i=1}^{n}\mathbb{1} (y_{i} =y)}} \ \ \forall j\in \{1,2,\dotsc ,d\}\ \ \forall y\in \{0,1\}</span></p>
+<p>We can use the following code to calculate the estimate of <span class="math inline">\hat{p}</span>:</p>
+<div class="cell" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>p_hat <span class="op">=</span> y.mean()</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>p_hat</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="5">
+<pre><code>0.5</code></pre>
+</div>
+</div>
+<p>We can define a Python function <code>estimator</code> to calculate these estimates:</p>
+<div class="cell" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> estimator(X, y, c, d):</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> X[d, y <span class="op">==</span> c].mean()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>And we can use this function to compute <span class="math inline">\hat{p}_{j}^{y}</span> for all <span class="math inline">j</span> and <span class="math inline">y</span>:</p>
+<div class="cell" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>p_hat_0_1 <span class="op">=</span> estimator(X, y, <span class="dv">0</span>, <span class="dv">0</span>)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>p_hat_0_2 <span class="op">=</span> estimator(X, y, <span class="dv">0</span>, <span class="dv">1</span>)</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>p_hat_0_3 <span class="op">=</span> estimator(X, y, <span class="dv">0</span>, <span class="dv">2</span>)</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>p_hat_1_1 <span class="op">=</span> estimator(X, y, <span class="dv">1</span>, <span class="dv">0</span>)</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>p_hat_1_2 <span class="op">=</span> estimator(X, y, <span class="dv">1</span>, <span class="dv">1</span>)</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>p_hat_1_3 <span class="op">=</span> estimator(X, y, <span class="dv">1</span>, <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>p_hat_0_1, p_hat_0_2, p_hat_0_3, p_hat_1_1, p_hat_1_2, p_hat_1_3</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="8">
+<pre><code>(0.25, 0.5, 0.5, 0.75, 0.5, 0.25)</code></pre>
+</div>
+</div>
+</section>
+<section id="prediction-using-naive-bayes" class="level3">
+<h3 class="anchored" data-anchor-id="prediction-using-naive-bayes">Prediction using Naive Bayes</h3>
+<p>We predict <span class="math inline">y_{test} =1</span> if the following inequality holds:</p>
+<p><span class="math display">\begin{equation*}
+\left(\prod _{i=1}^{d} (\hat{p}_{i}^{1} )^{f_{i}} (1-\hat{p}_{i}^{1} )^{1-f_{i}}\right)\hat{p} \geq \left(\prod _{i=1}^{d} (\hat{p}_{i}^{0} )^{f_{i}} (1-\hat{p}_{i}^{0} )^{1-f_{i}}\right) (1-\hat{p} )
+\end{equation*}</span></p>
+<p>Otherwise, we predict <span class="math inline">y_{test} =0</span>.</p>
+<p>We can implement a Python function <code>predict_probs</code> to calculate the probabilities for each class:</p>
+<div class="cell" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> predict_probs(x, X, y):</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>    d <span class="op">=</span> X.shape[<span class="dv">0</span>]</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>    p0, p1 <span class="op">=</span> <span class="dv">1</span>, <span class="dv">1</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(d):</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>        p0 <span class="op">*=</span> (estimator(X, y, <span class="dv">0</span>, i)<span class="op">**</span>(x[i]))<span class="op">*</span>((<span class="dv">1</span><span class="op">-</span>estimator(X, y, <span class="dv">0</span>, i))<span class="op">**</span>(<span class="dv">1</span><span class="op">-</span>(x[i])))</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>        p1 <span class="op">*=</span> (estimator(X, y, <span class="dv">1</span>, i)<span class="op">**</span>(x[i]))<span class="op">*</span>((<span class="dv">1</span><span class="op">-</span>estimator(X, y, <span class="dv">1</span>, i))<span class="op">**</span>(<span class="dv">1</span><span class="op">-</span>(x[i])))</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>    p0 <span class="op">*=</span> p_hat</span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>    p1 <span class="op">*=</span> p_hat</span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> p1, p0</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>And then we can use this function to compute the probabilities for each data point in the dataset:</p>
+<div class="cell" data-execution_count="10">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(X.shape[<span class="dv">1</span>]):</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>    p1, p0 <span class="op">=</span> predict_probs(X[:, i], X, y)</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"y_</span><span class="sc">{</span>i<span class="sc">}</span><span class="ss">: Probability for Class 1: </span><span class="sc">{</span>np<span class="sc">.</span><span class="bu">round</span>(p1, <span class="dv">3</span>)<span class="sc">}</span><span class="ss">;</span><span class="ch">\t</span><span class="ss">Probability for Class 0: </span><span class="sc">{</span>np<span class="sc">.</span><span class="bu">round</span>(p0, <span class="dv">3</span>)<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>y_0: Probability for Class 1: 0.141;    Probability for Class 0: 0.031
+y_1: Probability for Class 1: 0.141;    Probability for Class 0: 0.031
+y_2: Probability for Class 1: 0.047;    Probability for Class 0: 0.094
+y_3: Probability for Class 1: 0.016;    Probability for Class 0: 0.094
+y_4: Probability for Class 1: 0.047;    Probability for Class 0: 0.031
+y_5: Probability for Class 1: 0.047;    Probability for Class 0: 0.031
+y_6: Probability for Class 1: 0.047;    Probability for Class 0: 0.094
+y_7: Probability for Class 1: 0.047;    Probability for Class 0: 0.094</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="gaussian-naive-bayes-algorithm" class="level2">
+<h2 class="anchored" data-anchor-id="gaussian-naive-bayes-algorithm">Gaussian Naive Bayes Algorithm</h2>
+<p>The Gaussian Naive Bayes algorithm extends the Naive Bayes algorithm to continuous data, where the features are assumed to be drawn from a Gaussian distribution.</p>
+<p>Given a dataset <span class="math inline">\{\mathbf{x}_{1} ,\dotsc ,\mathbf{x}_{n} \}</span> where <span class="math inline">\mathbf{x}_{i} \in \mathbb{R}^{d}</span>, let <span class="math inline">\{y_{1} ,\dotsc ,y_{n} \}</span> be the labels, where <span class="math inline">y_{i} \in \{0,1\}</span>.</p>
+<p>Here’s a representation of the dataset:</p>
+<p><span class="math display">\begin{equation*}
+\mathbf{X} =\begin{bmatrix}
+-2 &amp; -4 &amp; -3 &amp; -4 &amp; -6 &amp; -5\\
+4 &amp; 4 &amp; 5 &amp; 1 &amp; 1 &amp; 2
+\end{bmatrix} \quad \mathbf{y} \ =\ \begin{bmatrix}
+1\\
+1\\
+1\\
+0\\
+0\\
+0
+\end{bmatrix}
+\end{equation*}</span></p>
+<p>We can represent this dataset in Python as follows:</p>
+<div class="cell" data-execution_count="11">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> np.array([[<span class="op">-</span><span class="dv">3</span>,<span class="dv">4</span>], [<span class="op">-</span><span class="dv">4</span>,<span class="dv">4</span>], [<span class="op">-</span><span class="dv">2</span>,<span class="dv">3</span>], [<span class="op">-</span><span class="dv">4</span>,<span class="dv">1</span>], [<span class="op">-</span><span class="dv">5</span>,<span class="dv">1</span>], [<span class="op">-</span><span class="dv">5</span>,<span class="dv">0</span>]])</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> np.array([<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="12">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>X.T, y</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="12">
+<pre><code>(array([[-3, -4, -2, -4, -5, -5],
+        [ 4,  4,  3,  1,  1,  0]]),
+ array([1, 1, 1, 0, 0, 0]))</code></pre>
+</div>
+</div>
+<section id="data-visualization" class="level3">
+<h3 class="anchored" data-anchor-id="data-visualization">Data Visualization</h3>
+<p>We can visualize the data points using a scatter plot:</p>
+<div class="cell" data-execution_count="13">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>plt.scatter(X.T[<span class="dv">0</span>, y <span class="op">==</span> <span class="dv">1</span>], X.T[<span class="dv">1</span>, y <span class="op">==</span> <span class="dv">1</span>], c<span class="op">=</span><span class="st">"r"</span>)</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>plt.scatter(X.T[<span class="dv">0</span>, y <span class="op">==</span> <span class="dv">0</span>], X.T[<span class="dv">1</span>, y <span class="op">==</span> <span class="dv">0</span>], c<span class="op">=</span><span class="st">"g"</span>)<span class="op">;</span></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>plt.grid()</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Feature 1'</span>)</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Feature 2'</span>)</span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>plt.axhline(c<span class="op">=</span><span class="st">'k'</span>)</span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>plt.axvline(c<span class="op">=</span><span class="st">'k'</span>)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="Not08_files/figure-html/cell-14-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+</section>
+<section id="parameter-estimation" class="level3">
+<h3 class="anchored" data-anchor-id="parameter-estimation">Parameter Estimation</h3>
+<p>We assume that the data points are drawn from a Gaussian distribution, i.e., <span class="math inline">P(\mathbf{x}|y=1)\sim\mathcal{N}(\mu_1,\Sigma_1)</span> and <span class="math inline">P(\mathbf{x}|y=0)\sim\mathcal{N}(\mu_0,\Sigma_0)</span>. We further assume that the covariances are equal.</p>
+<p>The parameters to be estimated are <span class="math inline">\hat{p}</span>, <span class="math inline">\mu_0</span>, <span class="math inline">\mu_1</span>, <span class="math inline">\Sigma_0</span>, and <span class="math inline">\Sigma_1</span>.</p>
+<p>Using Maximum Likelihood Estimation, we get the following results:</p>
+<p><span class="math display">\begin{align*}
+\hat{p}&amp;=\frac{1}{n}\sum_{i=1}^ny_i \\
+\hat{\mu}_1 &amp;= \frac{\displaystyle \sum_{i=1}^n\mathbb{1}(y_i=1)*x_i}{\displaystyle \sum_{i=1}^n\mathbb{1}(y_i=1)} \\
+\hat{\mu}_0 &amp;= \frac{\displaystyle \sum_{i=1}^n\mathbb{1}(y_i=0)*x_i}{\displaystyle \sum_{i=1}^n\mathbb{1}(y_i=0)} \\
+\hat{\Sigma}_1 &amp;= \frac{1}{n} \displaystyle \sum_{i=1}^n(\mathbb{1}(y_i=1)*x_i-\hat{\mu}_1)(\mathbb{1}(y_i=1)*x_i-\hat{\mu}_1)^T \\
+\hat{\Sigma}_0 &amp;= \frac{1}{n} \displaystyle \sum_{i=1}^n(\mathbb{1}(y_i=0)*x_i-\hat{\mu}_0)(\mathbb{1}(y_i=0)*x_i-\hat{\mu}_0)^T
+\end{align*}</span></p>
+</section>
+<section id="gaussian-naive-bayes-implementation" class="level3">
+<h3 class="anchored" data-anchor-id="gaussian-naive-bayes-implementation">Gaussian Naive Bayes Implementation</h3>
+<p>We can implement the Gaussian Naive Bayes algorithm in Python as follows:</p>
+<div class="cell" data-execution_count="14">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.stats <span class="im">import</span> multivariate_normal</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> GaussianNaiveBayes:</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>):</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.classes <span class="op">=</span> <span class="va">None</span></span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.class_priors <span class="op">=</span> <span class="va">None</span></span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.class_means <span class="op">=</span> <span class="va">None</span></span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.class_covs <span class="op">=</span> <span class="va">None</span></span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> fit(<span class="va">self</span>, X, y):</span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.classes <span class="op">=</span> np.unique(y)</span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>        n_classes <span class="op">=</span> <span class="bu">len</span>(<span class="va">self</span>.classes)</span>
+<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a>        n_features <span class="op">=</span> X.shape[<span class="dv">1</span>]</span>
+<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.class_priors <span class="op">=</span> np.zeros(n_classes)</span>
+<span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.class_means <span class="op">=</span> np.zeros((n_classes, n_features))</span>
+<span id="cb20-17"><a href="#cb20-17" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.class_covs <span class="op">=</span> np.zeros((n_classes, n_features, n_features))</span>
+<span id="cb20-18"><a href="#cb20-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-19"><a href="#cb20-19" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> i, c <span class="kw">in</span> <span class="bu">enumerate</span>(<span class="va">self</span>.classes):</span>
+<span id="cb20-20"><a href="#cb20-20" aria-hidden="true" tabindex="-1"></a>            X_c <span class="op">=</span> X[y <span class="op">==</span> c]</span>
+<span id="cb20-21"><a href="#cb20-21" aria-hidden="true" tabindex="-1"></a>            <span class="va">self</span>.class_priors[i] <span class="op">=</span> X_c.shape[<span class="dv">0</span>] <span class="op">/</span> X.shape[<span class="dv">0</span>]</span>
+<span id="cb20-22"><a href="#cb20-22" aria-hidden="true" tabindex="-1"></a>            <span class="va">self</span>.class_means[i] <span class="op">=</span> np.mean(X_c, axis<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb20-23"><a href="#cb20-23" aria-hidden="true" tabindex="-1"></a>            <span class="va">self</span>.class_covs[i] <span class="op">=</span> np.dot((X_c <span class="op">-</span> <span class="va">self</span>.class_means[i]).T, (X_c <span class="op">-</span> <span class="va">self</span>.class_means[i])) <span class="op">/</span> X_c.shape[<span class="dv">0</span>]</span>
+<span id="cb20-24"><a href="#cb20-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-25"><a href="#cb20-25" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> predict(<span class="va">self</span>, X):</span>
+<span id="cb20-26"><a href="#cb20-26" aria-hidden="true" tabindex="-1"></a>        posteriors <span class="op">=</span> <span class="va">self</span>._calculate_posteriors(X)</span>
+<span id="cb20-27"><a href="#cb20-27" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">self</span>.classes[np.argmax(posteriors, axis<span class="op">=</span><span class="dv">0</span>)]</span>
+<span id="cb20-28"><a href="#cb20-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-29"><a href="#cb20-29" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> predict_proba(<span class="va">self</span>, X):</span>
+<span id="cb20-30"><a href="#cb20-30" aria-hidden="true" tabindex="-1"></a>        posteriors <span class="op">=</span> <span class="va">self</span>._calculate_posteriors(X)</span>
+<span id="cb20-31"><a href="#cb20-31" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> np.exp(posteriors) <span class="op">/</span> np.<span class="bu">sum</span>(np.exp(posteriors), axis<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb20-32"><a href="#cb20-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-33"><a href="#cb20-33" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> _calculate_posteriors(<span class="va">self</span>, X):</span>
+<span id="cb20-34"><a href="#cb20-34" aria-hidden="true" tabindex="-1"></a>        posteriors <span class="op">=</span> []</span>
+<span id="cb20-35"><a href="#cb20-35" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> i, c <span class="kw">in</span> <span class="bu">enumerate</span>(<span class="va">self</span>.classes):</span>
+<span id="cb20-36"><a href="#cb20-36" aria-hidden="true" tabindex="-1"></a>            prior <span class="op">=</span> np.log(<span class="va">self</span>.class_priors[i])</span>
+<span id="cb20-37"><a href="#cb20-37" aria-hidden="true" tabindex="-1"></a>            likelihood <span class="op">=</span> multivariate_normal.logpdf(X, <span class="va">self</span>.class_means[i], <span class="va">self</span>.class_covs[i])</span>
+<span id="cb20-38"><a href="#cb20-38" aria-hidden="true" tabindex="-1"></a>            posterior <span class="op">=</span> prior <span class="op">+</span> likelihood</span>
+<span id="cb20-39"><a href="#cb20-39" aria-hidden="true" tabindex="-1"></a>            posteriors.append(posterior)</span>
+<span id="cb20-40"><a href="#cb20-40" aria-hidden="true" tabindex="-1"></a>        posteriors <span class="op">=</span> np.array(posteriors)</span>
+<span id="cb20-41"><a href="#cb20-41" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> posteriors</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>We can fit the model to our data:</p>
+<div class="cell" data-execution_count="15">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> GaussianNaiveBayes()</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>model.fit(X, y)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="16">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>model.class_means.T</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="16">
+<pre><code>array([[-4.66666667, -3.        ],
+       [ 0.66666667,  3.66666667]])</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="17">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>model.class_covs</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="17">
+<pre><code>array([[[ 0.22222222,  0.11111111],
+        [ 0.11111111,  0.22222222]],
+
+       [[ 0.66666667, -0.33333333],
+        [-0.33333333,  0.22222222]]])</code></pre>
+</div>
+</div>
+</section>
+<section id="prediction-using-gaussian-naive-bayes" class="level3">
+<h3 class="anchored" data-anchor-id="prediction-using-gaussian-naive-bayes">Prediction using Gaussian Naive Bayes</h3>
+<p>We predict <span class="math inline">y_{i} =1</span> if the following inequality holds:</p>
+<p><span class="math display">\begin{align*}
+f(x_{i} ;\hat{\mu }_{1} ,\hat{\Sigma }_{1} )\hat{p} &amp; \geq f(x_{i} ;\hat{\mu }_{0} ,\hat{\Sigma }_{0} )(1-\hat{p} )\\
+e^{-(x_{i} -\hat{\mu }_{1} )^{T}\hat{\Sigma }_{1}^{-1} (x_{i} -\hat{\mu }_{1} )}\hat{p} &amp; \geq e^{-(x_{i} -\hat{\mu }_{0} )^{T}\hat{\Sigma }_{0}^{-1} (x_{i} -\hat{\mu }_{0} )} (1-\hat{p} )\\
+-(x_{i} -\hat{\mu }_{1} )^{T}\hat{\Sigma }_{1}^{-1} (x_{i} -\hat{\mu }_{1} )+\log (\hat{p} ) &amp; \geq -(x_{i} -\hat{\mu }_{0} )^{T}\hat{\Sigma }_{0}^{-1} (x_{i} -\hat{\mu }_{0} )+\log (1-\hat{p} )
+\end{align*}</span></p>
+<p><span class="math display">\begin{equation*}
+x_{i}^{T}\left(\hat{\Sigma }_{1}^{-1} -\hat{\Sigma }_{0}^{-1}\right) x_{i} -2\left(\hat{\mu }_{1}^{T}\hat{\Sigma }_{1}^{-1} -\hat{\mu }_{0}^{T}\hat{\Sigma }_{0}^{-1}\right) x_{i} +\left(\hat{\mu }_{0}^{T}\hat{\Sigma }_{0}^{-1}\hat{\mu }_{0} -\hat{\mu }_{1}^{T}\hat{\Sigma }_{1}^{-1}\hat{\mu }_{1}\right) +log\left(\frac{1-\hat{p}}{\hat{p}}\right) \geq 0
+\end{equation*}</span></p>
+<p>We can use the <code>predict_proba</code> method of our model to compute the probabilities for each data point in the dataset:</p>
+<div class="cell" data-scrolled="true" data-execution_count="18">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(X.shape[<span class="dv">0</span>]):</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>    p0, p1 <span class="op">=</span> model.predict_proba(X[i].reshape((<span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>))).reshape((<span class="op">-</span><span class="dv">1</span>,))</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"y_</span><span class="sc">{</span>i<span class="sc">}</span><span class="ss">: Probability for Class 1: </span><span class="sc">{</span>np<span class="sc">.</span><span class="bu">round</span>(p1, <span class="dv">3</span>)<span class="sc">}</span><span class="ss">;</span><span class="ch">\t</span><span class="ss">Probability for Class 0: </span><span class="sc">{</span>np<span class="sc">.</span><span class="bu">round</span>(p0, <span class="dv">8</span>)<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>y_0: Probability for Class 1: 1.0;  Probability for Class 0: 0.0
+y_1: Probability for Class 1: 1.0;  Probability for Class 0: 0.0
+y_2: Probability for Class 1: 1.0;  Probability for Class 0: 2e-08
+y_3: Probability for Class 1: 0.0;  Probability for Class 0: 1.0
+y_4: Probability for Class 1: 0.0;  Probability for Class 0: 1.0
+y_5: Probability for Class 1: 0.0;  Probability for Class 0: 1.0</code></pre>
+</div>
+</div>
+</section>
+<section id="decision-boundary-visualization" class="level3">
+<h3 class="anchored" data-anchor-id="decision-boundary-visualization">Decision Boundary Visualization</h3>
+<p>We can visualize the decision boundary of our model using a contour plot:</p>
+<div class="cell" data-execution_count="19">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> plot_decision_boundary(model, X, y):</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Define the range of the grid</span></span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>    x_min, x_max <span class="op">=</span> X[:, <span class="dv">0</span>].<span class="bu">min</span>() <span class="op">-</span> <span class="dv">1</span>, X[:, <span class="dv">0</span>].<span class="bu">max</span>() <span class="op">+</span> <span class="dv">1</span></span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>    y_min, y_max <span class="op">=</span> X[:, <span class="dv">1</span>].<span class="bu">min</span>() <span class="op">-</span> <span class="dv">1</span>, X[:, <span class="dv">1</span>].<span class="bu">max</span>() <span class="op">+</span> <span class="dv">1</span></span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>    h <span class="op">=</span> <span class="fl">0.02</span>  <span class="co"># step size in the mesh</span></span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Generate a grid of points</span></span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a>    xx, yy <span class="op">=</span> np.meshgrid(np.arange(x_min, x_max, h), np.arange(y_min, y_max, h))</span>
+<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Predict the class for each point in the grid</span></span>
+<span id="cb28-11"><a href="#cb28-11" aria-hidden="true" tabindex="-1"></a>    Z <span class="op">=</span> model.predict(np.c_[xx.ravel(), yy.ravel()])</span>
+<span id="cb28-12"><a href="#cb28-12" aria-hidden="true" tabindex="-1"></a>    Z <span class="op">=</span> Z.reshape(xx.shape)</span>
+<span id="cb28-13"><a href="#cb28-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-14"><a href="#cb28-14" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Create a contour plot</span></span>
+<span id="cb28-15"><a href="#cb28-15" aria-hidden="true" tabindex="-1"></a>    plt.contourf(xx, yy, Z, alpha<span class="op">=</span><span class="fl">0.8</span>)</span>
+<span id="cb28-16"><a href="#cb28-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-17"><a href="#cb28-17" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Plot the training data points</span></span>
+<span id="cb28-18"><a href="#cb28-18" aria-hidden="true" tabindex="-1"></a>    markers <span class="op">=</span> [<span class="st">'o'</span>, <span class="st">'x'</span>, <span class="st">'s'</span>, <span class="st">'^'</span>, <span class="st">'v'</span>]  <span class="co"># markers for each class</span></span>
+<span id="cb28-19"><a href="#cb28-19" aria-hidden="true" tabindex="-1"></a>    colors <span class="op">=</span> [<span class="st">'r'</span>, <span class="st">'g'</span>]</span>
+<span id="cb28-20"><a href="#cb28-20" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i, class_label <span class="kw">in</span> <span class="bu">enumerate</span>(np.unique(y)):</span>
+<span id="cb28-21"><a href="#cb28-21" aria-hidden="true" tabindex="-1"></a>        plt.scatter(X[y <span class="op">==</span> class_label, <span class="dv">0</span>], X[y <span class="op">==</span> class_label, <span class="dv">1</span>], marker<span class="op">=</span>markers[i], label<span class="op">=</span>class_label, c<span class="op">=</span>colors[i])</span>
+<span id="cb28-22"><a href="#cb28-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-23"><a href="#cb28-23" aria-hidden="true" tabindex="-1"></a>    plt.xlabel(<span class="st">'Feature 1'</span>)</span>
+<span id="cb28-24"><a href="#cb28-24" aria-hidden="true" tabindex="-1"></a>    plt.ylabel(<span class="st">'Feature 2'</span>)</span>
+<span id="cb28-25"><a href="#cb28-25" aria-hidden="true" tabindex="-1"></a>    plt.title(<span class="st">'Decision Boundary'</span>)</span>
+<span id="cb28-26"><a href="#cb28-26" aria-hidden="true" tabindex="-1"></a>    plt.legend()</span>
+<span id="cb28-27"><a href="#cb28-27" aria-hidden="true" tabindex="-1"></a>    plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>And then we can use this function to plot the decision boundary of our model:</p>
+<div class="cell" data-execution_count="20">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>plot_decision_boundary(model, X, y)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="Not08_files/figure-html/cell-21-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+</section>
+</section>
+<section id="real-world-dataset-wine-dataset" class="level2">
+<h2 class="anchored" data-anchor-id="real-world-dataset-wine-dataset">Real World Dataset: Wine Dataset</h2>
+<p>In this section, we will explore the Wine dataset, which is a real-world dataset used for classification tasks. The dataset contains various attributes related to wine samples, and our goal is to classify these samples into two categories: Class 0 and Class 1.</p>
+<section id="dataset-description-1" class="level3">
+<h3 class="anchored" data-anchor-id="dataset-description-1">Dataset Description</h3>
+<ul>
+<li><p>Features: The dataset includes several features, but for this analysis, we will focus on two specific attributes: ‘proline’ and ‘hue.’ These attributes represent different characteristics of the wine samples.</p></li>
+<li><p>Labels: The target variable, denoted as ‘y,’ assigns each sample to one of two classes, Class 0 or Class 1.</p></li>
+</ul>
+</section>
+<section id="data-preprocessing" class="level3">
+<h3 class="anchored" data-anchor-id="data-preprocessing">Data Preprocessing</h3>
+<p>Before using the dataset, we perform some data preprocessing steps to standardize the features. Standardization is a common practice in machine learning to ensure that all features have the same scale. This can improve the performance of our models.</p>
+<div class="cell" data-execution_count="21">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.datasets <span class="im">import</span> load_wine</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> StandardScaler</span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Load the Wine dataset</span></span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>X, y <span class="op">=</span> load_wine(return_X_y<span class="op">=</span><span class="va">True</span>, as_frame<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Select samples belonging to Class 0 and Class 1</span></span>
+<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a>X, y <span class="op">=</span> X[y <span class="op">&lt;</span> <span class="dv">2</span>], y[y <span class="op">&lt;</span> <span class="dv">2</span>]</span>
+<span id="cb30-9"><a href="#cb30-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-10"><a href="#cb30-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Choose 'proline' and 'hue' as the features of interest</span></span>
+<span id="cb30-11"><a href="#cb30-11" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> X[[<span class="st">'proline'</span>, <span class="st">'hue'</span>]]</span>
+<span id="cb30-12"><a href="#cb30-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-13"><a href="#cb30-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Standardize the features</span></span>
+<span id="cb30-14"><a href="#cb30-14" aria-hidden="true" tabindex="-1"></a>std_scaler <span class="op">=</span> StandardScaler()</span>
+<span id="cb30-15"><a href="#cb30-15" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> std_scaler.fit_transform(X)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="exploratory-data-analysis" class="level3">
+<h3 class="anchored" data-anchor-id="exploratory-data-analysis">Exploratory Data Analysis</h3>
+<p>To gain insights into the dataset, we can visualize the samples based on their features. The following scatter plot represents the wine samples in a 2D space, with ‘proline’ on the x-axis and ‘hue’ on the y-axis. Different colors indicate the two classes, making it easier to observe any potential patterns or separations between the classes.</p>
+<div class="cell" data-execution_count="22">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Scatter plot to visualize the data</span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>plt.scatter(X[:, <span class="dv">0</span>], X[:, <span class="dv">1</span>], c<span class="op">=</span>y)</span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Proline'</span>)</span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Hue'</span>)</span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Scatter Plot of Wine Dataset'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="22">
+<pre><code>Text(0.5, 1.0, 'Scatter Plot of Wine Dataset')</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="Not08_files/figure-html/cell-23-output-2.png" class="img-fluid"></p>
+</div>
+</div>
+</section>
+<section id="modelling-for-wine-dataset" class="level3">
+<h3 class="anchored" data-anchor-id="modelling-for-wine-dataset">Modelling for Wine Dataset</h3>
+<p>Now that we have preprocessed the data and gained some initial insights, we can build a classification model using Gaussian Naive Bayes.</p>
+<div class="cell" data-execution_count="23">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.stats <span class="im">import</span> multivariate_normal</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Create an instance of the Gaussian Naive Bayes model</span></span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>wine_model <span class="op">=</span> GaussianNaiveBayes()</span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit the model to the preprocessed dataset</span></span>
+<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a>wine_model.fit(X, y)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="decision-boundary" class="level3">
+<h3 class="anchored" data-anchor-id="decision-boundary">Decision Boundary</h3>
+<p>To understand how the model separates the two classes, we can visualize the decision boundary. The decision boundary represents the region where the model assigns different class labels. In our case, it shows how the model distinguishes Class 0 from Class 1 based on the ‘proline’ and ‘hue’ features.</p>
+<div class="cell" data-execution_count="24">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot the decision boundary of the Gaussian Naive Bayes model</span></span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>plot_decision_boundary(wine_model, X, y)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="Not08_files/figure-html/cell-25-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+<p>This visualization helps us understand how the model’s predictions are made and how it classifies new wine samples based on their ‘proline’ and ‘hue’ attributes. It also allows us to see any regions where the model might make uncertain predictions.</p>
+<p>In summary, the Wine dataset provides a real-world example of applying the Gaussian Naive Bayes algorithm for classification, and visualizations help us understand the model’s behavior in a 2D feature space.</p>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  let localAlternateSentinel = 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      &nbsp;
+    </div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    </div>
+    <div class="nav-footer-right">This page is built with ❤️ and <a href="https://quarto.org/">Quarto</a>.</div>
+  </div>
+</footer>
+
+
+
+</body></html>
