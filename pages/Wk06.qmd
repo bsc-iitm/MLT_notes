@@ -83,7 +83,7 @@ Alternatively, we can understand the maximum likelihood estimator $\hat{\mathbf{
 
 Assume that $P(y|\mathbf{X})$ follows a normal distribution $\mathcal{N}(\mathbf{w}^T\mathbf{x},\mathbf{I})$, where $I$ represents the identity matrix for simplicity.
 
-For the prior distribution of $\mathbf{w}$, a suitable choice is the normal distribution $\mathcal{N}(0,\gamma^2\mathbf{I})$, where $\gamma^2\mathbf{I} \in\mathbb{R}^{d\times d}$.
+For the prior distribution of $\mathbf{w}$, a suitable choice is the normal distribution $\mathcal{N}(\mathbf{0},\gamma^2\mathbf{I})$, where $\gamma^2\mathbf{I} \in\mathbb{R}^{d\times d}$.
 
 Thus, we can write:
 
